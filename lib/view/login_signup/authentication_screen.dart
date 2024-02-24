@@ -18,7 +18,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0XFF9643EA),
+      backgroundColor: Color(0XFF4682B4),
       body: Padding(
         padding: EdgeInsets.only(
           left: width * 0.05,

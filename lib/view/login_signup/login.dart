@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0XFF9643EA),
+      backgroundColor: Color(0XFF4682B4),
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: Padding(

@@ -20,7 +20,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         height: height,
         width: width,
         decoration: const BoxDecoration(
-            color: Color(0XFF9643EA),
+            color: Color(0XFF4682B4),
             image: DecorationImage(
                 image: AssetImage("assets/image/illustration1.png"),
                 fit: BoxFit.fill)),

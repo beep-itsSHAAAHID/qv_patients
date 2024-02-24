@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
+import 'package:qv_patient/view/pediatrician.dart';
 import 'package:qv_patient/view/profile.dart';
 
 class Home extends StatelessWidget {
@@ -12,37 +13,58 @@ class Home extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
+    List<String> specialtyNames = [
+      "Pediatrician",
+      "Orthopedics",
+      "General Surgeon",
+      "Cardiologist",
+      "Dermatologist",
+    ];
+
+    List<String> doctorNames = [
+      "Dr. John Doe\nGeneral Physician",
+      "Dr. Emily Smith\nPediatrician",
+      "Dr. Michael Johnson\nOrthopedic Surgeon",
+      "Dr. Sarah Williams\nCardiologist",
+      "Dr. David Brown\nDermatologist",
+    ];
+
     return Scaffold(
       backgroundColor: Color(0XFF4682B4),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: height * 0.08),
+          padding: EdgeInsets.symmetric(vertical: height * 0.08),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, // Align children at the start
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "HELLO,\nJACKSON!",
-                    style: GoogleFonts.poppins(
-                      fontSize: height * 0.030,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0XFFFFFFFF),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0), // Add left space here
+                    child: Text(
+                      "HELLO,\nJACKSON!",
+                      style: GoogleFonts.poppins(
+                        fontSize: height * 0.030,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0XFFFFFFFF),
+                      ),
                     ),
                   ),
                   GestureDetector(
-                    //onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Profile())),
-                    child: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage('assets/image/Ellipse12.png'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16.0), // Add right space here
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: AssetImage('assets/image/Ellipse12.png'),
+                      ),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: height * 0.05),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.all(1),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
@@ -55,16 +77,19 @@ class Home extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          hintText: 'Search for your Doctor....',
-                          hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                          border: InputBorder.none,
+                      child: Container( // Wrap with Container and set width
+                        width: MediaQuery.of(context).size.width * 0.6, // Adjust width as needed
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            hintText: 'Search for your Doctor....',
+                            hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            // You can add search functionality here
+                          },
                         ),
-                        onChanged: (value) {
-                          // You can add search functionality here
-                        },
                       ),
                     ),
                     IconButton(
@@ -75,17 +100,21 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
+
               SizedBox(height: height * 0.05),
-              Container(
-                height: 175,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Container(
+                  height: 175,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30)
+                  ),
                 ),
               ),
               SizedBox(height: height * 0.03),
               Padding(
-                padding: EdgeInsets.only(left: width * 0.02),
+                padding: EdgeInsets.symmetric(horizontal: 16.0), // Add left and right space here
                 child: Text(
                   "Specialities",
                   style: GoogleFonts.poppins(
@@ -100,16 +129,22 @@ class Home extends StatelessWidget {
                 height: 40,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: specialtyNames.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: ElevatedButton(
                         onPressed: () {
-                          // Add your action here
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => Pediatrician(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black, backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                           ),
@@ -120,13 +155,13 @@ class Home extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                Icons.category, // Replace this with the icon you want
+                                Icons.category,
                                 size: 20,
                                 color: Colors.black,
                               ),
                               SizedBox(width: 8),
                               Text(
-                                "Specialty ${index + 1}",
+                                specialtyNames[index],
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
@@ -136,11 +171,10 @@ class Home extends StatelessWidget {
                     );
                   },
                 ),
-
               ),
               SizedBox(height: height * 0.03),
               Padding(
-                padding: EdgeInsets.only(left: width * 0.02),
+                padding: EdgeInsets.symmetric(horizontal: 16.0), // Add left and right space here
                 child: Text(
                   "Nearby Doctors",
                   style: GoogleFonts.poppins(
@@ -150,24 +184,23 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: height * 0.01),
               Container(
                 height: 150,
-
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: doctorNames.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => const BookingScreen(),
-                              ));
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => BookingScreen(doctor: doctorNames[index]),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.black,
@@ -182,21 +215,21 @@ class Home extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                width: 80, // Adjust the width of the image container as needed
-                                height: 80, // Adjust the height of the image container as needed
+                                width: 80,
+                                height: 80,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
                                 child: ClipOval(
                                   child: Image(
-                                    image: AssetImage('assets/image/doctor.jpg'), // Replace with actual image path
+                                    image: AssetImage('assets/image/doctor.jpg'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               SizedBox(height: 8),
                               Text(
-                                "Dr John Doe\nGeneral Physician",
+                                doctorNames[index],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 14),
                               ),
@@ -207,10 +240,7 @@ class Home extends StatelessWidget {
                     );
                   },
                 ),
-
-
               ),
-
             ],
           ),
         ),
