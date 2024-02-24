@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.1.0
   flutter_svg: ^2.0.9
   qr_flutter: ^4.1.0
+  iconsax: ^0.0.8
 
 dev_dependencies:
   flutter_test:

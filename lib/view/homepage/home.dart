@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qv_patient/model/searchbar.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
+import 'package:qv_patient/view/MyBookingPage/mybookingpage.dart';
 import 'package:qv_patient/view/pediatrician.dart';
 import 'package:qv_patient/view/profile.dart';
 
@@ -62,44 +64,41 @@ class Home extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: height * 0.05),
-              Container(
-                padding: EdgeInsets.all(1),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 15),
-                      child: Icon(Icons.search, color: Colors.black),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Container( // Wrap with Container and set width
-                        width: MediaQuery.of(context).size.width * 0.6, // Adjust width as needed
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            hintText: 'Search for your Doctor....',
-                            hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (value) {
-                            // You can add search functionality here
-                          },
+
+              //search bar
+              Column(
+                children: [
+                  SearchBarModel(),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => MyBookingPage(),
                         ),
+                      );
+                    },
+                    child: Container(
+
+                      child: Center(child: Text('View Bookings',style:
+                        GoogleFonts.poppins(
+                          fontSize: height * 0.030,
+                          fontWeight: FontWeight.w500,
+
+                        ),)),
+                      height: 80,
+                      width: width * 0.8,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30)
                       ),
                     ),
-                    IconButton(
-                      onPressed: () => _searchController.clear(),
-                      icon: Icon(Icons.clear),
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
+                  )
+                ],
               ),
+
+
 
               SizedBox(height: height * 0.05),
               Padding(

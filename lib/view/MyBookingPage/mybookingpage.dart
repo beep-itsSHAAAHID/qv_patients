@@ -12,6 +12,7 @@ class MyBookingPage extends StatelessWidget {
     return DefaultTabController(
       length: 3, // Number of tabs
       child: Scaffold(
+        backgroundColor: Color(0XFF4682B4),
         body: Column(
           children: [
             const SizedBox(
@@ -29,7 +30,7 @@ class MyBookingPage extends StatelessWidget {
                   ),
                   const Text(
                     "My Booking",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 30,color: Colors.white),
                   ),
                   RoundButton(
                     onPfressed: () {
@@ -43,10 +44,10 @@ class MyBookingPage extends StatelessWidget {
             ),
             const SizedBox(height: 20), // Add some spacing before the TabBar
             const TabBar(
-              indicatorColor: Colors.indigo,
-              labelColor: Colors.indigo,
+              indicatorColor: Colors.white,
+              labelColor: Colors.white,
               tabs: [
-                Tab(text: 'Upcomming'),
+                Tab(text: 'Upcoming'),
                 Tab(text: 'Completed'),
                 Tab(text: 'Cancelled'),
               ],
