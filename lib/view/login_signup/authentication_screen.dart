@@ -47,7 +47,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             SizedBox(
               height: height * 0.38,
             ),
-             SvgPicture.asset(""),
+
             Text("Hello,Welcome",
                 style: GoogleFonts.jockeyOne(
                     fontSize: height * 0.04,
@@ -68,9 +68,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               onTap: () {
                 Navigator.push(
                     context,
-                    CupertinoPageRoute(builder: (context) => Login(),
-                    )
-                );
+                    CupertinoPageRoute(
+                      builder: (context) => Login(),
+                    ));
               },
               child: Container(
                 height: height * 0.07,
@@ -105,8 +105,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 width: width * 0.8,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(width * 0.5),
-                    color: Color(0XFF33396B)
-                ),
+                    color: Color(0XFF33396B)),
                 child: Center(
                   child: Text(
                     "Sign Up",
