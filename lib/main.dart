@@ -1,11 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:qv_patient/model/globalvariable.dart';
 import 'package:qv_patient/view/onboarding/onboarding1.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+
+Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:Color(0XFF4682B4),));
+    statusBarColor:Color(0XFF4682B4),));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
