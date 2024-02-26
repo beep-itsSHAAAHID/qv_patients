@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "853054702494",
+    "project_id": "docbooking-9ec13",
+    "storage_bucket": "docbooking-9ec13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853054702494:android:1e227e21b3f5e6aea30c8f",
+        "android_client_info": {
+          "package_name": "com.example.qv_patient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA2yNxEEZ2QKHWnEuUsxOiDH9Yv74ZHko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
