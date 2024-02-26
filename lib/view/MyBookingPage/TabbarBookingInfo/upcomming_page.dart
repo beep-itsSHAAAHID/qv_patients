@@ -16,6 +16,7 @@ class _UpcommingTabState extends State<UpcommingTab> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
         child: Column(

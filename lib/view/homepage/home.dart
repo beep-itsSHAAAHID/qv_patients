@@ -32,7 +32,7 @@ class Home extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Color(0XFF4682B4),
+      backgroundColor: Color(0xFF315098),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: height * 0.08),
@@ -43,7 +43,8 @@ class Home extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 16.0), // Add left space here
+                    padding: const EdgeInsets.only(
+                        left: 16.0), // Add left space here
                     child: Text(
                       "HELLO,\nJACKSON!",
                       style: GoogleFonts.poppins(
@@ -55,10 +56,12 @@ class Home extends StatelessWidget {
                   ),
                   GestureDetector(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 16.0), // Add right space here
+                      padding: const EdgeInsets.only(
+                          right: 16.0), // Add right space here
                       child: CircleAvatar(
                         radius: 30,
-                        backgroundImage: AssetImage('assets/image/Ellipse12.png'),
+                        backgroundImage:
+                            AssetImage('assets/image/Ellipse12.png'),
                       ),
                     ),
                   ),
@@ -69,7 +72,6 @@ class Home extends StatelessWidget {
               Column(
                 children: [
                   SearchBarModel(),
-
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -80,25 +82,23 @@ class Home extends StatelessWidget {
                       );
                     },
                     child: Container(
-
-                      child: Center(child: Text('View Bookings',style:
-                        GoogleFonts.poppins(
+                      child: Center(
+                          child: Text(
+                        'View Bookings',
+                        style: GoogleFonts.poppins(
                           fontSize: height * 0.030,
                           fontWeight: FontWeight.w500,
-
-                        ),)),
+                        ),
+                      )),
                       height: 80,
                       width: width * 0.8,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30)
-                      ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
                     ),
                   )
                 ],
               ),
-
-
 
               SizedBox(height: height * 0.05),
               Padding(
@@ -107,13 +107,13 @@ class Home extends StatelessWidget {
                   height: 175,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(30)
-                  ),
+                      borderRadius: BorderRadius.circular(30)),
                 ),
               ),
               SizedBox(height: height * 0.03),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0), // Add left and right space here
+                padding: EdgeInsets.symmetric(
+                    horizontal: 16.0), // Add left and right space here
                 child: Text(
                   "Specialities",
                   style: GoogleFonts.poppins(
@@ -149,7 +149,8 @@ class Home extends StatelessWidget {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 8.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -173,7 +174,8 @@ class Home extends StatelessWidget {
               ),
               SizedBox(height: height * 0.03),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0), // Add left and right space here
+                padding: EdgeInsets.symmetric(
+                    horizontal: 16.0), // Add left and right space here
                 child: Text(
                   "Nearby Doctors",
                   style: GoogleFonts.poppins(
@@ -197,7 +199,8 @@ class Home extends StatelessWidget {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => BookingScreen(doctor: doctorNames[index]),
+                              builder: (context) =>
+                                  BookingScreen(doctor: doctorNames[index]),
                             ),
                           );
                         },
@@ -209,7 +212,8 @@ class Home extends StatelessWidget {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 8.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -221,7 +225,8 @@ class Home extends StatelessWidget {
                                 ),
                                 child: ClipOval(
                                   child: Image(
-                                    image: AssetImage('assets/image/doctor.jpg'),
+                                    image:
+                                        AssetImage('assets/image/doctor.jpg'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
