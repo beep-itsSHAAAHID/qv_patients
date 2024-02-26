@@ -32,7 +32,7 @@ class Home extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Color(0xFF315098),
+      backgroundColor: Color(0XFF4682B4),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: height * 0.08),
