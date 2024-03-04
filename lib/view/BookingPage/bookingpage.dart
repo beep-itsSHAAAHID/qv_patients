@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/qrGenerator.dart';
@@ -7,7 +6,7 @@ class BookingScreen extends StatefulWidget {
   final String? specialty;
   final String? doctor;
 
-  const BookingScreen({Key? key, this.specialty, this.doctor}) : super(key: key);
+  const BookingScreen({super.key, this.specialty, this.doctor});
 
   @override
   _BookingScreenState createState() => _BookingScreenState();
@@ -20,22 +19,22 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0XFF4682B4),
+      backgroundColor: const Color(0XFF4682B4),
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context); // Navigate back when back button is pressed
           },
         ),
-        backgroundColor: Color(0XFF4682B4),
+        backgroundColor: const Color(0XFF4682B4),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 70),
             child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(70)),
+              borderRadius: const BorderRadius.all(Radius.circular(70)),
               child: Image.asset(
                 'assets/image/doctor.jpg',
               ),
@@ -43,7 +42,7 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -56,7 +55,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Divider(
+                      const Divider(
                         indent: 150,
                         endIndent: 150,
                         thickness: 3,
@@ -64,21 +63,21 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                       Text(
                         widget.doctor ?? '',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         widget.specialty ?? '',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Divider(),
-                      Row(
+                      const SizedBox(height: 20),
+                      const Divider(),
+                      const Row(
                         children: [
                           Text(
                             'About',
@@ -90,14 +89,14 @@ class _BookingScreenState extends State<BookingScreen> {
                           SizedBox(width: 10),
                         ],
                       ),
-                      Text(
+                      const Text(
                         'Add information about the doctor here...',
                         style: TextStyle(
                           fontSize: 14,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Row(
+                      const SizedBox(height: 20),
+                      const Row(
                         children: [
                           Text(
                             'Appointment',
@@ -108,7 +107,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -124,8 +123,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                   });
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(right: 20),
-                                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                                  margin: const EdgeInsets.only(right: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                                   decoration: BoxDecoration(
                                     color: _selectedDate != null && currentDate.day == _selectedDate!.day
                                         ? Colors.indigo
@@ -137,15 +136,15 @@ class _BookingScreenState extends State<BookingScreen> {
                                     children: [
                                       Text(
                                         dayAbbreviation,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 5),
+                                      const SizedBox(height: 5),
                                       Text(
                                         '${currentDate.day}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                         ),
                                       ),
@@ -157,7 +156,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SingleChildScrollView(
@@ -172,16 +171,16 @@ class _BookingScreenState extends State<BookingScreen> {
                                 });
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                                margin: EdgeInsets.only(right: 10),
-                                child: Text(
-                                  'Morning Session',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                margin: const EdgeInsets.only(right: 10),
                                 decoration: BoxDecoration(
                                   color: _selectedSession == 'Morning' ? Colors.indigo : Colors.transparent,
                                   borderRadius: BorderRadius.circular(22),
                                   border: Border.all(color: Colors.indigo),
+                                ),
+                                child: const Text(
+                                  'Morning Session',
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
@@ -192,23 +191,23 @@ class _BookingScreenState extends State<BookingScreen> {
                                 });
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                                margin: EdgeInsets.only(right: 10),
-                                child: Text(
-                                  'Evening Session',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                margin: const EdgeInsets.only(right: 10),
                                 decoration: BoxDecoration(
                                   color: _selectedSession == 'Evening' ? Colors.indigo : Colors.transparent,
                                   borderRadius: BorderRadius.circular(22),
                                   border: Border.all(color: Colors.indigo),
+                                ),
+                                child: const Text(
+                                  'Evening Session',
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                                 ),
                               ),
                             )
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       GestureDetector(
@@ -216,15 +215,15 @@ class _BookingScreenState extends State<BookingScreen> {
                           _showBookingConfirmation();
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 17),
-                          child: Text(
-                            'Book APPOINTMENT!',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 17),
                           decoration: BoxDecoration(
                             color: Colors.indigo,
                             borderRadius: BorderRadius.circular(22),
                             border: Border.all(color: Colors.indigo),
+                          ),
+                          child: const Text(
+                            'Book APPOINTMENT!',
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
                       )
@@ -265,17 +264,17 @@ class _BookingScreenState extends State<BookingScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Booking Successful!"),
+          title: const Text("Booking Successful!"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Doctor's Name: ${widget.doctor}"),
-              Text("Patient's Name: Sajjad"), // Replace [Your Patient's Name] with actual patient's name
-              Text("Token Number: 10"), // Replace [Token Number] with actual token number
+              const Text("Patient's Name: Sajjad"), // Replace [Your Patient's Name] with actual patient's name
+              const Text("Token Number: 10"), // Replace [Token Number] with actual token number
               Text("Session: $_selectedSession"),
               Text("Date: ${_selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : ''}"),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SizedBox(
                 width: 200,
                 height: 200,
@@ -293,7 +292,7 @@ class _BookingScreenState extends State<BookingScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

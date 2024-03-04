@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/view/MyBookingPage/BookingDetailPage/bookindetails_page.dart';
 import 'package:qv_patient/view/MyBookingPage/widget/booking_card.dart';
-import 'package:qv_patient/view/MyBookingPage/widget/my_button_withText.dart';
 
 class UpcommingTab extends StatefulWidget {
   const UpcommingTab({super.key});
@@ -18,7 +15,7 @@ class _UpcommingTabState extends State<UpcommingTab> {
     return SingleChildScrollView(
       
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
         child: Column(
           children: [
             BookingCard(
@@ -26,7 +23,7 @@ class _UpcommingTabState extends State<UpcommingTab> {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => BookingDetailPage(
+                      builder: (context) => const BookingDetailPage(
                         imageUrl: 'assets/image/doctor.jpg',
                         doctorName: "Dr. Smith",
                         appointmentDate: "Sep 10, 2024 - 2:00 PM",
@@ -48,7 +45,7 @@ class _UpcommingTabState extends State<UpcommingTab> {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => BookingDetailPage(
+                      builder: (context) => const BookingDetailPage(
                         imageUrl: 'assets/image/doctor.jpg',
                         doctorName: "Dr. Kunju",
                         appointmentDate: "Aug 5, 2024 - 5:00 PM",
@@ -70,7 +67,7 @@ class _UpcommingTabState extends State<UpcommingTab> {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => BookingDetailPage(
+                      builder: (context) => const BookingDetailPage(
                         imageUrl: 'assets/image/doctor.jpg',
                         doctorName: "Dr. Kunju",
                         appointmentDate: "Aug 5, 2024 - 5:00 PM",

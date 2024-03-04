@@ -11,11 +11,11 @@ class TchipTheme {
     checkmarkColor: Colors.white,
   );
 
-  static ChipThemeData darkChipTheme = ChipThemeData(
+  static ChipThemeData darkChipTheme = const ChipThemeData(
     disabledColor: Colors.grey,
     selectedColor: Colors.blue,
-    labelStyle: const TextStyle(color: Colors.white),
-    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
+    labelStyle: TextStyle(color: Colors.white),
+    padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
     checkmarkColor: Colors.white,
   );
 }

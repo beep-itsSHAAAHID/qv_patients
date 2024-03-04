@@ -40,10 +40,10 @@ class _BookingCardState extends State<BookingCard> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [BoxShadow(blurRadius: 2, spreadRadius: .1)],
+            boxShadow: const [BoxShadow(blurRadius: 2, spreadRadius: .1)],
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -57,11 +57,11 @@ class _BookingCardState extends State<BookingCard> {
                     child: Text(
                       widget
                           .appointmentDate, // Correctly using provided appointmentDate
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   if (widget.showSwitch ?? true) ...[
-                    Text(
+                    const Text(
                       'Remind Me',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -77,7 +77,7 @@ class _BookingCardState extends State<BookingCard> {
                   ],
                 ],
               ),
-              Divider(),
+              const Divider(),
               Row(
                 children: [
                   Container(
@@ -95,7 +95,7 @@ class _BookingCardState extends State<BookingCard> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     // Wrapped in Expanded to prevent overflow
                     child: Column(
@@ -105,12 +105,12 @@ class _BookingCardState extends State<BookingCard> {
                         Text(
                           widget
                               .doctorName, // Dynamically using provided doctorName
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Iconsax.location,
                               size: 15,
                             ),
@@ -118,19 +118,19 @@ class _BookingCardState extends State<BookingCard> {
                           ],
                         ), // Dynamically using provided location
                         Row(children: [
-                          Icon(
+                          const Icon(
                             Iconsax.ticket,
                             size: 15,
                           ),
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Booking ID: ', // Dynamically using provided bookingId
                               ),
                               Text(
                                 widget
                                     .bookingId, // Dynamically using provided bookingId
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.indigo,
                                     fontWeight: FontWeight.bold),
                               )
@@ -142,15 +142,15 @@ class _BookingCardState extends State<BookingCard> {
                   )
                 ],
               ),
-              SizedBox(height: 10),
-              Divider(),
+              const SizedBox(height: 10),
+              const Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MyButtonWithText(
                     text: widget.firstbuttontext,
                     textColor: Colors.indigo,
-                    backgroundColor: Color.fromARGB(255, 179, 213, 241),
+                    backgroundColor: const Color.fromARGB(255, 179, 213, 241),
                   ),
                   MyButtonWithText(
                     text: widget.secondbuttontext,

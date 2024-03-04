@@ -12,7 +12,7 @@ class MyBookingPage extends StatelessWidget {
     return DefaultTabController(
       length: 3, // Number of tabs
       child: Scaffold(
-        backgroundColor: Color(0XFF4682B4),
+        backgroundColor: const Color(0XFF4682B4),
         body: Column(
           children: [
             const SizedBox(

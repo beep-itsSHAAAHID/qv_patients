@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DoctorCard extends StatelessWidget {
+  const DoctorCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -20,18 +22,18 @@ class DoctorCard extends StatelessWidget {
             Container(
               width: 80, // Adjust the width of the image container as needed
               height: 80, // Adjust the height of the image container as needed
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: ClipOval(
+              child: const ClipOval(
                 child: Image(
                   image: AssetImage('assets/image/doctor.jpg'), // Replace with actual image path
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               "Dr John Doe\nGeneral Physician",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14),

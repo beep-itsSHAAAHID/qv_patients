@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchBarModel extends StatefulWidget {
-  const SearchBarModel({Key? key}) : super(key: key);
+  const SearchBarModel({super.key});
 
   @override
   State<SearchBarModel> createState() => _SearchBarModelState();
@@ -15,7 +15,7 @@ class _SearchBarModelState extends State<SearchBarModel> {
     return Center(
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -24,7 +24,7 @@ class _SearchBarModelState extends State<SearchBarModel> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: AnimatedContainer(
-                  duration: Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 400),
                   width: _folded ? 56 : 300,
                   height: 56,
                   decoration: BoxDecoration(
@@ -58,15 +58,15 @@ class _SearchBarModelState extends State<SearchBarModel> {
                         ),
                       ),
                       AnimatedContainer(
-                        duration: Duration(milliseconds: 400),
+                        duration: const Duration(milliseconds: 400),
                         child: Material(
                           type: MaterialType.transparency,
                           child: InkWell(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(_folded ? 32 : 0),
-                              topRight: Radius.circular(32),
+                              topRight: const Radius.circular(32),
                               bottomLeft: Radius.circular(_folded ? 32 : 0),
-                              bottomRight: Radius.circular(32),
+                              bottomRight: const Radius.circular(32),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),

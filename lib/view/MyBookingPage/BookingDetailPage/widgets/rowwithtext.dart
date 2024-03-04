@@ -17,11 +17,11 @@ class RowWith2Text extends StatelessWidget {
           children: [
             Text(
               firsttext,
-              style: TextStyle(fontSize: 20, color: Colors.grey),
+              style: const TextStyle(fontSize: 20, color: Colors.grey),
             ),
             Text(
               secondText,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ));

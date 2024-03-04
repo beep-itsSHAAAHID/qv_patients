@@ -5,10 +5,11 @@ import 'package:qv_patient/model/searchbar.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
 import 'package:qv_patient/view/MyBookingPage/mybookingpage.dart';
 import 'package:qv_patient/view/pediatrician.dart';
-import 'package:qv_patient/view/profile.dart';
 
 class Home extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
+
+  Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class Home extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Color(0XFF4682B4),
+      backgroundColor: const Color(0XFF4682B4),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: height * 0.08),
@@ -50,13 +51,13 @@ class Home extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: height * 0.030,
                         fontWeight: FontWeight.w600,
-                        color: Color(0XFFFFFFFF),
+                        color: const Color(0XFFFFFFFF),
                       ),
                     ),
                   ),
                   GestureDetector(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
+                    child: const Padding(
+                      padding: EdgeInsets.only(
                           right: 16.0), // Add right space here
                       child: CircleAvatar(
                         radius: 30,
@@ -71,17 +72,22 @@ class Home extends StatelessWidget {
               //search bar
               Column(
                 children: [
-                  SearchBarModel(),
+                  const SearchBarModel(),
                   InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => MyBookingPage(),
+                          builder: (context) => const MyBookingPage(),
                         ),
                       );
                     },
                     child: Container(
+                      height: 80,
+                      width: width * 0.8,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
                       child: Center(
                           child: Text(
                         'View Bookings',
@@ -90,11 +96,6 @@ class Home extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       )),
-                      height: 80,
-                      width: width * 0.8,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30)),
                     ),
                   )
                 ],
@@ -112,32 +113,32 @@ class Home extends StatelessWidget {
               ),
               SizedBox(height: height * 0.03),
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                     horizontal: 16.0), // Add left and right space here
                 child: Text(
                   "Specialities",
                   style: GoogleFonts.poppins(
                     fontSize: height * 0.020,
                     fontWeight: FontWeight.w500,
-                    color: Color(0XFFFFFFFF),
+                    color: const Color(0XFFFFFFFF),
                   ),
                 ),
               ),
               SizedBox(height: height * 0.01),
-              Container(
+              SizedBox(
                 height: 40,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: specialtyNames.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => Pediatrician(),
+                              builder: (context) => const Pediatrician(),
                             ),
                           );
                         },
@@ -154,15 +155,15 @@ class Home extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.category,
                                 size: 20,
                                 color: Colors.black,
                               ),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Text(
                                 specialtyNames[index],
-                                style: TextStyle(fontSize: 14),
+                                style: const TextStyle(fontSize: 14),
                               ),
                             ],
                           ),
@@ -174,26 +175,26 @@ class Home extends StatelessWidget {
               ),
               SizedBox(height: height * 0.03),
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                     horizontal: 16.0), // Add left and right space here
                 child: Text(
                   "Nearby Doctors",
                   style: GoogleFonts.poppins(
                     fontSize: height * 0.020,
                     fontWeight: FontWeight.w500,
-                    color: Color(0XFFFFFFFF),
+                    color: const Color(0XFFFFFFFF),
                   ),
                 ),
               ),
               SizedBox(height: height * 0.01),
-              Container(
+              SizedBox(
                 height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: doctorNames.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -220,10 +221,10 @@ class Home extends StatelessWidget {
                               Container(
                                 width: 80,
                                 height: 80,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
-                                child: ClipOval(
+                                child: const ClipOval(
                                   child: Image(
                                     image:
                                         AssetImage('assets/image/doctor.jpg'),
@@ -231,11 +232,11 @@ class Home extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 doctorNames[index],
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 14),
+                                style: const TextStyle(fontSize: 14),
                               ),
                             ],
                           ),

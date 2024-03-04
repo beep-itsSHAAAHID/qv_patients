@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/view/MyBookingPage/BookingDetailPage/widgets/rowwithtext.dart';
 import 'package:qv_patient/view/MyBookingPage/widget/round_button_with_icon.dart';
@@ -12,13 +11,13 @@ class BookingDetailPage extends StatelessWidget {
   final String imageUrl;
 
   const BookingDetailPage({
-    Key? key,
+    super.key,
     required this.doctorName,
     required this.appointmentDate,
     required this.location,
     required this.bookingId,
     required this.imageUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class BookingDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -37,7 +36,7 @@ class BookingDetailPage extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 const Text(
                   "My Appointment",
                   style: TextStyle(
@@ -45,10 +44,10 @@ class BookingDetailPage extends StatelessWidget {
                       fontSize: 30,
                       color: Colors.black),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
@@ -61,7 +60,7 @@ class BookingDetailPage extends StatelessWidget {
                         backgroundImage: AssetImage(imageUrl),
                         radius: 50,
                       ),
-                      Positioned(
+                      const Positioned(
                         bottom: 8,
                         right: -1,
                         child: Icon(
@@ -71,25 +70,25 @@ class BookingDetailPage extends StatelessWidget {
                       )
                     ]),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         doctorName,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Iconsax.location,
                             size: 15,
                             color: Colors.blue,
                           ),
                           Text(
                             location,
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                            style: const TextStyle(fontSize: 16, color: Colors.grey),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
@@ -99,14 +98,14 @@ class BookingDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            Divider(
+            const SizedBox(height: 20),
+            const Divider(
               indent: 20,
               endIndent: 20,
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
                   Text(
@@ -121,32 +120,32 @@ class BookingDetailPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Date",
                     style: TextStyle(fontSize: 20, color: Colors.grey),
                   ),
                   Text(
                     appointmentDate,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            RowWith2Text(
+            const SizedBox(height: 20),
+            const RowWith2Text(
               firsttext: "Booking For",
               secondText: 'Self',
             ),
-            SizedBox(height: 20),
-            Divider(
+            const SizedBox(height: 20),
+            const Divider(
               indent: 20,
               endIndent: 20,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
                   Text(
@@ -156,30 +155,30 @@ class BookingDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            RowWith2Text(firsttext: 'Full Name', secondText: "Abu"),
-            SizedBox(
+            const RowWith2Text(firsttext: 'Full Name', secondText: "Abu"),
+            const SizedBox(
               height: 10,
             ),
-            RowWith2Text(firsttext: 'Gender', secondText: "Male"),
-            SizedBox(
+            const RowWith2Text(firsttext: 'Gender', secondText: "Male"),
+            const SizedBox(
               height: 10,
             ),
-            RowWith2Text(firsttext: 'Age', secondText: "27"),
-            SizedBox(
+            const RowWith2Text(firsttext: 'Age', secondText: "27"),
+            const SizedBox(
               height: 10,
             ),
-            RowWith2Text(firsttext: 'Problem', secondText: "Fever"),
-            SizedBox(
+            const RowWith2Text(firsttext: 'Problem', secondText: "Fever"),
+            const SizedBox(
               height: 20,
             ),
-            Divider(
+            const Divider(
               indent: 20,
               endIndent: 20,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Padding(
@@ -191,18 +190,18 @@ class BookingDetailPage extends StatelessWidget {
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(12)),
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.blue[100],
-                          child: Icon(Iconsax.message),
+                          child: const Icon(Iconsax.message),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Column(
+                        const Column(
                           children: [
                             Row(
                               children: [
@@ -260,11 +259,11 @@ class BookingDetailPage extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         child: ElevatedButton(
-            style: ButtonStyle(
+            style: const ButtonStyle(
                 foregroundColor: MaterialStatePropertyAll(Colors.white),
                 backgroundColor: MaterialStatePropertyAll(Colors.indigo)),
             onPressed: () {},
-            child: Text(
+            child: const Text(
               'Message (Start at 16:00 PM)',
               style: TextStyle(fontSize: 25),
             )),
