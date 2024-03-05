@@ -1,253 +1,178 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:qv_patient/animations/fade_in_slide.dart';
+import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/constants/image_url.dart';
+import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/model/searchbar.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
-import 'package:qv_patient/view/MyBookingPage/mybookingpage.dart';
-import 'package:qv_patient/view/pediatrician.dart';
+import 'package:qv_patient/view/homepage/widgets/docCaed.dart';
+import 'package:qv_patient/view/homepage/widgets/promo_slider.dart';
+import 'package:qv_patient/view/homepage/widgets/sectionheading.dart';
+import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
 
 class Home extends StatelessWidget {
-  final TextEditingController _searchController = TextEditingController();
-
-  Home({super.key});
+  const Home({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
-
-    List<String> specialtyNames = [
-      "Pediatrician",
-      "Orthopedics",
-      "General Surgeon",
-      "Cardiologist",
-      "Dermatologist",
-    ];
-
-    List<String> doctorNames = [
-      "Dr. John Doe\nGeneral Physician",
-      "Dr. Emily Smith\nPediatrician",
-      "Dr. Michael Johnson\nOrthopedic Surgeon",
-      "Dr. Sarah Williams\nCardiologist",
-      "Dr. David Brown\nDermatologist",
-    ];
-
     return Scaffold(
-      backgroundColor: const Color(0XFF4682B4),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: height * 0.08),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0), // Add left space here
-                    child: Text(
-                      "HELLO,\nJACKSON!",
-                      style: GoogleFonts.poppins(
-                        fontSize: height * 0.030,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0XFFFFFFFF),
+        child: Column(
+          children: [
+            FadeInSlide(
+              duration: 0.5,
+              child: TPrimaryHeaderContainer(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Tsizes.defaultspace),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: Tsizes.spcbtwsections + 20,
                       ),
-                    ),
-                  ),
-                  GestureDetector(
-                    child: const Padding(
-                      padding: EdgeInsets.only(
-                          right: 16.0), // Add right space here
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundImage:
-                            AssetImage('assets/image/Ellipse12.png'),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              //search bar
-              Column(
-                children: [
-                  const SearchBarModel(),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => const MyBookingPage(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: 80,
-                      width: width * 0.8,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Center(
-                          child: Text(
-                        'View Bookings',
-                        style: GoogleFonts.poppins(
-                          fontSize: height * 0.030,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )),
-                    ),
-                  )
-                ],
-              ),
-
-              SizedBox(height: height * 0.05),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Container(
-                  height: 175,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30)),
-                ),
-              ),
-              SizedBox(height: height * 0.03),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0), // Add left and right space here
-                child: Text(
-                  "Specialities",
-                  style: GoogleFonts.poppins(
-                    fontSize: height * 0.020,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0XFFFFFFFF),
-                  ),
-                ),
-              ),
-              SizedBox(height: height * 0.01),
-              SizedBox(
-                height: 40,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: specialtyNames.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const Pediatrician(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 8.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                      Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Icon(
-                                Icons.category,
-                                size: 20,
-                                color: Colors.black,
+                              FadeInSlide(
+                                duration: .9,
+                                child: Text(
+                                  "Hello Welcome 👋",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .apply(color: TColors.dark),
+                                ),
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                specialtyNames[index],
-                                style: const TextStyle(fontSize: 14),
+                              FadeInSlide(
+                                duration: 0.9,
+                                child: Text(
+                                  "Sajad.kp",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .apply(color: TColors.dark),
+                                ),
                               ),
                             ],
                           ),
-                        ),
+                          const Spacer(),
+                          const FadeInSlide(
+                            duration: 0.9,
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage(TImages.user),
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: height * 0.03),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0), // Add left and right space here
-                child: Text(
-                  "Nearby Doctors",
-                  style: GoogleFonts.poppins(
-                    fontSize: height * 0.020,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0XFFFFFFFF),
+                      const FadeInSlide(duration: 0.9, child: SearchBarModel()),
+                      const SizedBox(
+                        height: Tsizes.defaultspace + 50,
+                      )
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: height * 0.01),
-              SizedBox(
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: doctorNames.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) =>
-                                  BookingScreen(doctor: doctorNames[index]),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  const FadeInSlide(
+                    duration: 0.9,
+                    child: TPromoSlider(
+                      banners: [
+                        TImages.promoBanner1,
+                        TImages.promoBanner1,
+                        TImages.promoBanner1
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+                  const FadeInSlide(
+                      duration: 0.9,
+                      child: TSectionHeading(title: "Nearby Doctors")),
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+                  FadeInSlide(
+                    duration: 0.9,
+                    child: DocCard(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const BookingScreen(
+                              doctor: 'Dr.Salman',
+                              specialty: 'Orthologist',
                             ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 80,
-                                height: 80,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const ClipOval(
-                                  child: Image(
-                                    image:
-                                        AssetImage('assets/image/doctor.jpg'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                doctorNames[index],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
+                        );
+                      },
+                      name: 'Dr.Salman',
+                      location: 'Perintalmanna',
+                      department: 'Orthologist',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.defaultspace,
+                  ),
+                  FadeInSlide(
+                    duration: 0.9,
+                    child: DocCard(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const BookingScreen(
+                              doctor: 'Dr.Salman',
+                              specialty: 'Orthologist',
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                        );
+                      },
+                      name: 'Dr.Salman',
+                      location: 'Perintalmanna',
+                      department: 'Orthologist',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.defaultspace,
+                  ),
+                  FadeInSlide(
+                    duration: 0.9,
+                    child: DocCard(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const BookingScreen(
+                              doctor: 'Dr.Salman',
+                              specialty: 'Orthologist',
+                            ),
+                          ),
+                        );
+                      },
+                      name: 'Dr.Salman',
+                      location: 'Perintalmanna',
+                      department: 'Orthologist',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.defaultspace,
+                  ),
+                ],
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

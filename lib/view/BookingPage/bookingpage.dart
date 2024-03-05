@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qv_patient/constants/colors.dart';
 
 import '../../model/qrGenerator.dart';
 
@@ -19,7 +20,6 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF4682B4),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
@@ -27,7 +27,7 @@ class _BookingScreenState extends State<BookingScreen> {
             Navigator.pop(context); // Navigate back when back button is pressed
           },
         ),
-        backgroundColor: const Color(0XFF4682B4),
+        backgroundColor: TColors.dark,
       ),
       body: Column(
         children: [
@@ -50,7 +50,8 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,9 +114,11 @@ class _BookingScreenState extends State<BookingScreen> {
                         child: Row(
                           children: List.generate(
                             7,
-                                (index) {
-                              final currentDate = DateTime.now().add(Duration(days: index));
-                              final dayAbbreviation = _getDayAbbreviation(currentDate.weekday);
+                            (index) {
+                              final currentDate =
+                                  DateTime.now().add(Duration(days: index));
+                              final dayAbbreviation =
+                                  _getDayAbbreviation(currentDate.weekday);
                               return InkWell(
                                 onTap: () {
                                   setState(() {
@@ -124,9 +127,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(right: 20),
-                                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 25),
                                   decoration: BoxDecoration(
-                                    color: _selectedDate != null && currentDate.day == _selectedDate!.day
+                                    color: _selectedDate != null &&
+                                            currentDate.day ==
+                                                _selectedDate!.day
                                         ? Colors.indigo
                                         : Colors.grey[300],
                                     borderRadius: BorderRadius.circular(10),
@@ -171,16 +177,21 @@ class _BookingScreenState extends State<BookingScreen> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 40, vertical: 10),
                                 margin: const EdgeInsets.only(right: 10),
                                 decoration: BoxDecoration(
-                                  color: _selectedSession == 'Morning' ? Colors.indigo : Colors.transparent,
+                                  color: _selectedSession == 'Morning'
+                                      ? Colors.indigo
+                                      : Colors.transparent,
                                   borderRadius: BorderRadius.circular(22),
                                   border: Border.all(color: Colors.indigo),
                                 ),
                                 child: const Text(
                                   'Morning Session',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
@@ -191,31 +202,36 @@ class _BookingScreenState extends State<BookingScreen> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 40, vertical: 10),
                                 margin: const EdgeInsets.only(right: 10),
                                 decoration: BoxDecoration(
-                                  color: _selectedSession == 'Evening' ? Colors.indigo : Colors.transparent,
+                                  color: _selectedSession == 'Evening'
+                                      ? Colors.indigo
+                                      : Colors.transparent,
                                   borderRadius: BorderRadius.circular(22),
                                   border: Border.all(color: Colors.indigo),
                                 ),
                                 child: const Text(
                                   'Evening Session',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
                                 ),
                               ),
                             )
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 40,
-                      ),
+                      const SizedBox(height: 40),
                       GestureDetector(
                         onTap: () {
                           _showBookingConfirmation();
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 17),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 17),
                           decoration: BoxDecoration(
                             color: Colors.indigo,
                             borderRadius: BorderRadius.circular(22),
@@ -223,7 +239,10 @@ class _BookingScreenState extends State<BookingScreen> {
                           ),
                           child: const Text(
                             'Book APPOINTMENT!',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
                       )
@@ -270,19 +289,22 @@ class _BookingScreenState extends State<BookingScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Doctor's Name: ${widget.doctor}"),
-              const Text("Patient's Name: Sajjad"), // Replace [Your Patient's Name] with actual patient's name
-              const Text("Token Number: 10"), // Replace [Token Number] with actual token number
+              const Text(
+                  "Patient's Name: Sajjad"), // Replace [Your Patient's Name] with actual patient's name
+              const Text(
+                  "Token Number: 10"), // Replace [Token Number] with actual token number
               Text("Session: $_selectedSession"),
-              Text("Date: ${_selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : ''}"),
+              Text(
+                  "Date: ${_selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : ''}"),
               const SizedBox(height: 10),
               SizedBox(
                 width: 200,
                 height: 200,
                 child: TokenGenerationDataModel(
-                    doctorName: '${widget.doctor}',
-                    tokenNumber: '10',
-                    patientName: 'Sajjad',
-                    appointmentTime: '$_selectedSession"'
+                  doctorName: '${widget.doctor}',
+                  tokenNumber: '10',
+                  patientName: 'Sajjad',
+                  appointmentTime: '$_selectedSession"',
                 ).generateQrCodeWidget(),
               ),
             ],
@@ -299,5 +321,4 @@ class _BookingScreenState extends State<BookingScreen> {
       },
     );
   }
-
 }

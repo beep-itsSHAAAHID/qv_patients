@@ -4,9 +4,9 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/loading_overlay.dart';
+import 'package:qv_patient/navigationmenu.dart';
 import 'package:qv_patient/view/Authentication/forgot_password_view.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
-import 'package:qv_patient/view/homepage/home.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
@@ -189,7 +189,7 @@ class _SignInViewState extends State<SignInView> {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => Home(),
+                  builder: (context) => const NavigationMenu(),
                 ),
               );
             },

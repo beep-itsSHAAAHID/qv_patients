@@ -32,7 +32,7 @@ class TImages {
   static const String onBoardingImage3 = "assets/image/onboarding3.png";
 
   //Profile
-  static const String user = "assets/images/content/user.png";
+  static const String user = "assets/image/content/user.png";
 
   // -- Payment Methods
   static const String applePay = "assets/icons/payment_methods/apple-pay.png";
@@ -47,4 +47,12 @@ class TImages {
   static const String paytm = "assets/icons/payment_methods/paytm.png";
   static const String successfulPaymentIcon =
       "assets/icons/payment_methods/successful_payment_icon.png";
+
+  //Banners
+  static const String promoBanner1 =
+      "assets/image/products/promo-banner-1.png";
+  static const String promoBanner2 =
+      "assets/image/products/promo-banner-2.png";
+  static const String promoBanner3 =
+      "assets/image/products/promo-banner-3.png";
 }

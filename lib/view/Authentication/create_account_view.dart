@@ -197,7 +197,7 @@ class _SignUpViewState extends State<SignUpView> {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => Home(),
+                  builder: (context) => const Home(),
                 ),
               );
             },
