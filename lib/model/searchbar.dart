@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/helper/doc_helper_function.dart';
 
 class SearchBarModel extends StatefulWidget {
   const SearchBarModel({super.key});
@@ -13,6 +14,7 @@ class _SearchBarModelState extends State<SearchBarModel> {
 
   @override
   Widget build(BuildContext context) {
+    final dark = DocHelperFunctions.isDarkMode(context);
     return Center(
       child: Column(
         children: [
@@ -30,7 +32,7 @@ class _SearchBarModelState extends State<SearchBarModel> {
                   height: 56,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(32),
-                    color: TColors.dark,
+                    color: dark ? TColors.dark : TColors.light,
                     boxShadow: kElevationToShadow[6],
                   ),
                   child: Row(

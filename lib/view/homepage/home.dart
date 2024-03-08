@@ -4,6 +4,7 @@ import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/image_url.dart';
 import 'package:qv_patient/constants/size.dart';
+import 'package:qv_patient/helper/doc_helper_function.dart';
 import 'package:qv_patient/model/searchbar.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
 import 'package:qv_patient/view/homepage/widgets/docCaed.dart';
@@ -18,12 +19,15 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dark = DocHelperFunctions.isDarkMode(context);
     return Scaffold(
+      backgroundColor: dark ? TColors.dark : TColors.light,
       body: SingleChildScrollView(
         child: Column(
           children: [
             FadeInSlide(
               duration: 0.5,
+              direction: FadeSlideDirection.ltr,
               child: TPrimaryHeaderContainer(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -41,22 +45,30 @@ class Home extends StatelessWidget {
                             children: [
                               FadeInSlide(
                                 duration: .9,
+                                direction: FadeSlideDirection.ltr,
                                 child: Text(
                                   "Hello Welcome 👋",
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineLarge!
-                                      .apply(color: TColors.dark),
+                                      .apply(
+                                          color: dark
+                                              ? TColors.dark
+                                              : TColors.light),
                                 ),
                               ),
                               FadeInSlide(
                                 duration: 0.9,
+                                direction: FadeSlideDirection.ltr,
                                 child: Text(
                                   "Sajad.kp",
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium!
-                                      .apply(color: TColors.dark),
+                                      .apply(
+                                          color: dark
+                                              ? TColors.dark
+                                              : TColors.light),
                                 ),
                               ),
                             ],
@@ -64,6 +76,7 @@ class Home extends StatelessWidget {
                           const Spacer(),
                           const FadeInSlide(
                             duration: 0.9,
+                            direction: FadeSlideDirection.ltr,
                             child: CircleAvatar(
                               radius: 30,
                               backgroundImage: AssetImage(TImages.user),
@@ -71,7 +84,10 @@ class Home extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const FadeInSlide(duration: 0.9, child: SearchBarModel()),
+                      const FadeInSlide(
+                          duration: 0.9,
+                          direction: FadeSlideDirection.ltr,
+                          child: SearchBarModel()),
                       const SizedBox(
                         height: Tsizes.defaultspace + 50,
                       )
@@ -86,6 +102,7 @@ class Home extends StatelessWidget {
                 children: [
                   const FadeInSlide(
                     duration: 0.9,
+                    direction: FadeSlideDirection.ltr,
                     child: TPromoSlider(
                       banners: [
                         TImages.promoBanner1,
@@ -99,13 +116,18 @@ class Home extends StatelessWidget {
                   ),
                   const FadeInSlide(
                       duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
                       child: TSectionHeading(title: "Nearby Doctors")),
                   const SizedBox(
                     height: Tsizes.spcbtwsections,
                   ),
                   FadeInSlide(
                     duration: 0.9,
+                    direction: FadeSlideDirection.ltr,
                     child: DocCard(
+                      peoplerated: 45,
+                      ratingnumber: 4.0,
+                      rating: 4,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -127,7 +149,11 @@ class Home extends StatelessWidget {
                   ),
                   FadeInSlide(
                     duration: 0.9,
+                    direction: FadeSlideDirection.ltr,
                     child: DocCard(
+                      peoplerated: 32,
+                      ratingnumber: 3.0,
+                      rating: 3,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -149,7 +175,11 @@ class Home extends StatelessWidget {
                   ),
                   FadeInSlide(
                     duration: 0.9,
+                    direction: FadeSlideDirection.ltr,
                     child: DocCard(
+                      peoplerated: 48,
+                      ratingnumber: 5,
+                      rating: 5,
                       onTap: () {
                         Navigator.push(
                           context,
