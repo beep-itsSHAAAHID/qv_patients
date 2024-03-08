@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:qv_patient/animations/fade_in_slide.dart';
+import 'package:qv_patient/constants/colors.dart';
+
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/canceled_page.dart';
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/completed_page.dart';
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/upcomming_page.dart';
-import 'package:qv_patient/view/MyBookingPage/widget/round_button_with_icon.dart';
 
 class MyBookingPage extends StatelessWidget {
   const MyBookingPage({super.key});
@@ -12,7 +14,7 @@ class MyBookingPage extends StatelessWidget {
     return DefaultTabController(
       length: 3, // Number of tabs
       child: Scaffold(
-        backgroundColor: const Color(0XFF4682B4),
+        backgroundColor: TColors.dark,
         body: Column(
           children: [
             const SizedBox(
@@ -21,45 +23,49 @@ class MyBookingPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  RoundButton(
-                    onPfressed: () => Navigator.of(context).pop(),
-                    icon: Icons.arrow_back,
-                    coloricon: Colors.black,
+                  Spacer(),
+                  FadeInSlide(
+                    duration: 0.9,
+                    direction: FadeSlideDirection.ltr,
+                    child: const Text(
+                      "My Booking",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 30,
+                          color: Colors.white),
+                    ),
                   ),
-                  const Text(
-                    "My Booking",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 30,color: Colors.white),
-                  ),
-                  RoundButton(
-                    onPfressed: () {
-                      // Handle search action
-                    },
-                    icon: Icons.search,
-                    coloricon: Colors.black,
-                  )
+                  Spacer(),
                 ],
               ),
             ),
             const SizedBox(height: 20), // Add some spacing before the TabBar
-            const TabBar(
-              indicatorColor: Colors.white,
-              labelColor: Colors.white,
-              tabs: [
-                Tab(text: 'Upcoming'),
-                Tab(text: 'Completed'),
-                Tab(text: 'Cancelled'),
-              ],
+            FadeInSlide(
+              duration: 0.9,
+              direction: FadeSlideDirection.ltr,
+              child: const TabBar(
+                indicatorColor: Colors.white,
+                labelColor: Colors.white,
+                tabs: [
+                  Tab(text: 'Upcoming'),
+                  Tab(text: 'Completed'),
+                  Tab(text: 'Cancelled'),
+                ],
+              ),
             ),
             const Expanded(
-              child: TabBarView(
-                children: [
-                  // Replace these with your actual content widgets
-                  UpcommingTab(),
-                  CompletedPage(),
-                  CanceledPage(),
-                ],
+              child: FadeInSlide(
+                duration: 0.9,
+                direction: FadeSlideDirection.ltr,
+                child: TabBarView(
+                  children: [
+                    // Replace these with your actual content widgets
+                    UpcommingTab(),
+                    CompletedPage(),
+                    CanceledPage(),
+                  ],
+                ),
               ),
             ),
           ],

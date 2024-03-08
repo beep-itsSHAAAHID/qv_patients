@@ -6,6 +6,7 @@ import 'package:qv_patient/constants/image_url.dart';
 import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
 import 'package:qv_patient/model/searchbar.dart';
+import 'package:qv_patient/view/BookingPage/all_doctors_avil.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
 import 'package:qv_patient/view/homepage/widgets/docCaed.dart';
 import 'package:qv_patient/view/homepage/widgets/promo_slider.dart';
@@ -114,10 +115,18 @@ class Home extends StatelessWidget {
                   const SizedBox(
                     height: Tsizes.spcbtwsections,
                   ),
-                  const FadeInSlide(
+                  FadeInSlide(
                       duration: 0.9,
                       direction: FadeSlideDirection.ltr,
-                      child: TSectionHeading(title: "Nearby Doctors")),
+                      child: TSectionHeading(
+                        title: "Nearby Doctors",
+                        onPressed: () {
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) {
+                            return AllDoctorsPage();
+                          }));
+                        },
+                      )),
                   const SizedBox(
                     height: Tsizes.spcbtwsections,
                   ),

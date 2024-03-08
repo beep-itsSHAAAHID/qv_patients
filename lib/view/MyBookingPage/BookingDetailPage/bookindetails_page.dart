@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/view/MyBookingPage/BookingDetailPage/widgets/rowwithtext.dart';
 import 'package:qv_patient/view/MyBookingPage/widget/round_button_with_icon.dart';
 
@@ -30,19 +31,13 @@ class BookingDetailPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RoundButton(
-                  icon: Icons.arrow_back,
-                  onPfressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
                 const Spacer(),
                 const Text(
                   "My Appointment",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 30,
-                      color: Colors.black),
+                      color: TColors.white),
                 ),
                 const Spacer(),
               ],
@@ -88,7 +83,8 @@ class BookingDetailPage extends StatelessWidget {
                           ),
                           Text(
                             location,
-                            style: const TextStyle(fontSize: 16, color: Colors.grey),
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.grey),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
@@ -126,7 +122,8 @@ class BookingDetailPage extends StatelessWidget {
                   ),
                   Text(
                     appointmentDate,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -187,7 +184,7 @@ class BookingDetailPage extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: TColors.dark.withOpacity(0.1),
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.all(12),
@@ -195,7 +192,7 @@ class BookingDetailPage extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          backgroundColor: Colors.blue[100],
+                          backgroundColor: TColors.light,
                           child: const Icon(Iconsax.message),
                         ),
                         const SizedBox(
@@ -255,18 +252,6 @@ class BookingDetailPage extends StatelessWidget {
             )
           ],
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: ElevatedButton(
-            style: const ButtonStyle(
-                foregroundColor: MaterialStatePropertyAll(Colors.white),
-                backgroundColor: MaterialStatePropertyAll(Colors.indigo)),
-            onPressed: () {},
-            child: const Text(
-              'Message (Start at 16:00 PM)',
-              style: TextStyle(fontSize: 25),
-            )),
       ),
     );
   }

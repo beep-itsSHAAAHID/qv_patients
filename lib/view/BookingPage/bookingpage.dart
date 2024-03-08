@@ -166,7 +166,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                 shape: BoxShape.circle,
                                 color: TColors.black,
                               ),
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: Icon(
                                 icons[index],
                                 color: TColors.light,

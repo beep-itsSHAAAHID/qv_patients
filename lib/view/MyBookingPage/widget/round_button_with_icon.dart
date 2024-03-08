@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qv_patient/constants/colors.dart';
 
 class RoundButton extends StatelessWidget {
   const RoundButton({
@@ -14,6 +15,7 @@ class RoundButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll(TColors.dark),
           padding: MaterialStatePropertyAll(EdgeInsets.all(14)),
           shape: MaterialStatePropertyAll(CircleBorder())),
       onPressed: onPfressed,

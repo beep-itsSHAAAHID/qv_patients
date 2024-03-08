@@ -1,0 +1,155 @@
+import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/constants/size.dart';
+import 'package:qv_patient/view/homepage/widgets/sectionheading.dart';
+import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
+import 'package:qv_patient/view/settingsPage/widgets/custom_appbar.dart';
+import 'package:qv_patient/view/settingsPage/widgets/settings_menu_tile.dart';
+import 'package:qv_patient/view/settingsPage/widgets/t_user_tile.dart';
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            //header
+            TPrimaryHeaderContainer(
+              child: Column(
+                children: [
+                  TAppBar(
+                    title: Text(
+                      'Account',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .apply(color: TColors.white),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcBtwitems - 5,
+                  ),
+                  //user profile card
+                  TUserProfileTile(),
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+                ],
+              ),
+            ),
+            //body
+            Padding(
+              padding: const EdgeInsets.all(Tsizes.defaultspace),
+              child: Column(
+                children: [
+                  const TSectionHeading(
+                    title: 'Account Settings',
+                    showActionButton: false,
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcBtwitems,
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.safe_home,
+                    title: 'My Address',
+                    subtitle: 'Set shopping delivery address',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.shopping_cart,
+                    title: 'My Cart',
+                    subtitle: 'Add, Remove product and move to checkout',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.bank,
+                    title: 'Bank Account',
+                    subtitle: 'Withdraw balance to registered account',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.discount_shape,
+                    title: 'My Coupons',
+                    subtitle: 'List of all the discounted coupons',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.notification,
+                    title: 'Notification',
+                    subtitle: 'Set any kind of notification message',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.security_card,
+                    title: 'Account privacy',
+                    subtitle: 'manage data usage and connected Accounts',
+                    ontap: () {},
+                  ),
+                  //app Settings
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+                  const TSectionHeading(
+                    title: 'App Settings',
+                    showActionButton: false,
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcBtwitems,
+                  ),
+                  const SettingsMenuTile(
+                      icon: Iconsax.document_upload,
+                      title: 'Load data',
+                      subtitle: "Upload data to cloud Firebase"),
+                  SettingsMenuTile(
+                    icon: Iconsax.location,
+                    title: 'Set Location',
+                    subtitle: "Set recommendation based on location ",
+                    trailing: Switch(
+                      value: true,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.security_user,
+                    title: 'Safe mode',
+                    subtitle: "Search result is safe for all ages ",
+                    trailing: Switch(
+                      value: false,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.image,
+                    title: 'HD Image Quality',
+                    subtitle: " Set image quality to be seen ",
+                    trailing: Switch(
+                      value: false,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      child: const Text("Log Out"),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections * 2,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

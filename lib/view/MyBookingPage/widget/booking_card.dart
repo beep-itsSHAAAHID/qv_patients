@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/view/MyBookingPage/widget/my_button_withText.dart'; // Ensure this import path is correct
 
 class BookingCard extends StatefulWidget {
@@ -42,9 +43,9 @@ class _BookingCardState extends State<BookingCard> {
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: TColors.light,
             boxShadow: const [BoxShadow(blurRadius: 2, spreadRadius: .1)],
-            border: Border.all(color: Colors.white),
+            border: Border.all(color: TColors.light),
             borderRadius: BorderRadius.circular(12),
           ),
           width: MediaQuery.of(context).size.width,
@@ -57,16 +58,18 @@ class _BookingCardState extends State<BookingCard> {
                     child: Text(
                       widget
                           .appointmentDate, // Correctly using provided appointmentDate
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: TColors.dark),
                     ),
                   ),
                   if (widget.showSwitch ?? true) ...[
                     const Text(
                       'Remind Me',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: TColors.dark),
                     ),
                     Switch(
-                      activeColor: Colors.indigo,
+                      activeColor: TColors.dark,
                       value: isReminder,
                       onChanged: (value) {
                         setState(() {
@@ -77,7 +80,9 @@ class _BookingCardState extends State<BookingCard> {
                   ],
                 ],
               ),
-              const Divider(),
+              const Divider(
+                color: TColors.dark,
+              ),
               Row(
                 children: [
                   Container(
@@ -106,32 +111,42 @@ class _BookingCardState extends State<BookingCard> {
                           widget
                               .doctorName, // Dynamically using provided doctorName
                           style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              color: TColors.dark,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
                         Row(
                           children: [
                             const Icon(
                               Iconsax.location,
+                              color: TColors.dark,
                               size: 15,
                             ),
-                            Text(widget.location),
+                            Text(
+                              widget.location,
+                              style: TextStyle(color: TColors.dark),
+                            ),
                           ],
                         ), // Dynamically using provided location
                         Row(children: [
                           const Icon(
                             Iconsax.ticket,
                             size: 15,
+                            color: TColors.dark,
                           ),
                           Row(
                             children: [
                               const Text(
-                                'Booking ID: ', // Dynamically using provided bookingId
+                                'Booking ID: ',
+                                style: TextStyle(
+                                    color: TColors
+                                        .dark), // Dynamically using provided bookingId
                               ),
                               Text(
                                 widget
                                     .bookingId, // Dynamically using provided bookingId
                                 style: const TextStyle(
-                                    color: Colors.indigo,
+                                    color: TColors.dark,
                                     fontWeight: FontWeight.bold),
                               )
                             ],
@@ -143,19 +158,21 @@ class _BookingCardState extends State<BookingCard> {
                 ],
               ),
               const SizedBox(height: 10),
-              const Divider(),
+              const Divider(
+                color: TColors.dark,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MyButtonWithText(
                     text: widget.firstbuttontext,
-                    textColor: Colors.indigo,
+                    textColor: TColors.dark,
                     backgroundColor: const Color.fromARGB(255, 179, 213, 241),
                   ),
                   MyButtonWithText(
                     text: widget.secondbuttontext,
                     textColor: Colors.white,
-                    backgroundColor: Colors.indigo,
+                    backgroundColor: TColors.dark,
                   )
                 ],
               )
