@@ -33,7 +33,7 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     final dark = DocHelperFunctions.isDarkMode(context);
     return Scaffold(
-      backgroundColor: dark ? TColors.light : TColors.dark.withOpacity(.9),
+      backgroundColor: dark ? TColors.dark : TColors.dark.withOpacity(.9),
       body: Column(
         children: [
           TPrimaryHeaderContainer(
@@ -71,77 +71,81 @@ class _BookingScreenState extends State<BookingScreen> {
                 const SizedBox(
                   height: Tsizes.spcbtwsections,
                 ),
-                FadeInSlide(
-                  duration: 0.9,
-                  direction: FadeSlideDirection.ltr,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: TColors.dark.withOpacity(.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          const Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundImage:
-                                    AssetImage('assets/image/doctor.jpg'),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 10,
-                                child: Icon(
-                                  Icons.verified,
-                                  color: Colors.blueAccent,
-                                  size: 16,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: FadeInSlide(
+                    duration: 0.9,
+                    direction: FadeSlideDirection.ltr,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: TColors.dark.withOpacity(.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Row(
+                          children: [
+                            const Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage:
+                                      AssetImage('assets/image/doctor.jpg'),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.doctor ?? '',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: TColors.white,
-                                  fontWeight: FontWeight.bold,
+                                Positioned(
+                                  bottom: 0,
+                                  right: 10,
+                                  child: Icon(
+                                    Icons.verified,
+                                    color: Colors.blueAccent,
+                                    size: 16,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                widget.specialty ?? '',
-                                style: const TextStyle(
-                                  color: TColors.white,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              const Row(
-                                children: [
-                                  Icon(
-                                    Iconsax.location,
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.doctor ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 20,
                                     color: TColors.white,
-                                    size: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    "Melattur,kerala",
-                                    style: TextStyle(
+                                ),
+                                Text(
+                                  widget.specialty ?? '',
+                                  style: const TextStyle(
+                                    color: TColors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                const Row(
+                                  children: [
+                                    Icon(
+                                      Iconsax.location,
                                       color: TColors.white,
-                                      fontSize: 15,
+                                      size: 15,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                    Text(
+                                      "Melattur,kerala",
+                                      style: TextStyle(
+                                        color: TColors.white,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -153,49 +157,45 @@ class _BookingScreenState extends State<BookingScreen> {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Row(
-                    children: List.generate(
-                      4,
-                      (index) => FadeInSlide(
-                        duration: 0.9,
-                        direction: FadeSlideDirection.ltr,
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 70,
-                              width: 70,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: TColors.black,
-                              ),
-                              margin: EdgeInsets.symmetric(horizontal: 7),
-                              child: Icon(
-                                icons[index],
-                                color: TColors.light,
-                              ),
+                Row(
+                  children: List.generate(
+                    4,
+                    (index) => FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 70,
+                            width: 70,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: TColors.black,
                             ),
-                            const SizedBox(
-                              height: 10,
+                            margin: EdgeInsets.symmetric(horizontal: 15),
+                            child: Icon(
+                              icons[index],
+                              color: TColors.light,
                             ),
-                            Text(
-                              titlenum[index],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .apply(color: TColors.black),
-                            ),
-                            Text(
-                              title[index],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .apply(color: TColors.darkGrey),
-                            )
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            titlenum[index],
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .apply(color: TColors.black),
+                          ),
+                          Text(
+                            title[index],
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .apply(color: TColors.darkGrey),
+                          )
+                        ],
                       ),
                     ),
                   ),

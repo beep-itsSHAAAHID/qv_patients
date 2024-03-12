@@ -144,7 +144,9 @@ class Home extends StatelessWidget {
                                   width: 150,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(16),
-                                    color: TColors.light.withOpacity(0.3),
+                                    color: dark
+                                        ? TColors.dark.withOpacity(0.3)
+                                        : TColors.light.withOpacity(0.3),
                                   ),
                                   margin: EdgeInsets.symmetric(horizontal: 7),
                                 ),

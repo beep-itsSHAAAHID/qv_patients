@@ -43,7 +43,7 @@ class _BookingCardState extends State<BookingCard> {
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: TColors.light,
+            color: TColors.light.withOpacity(0.9),
             boxShadow: const [BoxShadow(blurRadius: 2, spreadRadius: .1)],
             border: Border.all(color: TColors.light),
             borderRadius: BorderRadius.circular(12),
