@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/view/homepage/widgets/sectionheading.dart';
@@ -18,133 +19,170 @@ class SettingsScreen extends StatelessWidget {
         child: Column(
           children: [
             //header
-            TPrimaryHeaderContainer(
-              child: Column(
-                children: [
-                  TAppBar(
-                    title: Text(
-                      'Account',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium!
-                          .apply(color: TColors.white),
+            FadeInSlide(
+              duration: 0.9,
+              direction: FadeSlideDirection.ltr,
+              child: TPrimaryHeaderContainer(
+                child: Column(
+                  children: [
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: TAppBar(
+                        title: Text(
+                          'Account',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium!
+                              .apply(color: TColors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.spcBtwitems - 5,
-                  ),
-                  //user profile card
-                  TUserProfileTile(),
-                  const SizedBox(
-                    height: Tsizes.spcbtwsections,
-                  ),
-                ],
+                    const SizedBox(
+                      height: Tsizes.spcBtwitems - 5,
+                    ),
+                    //user profile card
+                    FadeInSlide(
+                        duration: 0.9,
+                        direction: FadeSlideDirection.ltr,
+                        child: const TUserProfileTile()),
+                    const SizedBox(
+                      height: Tsizes.spcbtwsections,
+                    ),
+                  ],
+                ),
               ),
             ),
             //body
             Padding(
               padding: const EdgeInsets.all(Tsizes.defaultspace),
-              child: Column(
-                children: [
-                  const TSectionHeading(
-                    title: 'Account Settings',
-                    showActionButton: false,
-                  ),
-                  const SizedBox(
-                    height: Tsizes.spcBtwitems,
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.safe_home,
-                    title: 'My Address',
-                    subtitle: 'Set shopping delivery address',
-                    ontap: () {},
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.shopping_cart,
-                    title: 'My Cart',
-                    subtitle: 'Add, Remove product and move to checkout',
-                    ontap: () {},
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.bank,
-                    title: 'Bank Account',
-                    subtitle: 'Withdraw balance to registered account',
-                    ontap: () {},
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.discount_shape,
-                    title: 'My Coupons',
-                    subtitle: 'List of all the discounted coupons',
-                    ontap: () {},
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.notification,
-                    title: 'Notification',
-                    subtitle: 'Set any kind of notification message',
-                    ontap: () {},
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.security_card,
-                    title: 'Account privacy',
-                    subtitle: 'manage data usage and connected Accounts',
-                    ontap: () {},
-                  ),
-                  //app Settings
-                  const SizedBox(
-                    height: Tsizes.spcbtwsections,
-                  ),
-                  const TSectionHeading(
-                    title: 'App Settings',
-                    showActionButton: false,
-                  ),
-                  const SizedBox(
-                    height: Tsizes.spcBtwitems,
-                  ),
-                  const SettingsMenuTile(
-                      icon: Iconsax.document_upload,
-                      title: 'Load data',
-                      subtitle: "Upload data to cloud Firebase"),
-                  SettingsMenuTile(
-                    icon: Iconsax.location,
-                    title: 'Set Location',
-                    subtitle: "Set recommendation based on location ",
-                    trailing: Switch(
-                      value: true,
-                      onChanged: (value) {},
+              child: FadeInSlide(
+                duration: 0.9,
+                direction: FadeSlideDirection.ltr,
+                child: Column(
+                  children: [
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: const TSectionHeading(
+                        title: 'Account Settings',
+                        showActionButton: false,
+                      ),
                     ),
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.security_user,
-                    title: 'Safe mode',
-                    subtitle: "Search result is safe for all ages ",
-                    trailing: Switch(
-                      value: false,
-                      onChanged: (value) {},
+                    const SizedBox(
+                      height: Tsizes.spcBtwitems,
                     ),
-                  ),
-                  SettingsMenuTile(
-                    icon: Iconsax.image,
-                    title: 'HD Image Quality',
-                    subtitle: " Set image quality to be seen ",
-                    trailing: Switch(
-                      value: false,
-                      onChanged: (value) {},
+
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SettingsMenuTile(
+                        icon: Iconsax.heart,
+                        title: 'Favourite',
+                        subtitle: 'Your favourite doctor here',
+                        ontap: () {},
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.spcbtwsections,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: const Text("Log Out"),
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SettingsMenuTile(
+                        icon: Iconsax.bank,
+                        title: 'Bank Account',
+                        subtitle: 'For transactions and payment',
+                        ontap: () {},
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.spcbtwsections * 2,
-                  )
-                ],
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SettingsMenuTile(
+                        icon: Iconsax.discount_shape,
+                        title: 'My Coupons',
+                        subtitle: 'List of all the discounted coupons',
+                        ontap: () {},
+                      ),
+                    ),
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SettingsMenuTile(
+                        icon: Iconsax.notification,
+                        title: 'Notification',
+                        subtitle: 'Set any kind of notification message',
+                        ontap: () {},
+                      ),
+                    ),
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SettingsMenuTile(
+                        icon: Iconsax.security_card,
+                        title: 'Account privacy',
+                        subtitle: 'manage data usage and connected Accounts',
+                        ontap: () {},
+                      ),
+                    ),
+                    //app Settings
+                    const SizedBox(
+                      height: Tsizes.spcbtwsections,
+                    ),
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: const TSectionHeading(
+                        title: 'App Settings',
+                        showActionButton: false,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: Tsizes.spcBtwitems,
+                    ),
+
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SettingsMenuTile(
+                        icon: Iconsax.location,
+                        title: 'Set Location',
+                        subtitle: "Set recommendation based on location ",
+                        trailing: Switch(
+                          value: true,
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SettingsMenuTile(
+                        icon: Iconsax.info_circle,
+                        title: 'Help Center',
+                        subtitle: 'Need Help Contact us!',
+                        ontap: () {},
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: Tsizes.spcbtwsections,
+                    ),
+
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: const Text("Log Out"),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: Tsizes.spcbtwsections * 2,
+                    )
+                  ],
+                ),
               ),
             )
           ],

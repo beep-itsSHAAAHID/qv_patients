@@ -23,7 +23,10 @@ class MyButtonWithText extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-                color: textColor, fontWeight: FontWeight.bold, fontSize: 16),
+                overflow: TextOverflow.ellipsis,
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
           )),
     );
   }

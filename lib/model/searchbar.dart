@@ -28,7 +28,7 @@ class _SearchBarModelState extends State<SearchBarModel> {
                 padding: const EdgeInsets.all(8.0),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 400),
-                  width: _folded ? 56 : 300,
+                  width: _folded ? 56 : 200,
                   height: 56,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(32),

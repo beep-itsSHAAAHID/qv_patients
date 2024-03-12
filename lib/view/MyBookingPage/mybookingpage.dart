@@ -11,24 +11,24 @@ class MyBookingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return const DefaultTabController(
       length: 3, // Number of tabs
       child: Scaffold(
         backgroundColor: TColors.dark,
         body: Column(
           children: [
-            const SizedBox(
+            SizedBox(
               height: 40,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
                   Spacer(),
                   FadeInSlide(
                     duration: 0.9,
                     direction: FadeSlideDirection.ltr,
-                    child: const Text(
+                    child: Text(
                       "My Booking",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -40,11 +40,11 @@ class MyBookingPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20), // Add some spacing before the TabBar
+            SizedBox(height: 20), // Add some spacing before the TabBar
             FadeInSlide(
               duration: 0.9,
               direction: FadeSlideDirection.ltr,
-              child: const TabBar(
+              child: TabBar(
                 indicatorColor: Colors.white,
                 labelColor: Colors.white,
                 tabs: [
@@ -54,7 +54,7 @@ class MyBookingPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Expanded(
+            Expanded(
               child: FadeInSlide(
                 duration: 0.9,
                 direction: FadeSlideDirection.ltr,

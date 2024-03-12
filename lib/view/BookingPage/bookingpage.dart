@@ -33,125 +33,130 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     final dark = DocHelperFunctions.isDarkMode(context);
     return Scaffold(
+      backgroundColor: dark ? TColors.light : TColors.dark.withOpacity(.9),
       body: Column(
         children: [
           TPrimaryHeaderContainer(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                FadeInSlide(
+                  duration: 0.9,
+                  direction: FadeSlideDirection.ltr,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: TColors.white,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        'Book Appointment',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .apply(color: TColors.white),
+                      ),
+                      const Spacer(),
+                    ],
                   ),
-                  FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: TColors.white,
+                ),
+                const SizedBox(
+                  height: Tsizes.spcbtwsections,
+                ),
+                FadeInSlide(
+                  duration: 0.9,
+                  direction: FadeSlideDirection.ltr,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: TColors.dark.withOpacity(.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          const Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundImage:
+                                    AssetImage('assets/image/doctor.jpg'),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 10,
+                                child: Icon(
+                                  Icons.verified,
+                                  color: Colors.blueAccent,
+                                  size: 16,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          'Book Appointment',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .apply(color: TColors.white),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.spcbtwsections,
-                  ),
-                  FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: TColors.dark.withOpacity(.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            const Stack(
-                              children: [
-                                CircleAvatar(
-                                  radius: 40,
-                                  backgroundImage:
-                                      AssetImage('assets/image/doctor.jpg'),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.doctor ?? '',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: TColors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 10,
-                                  child: Icon(
-                                    Icons.verified,
-                                    color: Colors.blueAccent,
-                                    size: 16,
-                                  ),
+                              ),
+                              Text(
+                                widget.specialty ?? '',
+                                style: const TextStyle(
+                                  color: TColors.white,
+                                  fontSize: 15,
                                 ),
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.doctor ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 20,
+                              ),
+                              const Row(
+                                children: [
+                                  Icon(
+                                    Iconsax.location,
                                     color: TColors.white,
-                                    fontWeight: FontWeight.bold,
+                                    size: 15,
                                   ),
-                                ),
-                                Text(
-                                  widget.specialty ?? '',
-                                  style: const TextStyle(
-                                    color: TColors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                const Row(
-                                  children: [
-                                    Icon(
-                                      Iconsax.location,
+                                  Text(
+                                    "Melattur,kerala",
+                                    style: TextStyle(
                                       color: TColors.white,
-                                      size: 15,
+                                      fontSize: 15,
                                     ),
-                                    Text(
-                                      "Melattur,kerala",
-                                      style: TextStyle(
-                                        color: TColors.white,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: Tsizes.defaultspace,
-                  ),
-                  const Divider(),
-                  Row(
+                ),
+                const SizedBox(
+                  height: Tsizes.defaultspace,
+                ),
+                const Divider(
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
                     children: List.generate(
                       4,
                       (index) => FadeInSlide(
@@ -166,8 +171,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 shape: BoxShape.circle,
                                 color: TColors.black,
                               ),
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              margin: EdgeInsets.symmetric(horizontal: 7),
                               child: Icon(
                                 icons[index],
                                 color: TColors.light,
@@ -195,11 +199,11 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 50,
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 50,
+                )
+              ],
             ),
           ),
           Expanded(
@@ -402,6 +406,9 @@ class _BookingScreenState extends State<BookingScreen> {
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     )
                   ],
                 ),

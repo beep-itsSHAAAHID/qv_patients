@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/device/device_utility.dart';
 import 'package:qv_patient/view/MyBookingPage/BookingDetailPage/widgets/rowwithtext.dart';
-import 'package:qv_patient/view/MyBookingPage/widget/round_button_with_icon.dart';
 
 class BookingDetailPage extends StatelessWidget {
   final String doctorName;
@@ -24,22 +24,25 @@ class BookingDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        scrollDirection: Axis.vertical,
         child: Column(
           children: [
             const SizedBox(height: 20),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(),
-                const Text(
-                  "My Appointment",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30,
-                      color: TColors.white),
+                Spacer(),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "My Appointment",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 30,
+                        color: TColors.white),
+                  ),
                 ),
-                const Spacer(),
+                Spacer(),
               ],
             ),
             const SizedBox(
@@ -69,10 +72,13 @@ class BookingDetailPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        doctorName,
-                        style: const TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          doctorName,
+                          style: const TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       Row(
                         children: [
@@ -81,11 +87,13 @@ class BookingDetailPage extends StatelessWidget {
                             size: 15,
                             color: Colors.blue,
                           ),
-                          Text(
-                            location,
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.grey),
-                            overflow: TextOverflow.ellipsis,
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              location,
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.grey),
+                            ),
                           ),
                         ],
                       )
@@ -104,9 +112,13 @@ class BookingDetailPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
-                  Text(
-                    'Scheduled Appointment',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Scheduled Appointment',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -116,14 +128,20 @@ class BookingDetailPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Date",
-                    style: TextStyle(fontSize: 20, color: Colors.grey),
+                  const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      "Date",
+                      style: TextStyle(fontSize: 20, color: Colors.grey),
+                    ),
                   ),
-                  Text(
-                    appointmentDate,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      appointmentDate,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -145,9 +163,13 @@ class BookingDetailPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
-                  Text(
-                    'Patient Info',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Patient Info',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -179,7 +201,7 @@ class BookingDetailPage extends StatelessWidget {
               height: 30,
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
                   Container(
@@ -188,60 +210,77 @@ class BookingDetailPage extends StatelessWidget {
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.all(12),
-                    child: Row(
+                    child: const Row(
                       children: [
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: TColors.light,
-                          child: const Icon(Iconsax.message),
+                          child: Icon(Iconsax.message),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10,
                         ),
-                        const Column(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  'Messaging',
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'Messaging',
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                                 SizedBox(
-                                  width: 100,
+                                  width: 80,
                                 ),
-                                Text(
-                                  '\$20',
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    '\$20',
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 )
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  textAlign: TextAlign.start,
-                                  'Chat with Doctor',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 100,
-                                ),
-                                Text(
-                                  'paid',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            )
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      'Chat with Doctor',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 80,
+                                  ),
+                                  const FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      'paid',
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
                         )
                       ],
@@ -249,6 +288,9 @@ class BookingDetailPage extends StatelessWidget {
                   )
                 ],
               ),
+            ),
+            SizedBox(
+              height: 20,
             )
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/image_url.dart';
@@ -20,6 +21,12 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> department = [
+      'Neurologist',
+      "Dentist",
+      "Cardiologist",
+      "Psychiatrists"
+    ];
     final dark = DocHelperFunctions.isDarkMode(context);
     return Scaffold(
       backgroundColor: dark ? TColors.dark : TColors.light,
@@ -30,15 +37,15 @@ class Home extends StatelessWidget {
               duration: 0.5,
               direction: FadeSlideDirection.ltr,
               child: TPrimaryHeaderContainer(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Tsizes.defaultspace),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: Tsizes.spcbtwsections + 20,
-                      ),
-                      Row(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: Tsizes.spcbtwsections + 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Tsizes.defaultspace),
+                      child: Row(
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -85,15 +92,75 @@ class Home extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const FadeInSlide(
-                          duration: 0.9,
-                          direction: FadeSlideDirection.ltr,
-                          child: SearchBarModel()),
-                      const SizedBox(
-                        height: Tsizes.defaultspace + 50,
-                      )
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Tsizes.defaultspace),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const FadeInSlide(
+                              duration: 0.9,
+                              direction: FadeSlideDirection.ltr,
+                              child: SearchBarModel()),
+                          InkWell(
+                            onTap: () {},
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: TColors.dark,
+                              backgroundImage:
+                                  AssetImage('assets/image/chatbot.png'),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: Tsizes.defaultspace,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(
+                          4,
+                          (index) => FadeInSlide(
+                            duration: 0.9,
+                            direction: FadeSlideDirection.ltr,
+                            child: Column(
+                              children: [
+                                Container(
+                                  child: Center(
+                                      child: Text(
+                                    department[index],
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall!
+                                        .apply(
+                                            color: dark
+                                                ? TColors.dark
+                                                : TColors.light),
+                                  )),
+                                  height: 50,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: TColors.light.withOpacity(0.3),
+                                  ),
+                                  margin: EdgeInsets.symmetric(horizontal: 7),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -123,7 +190,7 @@ class Home extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(context,
                               CupertinoPageRoute(builder: (context) {
-                            return AllDoctorsPage();
+                            return const AllDoctorsPage();
                           }));
                         },
                       )),

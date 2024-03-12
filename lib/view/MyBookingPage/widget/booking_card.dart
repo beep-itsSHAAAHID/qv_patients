@@ -124,7 +124,7 @@ class _BookingCardState extends State<BookingCard> {
                             ),
                             Text(
                               widget.location,
-                              style: TextStyle(color: TColors.dark),
+                              style: const TextStyle(color: TColors.dark),
                             ),
                           ],
                         ), // Dynamically using provided location

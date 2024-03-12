@@ -58,8 +58,7 @@ class DocCard extends StatelessWidget {
                               color: TColors.light.withOpacity(.1),
                               borderRadius: BorderRadius.circular(12)),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15.0, vertical: 8),
+                            padding: const EdgeInsets.only(right: 8),
                             child: Row(
                               children: [
                                 const Icon(
@@ -69,34 +68,33 @@ class DocCard extends StatelessWidget {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  "Proffesional Doctor",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .apply(),
+                                const FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    "Proffesional Doctor",
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: Tsizes.defaultspace + 20,
-                        ),
                         const FavoriteIconButton()
                       ],
                     ),
                   ),
-                  Text(
-                    name,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headlineSmall,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      name,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                   ),
-                  Text(
-                    department,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium!.apply(),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      department,
+                      style: Theme.of(context).textTheme.labelMedium!.apply(),
+                    ),
                   ),
                   Row(
                     children: [
@@ -114,13 +112,22 @@ class DocCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(ratingnumber.toString()),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(ratingnumber.toString()),
+                      ),
                       const Text("  |  "),
-                      Text(peoplerated.toString()),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(peoplerated.toString()),
+                      ),
                       const SizedBox(
                         width: 2,
                       ),
-                      const Text("Reviews"),
+                      const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text("Reviews"),
+                      ),
                     ],
                   ),
                 ],
