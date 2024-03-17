@@ -36,7 +36,7 @@ class DocCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12)),
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(5.0),
           child: Row(
             children: [
               const TRoundedImage(

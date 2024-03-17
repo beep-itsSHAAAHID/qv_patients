@@ -32,6 +32,7 @@ class BookingDetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Spacer(),
+
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
@@ -212,11 +213,7 @@ class BookingDetailPage extends StatelessWidget {
                     padding: const EdgeInsets.all(12),
                     child: const Row(
                       children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: TColors.light,
-                          child: Icon(Iconsax.message),
-                        ),
+
                         SizedBox(
                           width: 10,
                         ),
@@ -230,7 +227,7 @@ class BookingDetailPage extends StatelessWidget {
                                 FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Text(
-                                    'Messaging',
+                                    'Current Token',
                                     style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
@@ -242,8 +239,9 @@ class BookingDetailPage extends StatelessWidget {
                                 FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Text(
-                                    '\$20',
+                                    '01',
                                     style: TextStyle(
+                                      color: Colors.green,
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -256,28 +254,11 @@ class BookingDetailPage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      'Chat with Doctor',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
+
                                   const SizedBox(
                                     width: 80,
                                   ),
-                                  const FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      'paid',
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
+
                                 ],
                               ),
                             ),

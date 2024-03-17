@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
                                 "Hello Welcome 👋",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headlineLarge!
+                                    .headlineSmall!
                                     .apply(
                                         color: dark
                                             ? TColors.dark

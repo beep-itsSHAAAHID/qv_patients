@@ -23,7 +23,7 @@ class _CompletedPageState extends State<CompletedPage> {
               imageurl: 'assets/image/doctor.jpg',
               doctorName: "Dr. Smith",
               appointmentDate: "Sep 10, 2024 - 2:00 PM",
-              location: "Downtown Clinic, Springfield",
+              location: "Downtown Clinic",
               bookingId: "#67890",
             ),
             BookingCard(

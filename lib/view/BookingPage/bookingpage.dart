@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -159,45 +160,48 @@ class _BookingScreenState extends State<BookingScreen> {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Row(
-                  children: List.generate(
-                    4,
-                    (index) => FadeInSlide(
-                      duration: 0.9,
-                      direction: FadeSlideDirection.ltr,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 70,
-                            width: 70,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: TColors.black,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      4,
+                      (index) => FadeInSlide(
+                        duration: 0.9,
+                        direction: FadeSlideDirection.ltr,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: TColors.black,
+                              ),
+                              margin: EdgeInsets.symmetric(horizontal: 15),
+                              child: Icon(
+                                icons[index],
+                                color: TColors.light,
+                              ),
                             ),
-                            margin: EdgeInsets.symmetric(horizontal: 15),
-                            child: Icon(
-                              icons[index],
-                              color: TColors.light,
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            titlenum[index],
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall!
-                                .apply(color: TColors.black),
-                          ),
-                          Text(
-                            title[index],
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .apply(color: TColors.darkGrey),
-                          )
-                        ],
+                            Text(
+                              titlenum[index],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .apply(color: TColors.black),
+                            ),
+                            Text(
+                              title[index],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .apply(color: TColors.darkGrey),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
