@@ -9,6 +9,7 @@ import 'package:qv_patient/helper/doc_helper_function.dart';
 import 'package:qv_patient/model/searchbar.dart';
 import 'package:qv_patient/view/BookingPage/all_doctors_avil.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
+import 'package:qv_patient/view/homepage/AiDoctor/ai_doctor.dart';
 import 'package:qv_patient/view/homepage/widgets/docCaed.dart';
 import 'package:qv_patient/view/homepage/widgets/promo_slider.dart';
 import 'package:qv_patient/view/homepage/widgets/sectionheading.dart';
@@ -89,7 +90,12 @@ class Home extends StatelessWidget {
                         children: [
                           SearchBarModel(),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(CupertinoPageRoute(builder: (ctx) {
+                                return ChatBot();
+                              }));
+                            },
                             child: CircleAvatar(
                               radius: 30,
                               backgroundColor: TColors.dark,
