@@ -55,6 +55,7 @@ dependencies:
   flutter_spinkit: ^5.2.0
   carousel_slider: ^4.2.1
   slidable_button: ^3.0.0+1
+  lottie: ^2.7.0
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +92,9 @@ flutter:
     - assets/image/content/
     - assets/image/products/
     - assets/payment_methods/
+    - assets/
+    - assets/fonts/
+    - assets/lotties/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

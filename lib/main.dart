@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:qv_patient/model/globalvariable.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:qv_patient/theme/theme.dart';
-import 'package:qv_patient/view/onboarding/onboarding_screen.dart';
+import 'package:qv_patient/view/onboarding/screens/onboarding.dart';
 
 import 'firebase_options.dart';
 
@@ -36,6 +36,6 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         debugShowCheckedModeBanner: false,
-        home: const OnBoardingScreen());
+        home: const OnboardingScreen());
   }
 }
