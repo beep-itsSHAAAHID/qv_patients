@@ -54,6 +54,7 @@ dependencies:
   flutter_animate: ^4.5.0
   flutter_spinkit: ^5.2.0
   carousel_slider: ^4.2.1
+  slidable_button: ^3.0.0+1
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +90,7 @@ flutter:
     - assets/image/
     - assets/image/content/
     - assets/image/products/
+    - assets/payment_methods/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

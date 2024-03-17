@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
@@ -5,6 +6,7 @@ import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
 import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
+import 'package:qv_patient/view/payment/payment_screen.dart';
 
 import '../../model/qrGenerator.dart';
 
@@ -384,7 +386,20 @@ class _BookingScreenState extends State<BookingScreen> {
                     const SizedBox(height: 40),
                     GestureDetector(
                       onTap: () {
-                        _showBookingConfirmation();
+                        // _showBookingConfirmation();
+                       Navigator.of(context).push(
+  CupertinoPageRoute(
+    builder: (context) => PaymentScreen(
+      bookingData: {
+        'doctorName': widget.doctor,
+        'patientName': 'Sajjad', // Replace with actual patient's name
+        'tokenNumber': '10', // Replace with actual token number
+        'session': _selectedSession,
+        'date': _selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : '',
+      },
+    ),
+  ),
+);
                       },
                       child: FadeInSlide(
                         duration: 0.9,
@@ -441,48 +456,48 @@ class _BookingScreenState extends State<BookingScreen> {
     }
   }
 
-  void _showBookingConfirmation() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: TColors.light,
-          title: const Text("Booking Successful!"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Doctor's Name: ${widget.doctor}"),
-              const Text(
-                  "Patient's Name: Sajjad"), // Replace [Your Patient's Name] with actual patient's name
-              const Text(
-                  "Token Number: 10"), // Replace [Token Number] with actual token number
-              Text("Session: $_selectedSession"),
-              Text(
-                  "Date: ${_selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : ''}"),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: 200,
-                height: 200,
-                child: TokenGenerationDataModel(
-                  doctorName: '${widget.doctor}',
-                  tokenNumber: '10',
-                  patientName: 'Sajjad',
-                  appointmentTime: '$_selectedSession"',
-                ).generateQrCodeWidget(),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showBookingConfirmation() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         backgroundColor: TColors.light,
+  //         title: const Text("Booking Successful!"),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text("Doctor's Name: ${widget.doctor}"),
+  //             const Text(
+  //                 "Patient's Name: Sajjad"), // Replace [Your Patient's Name] with actual patient's name
+  //             const Text(
+  //                 "Token Number: 10"), // Replace [Token Number] with actual token number
+  //             Text("Session: $_selectedSession"),
+  //             Text(
+  //                 "Date: ${_selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : ''}"),
+  //             const SizedBox(height: 10),
+  //             SizedBox(
+  //               width: 200,
+  //               height: 200,
+  //               child: TokenGenerationDataModel(
+  //                 doctorName: '${widget.doctor}',
+  //                 tokenNumber: '10',
+  //                 patientName: 'Sajjad',
+  //                 appointmentTime: '$_selectedSession"',
+  //               ).generateQrCodeWidget(),
+  //             ),
+  //           ],
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

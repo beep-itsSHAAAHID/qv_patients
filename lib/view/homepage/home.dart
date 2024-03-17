@@ -31,12 +31,12 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: dark ? TColors.dark : TColors.light,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FadeInSlide(
-              duration: 0.5,
-              direction: FadeSlideDirection.ltr,
-              child: TPrimaryHeaderContainer(
+        child: FadeInSlide(
+          direction: FadeSlideDirection.ltr,
+          duration: 0.9,
+          child: Column(
+            children: [
+              TPrimaryHeaderContainer(
                 child: Column(
                   children: [
                     const SizedBox(
@@ -51,44 +51,32 @@ class Home extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              FadeInSlide(
-                                duration: .9,
-                                direction: FadeSlideDirection.ltr,
-                                child: Text(
-                                  "Hello Welcome 👋",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineLarge!
-                                      .apply(
-                                          color: dark
-                                              ? TColors.dark
-                                              : TColors.light),
-                                ),
+                              Text(
+                                "Hello Welcome 👋",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .apply(
+                                        color: dark
+                                            ? TColors.dark
+                                            : TColors.light),
                               ),
-                              FadeInSlide(
-                                duration: 0.9,
-                                direction: FadeSlideDirection.ltr,
-                                child: Text(
-                                  "Sajad.kp",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium!
-                                      .apply(
-                                          color: dark
-                                              ? TColors.dark
-                                              : TColors.light),
-                                ),
+                              Text(
+                                "Sajad.kp",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .apply(
+                                        color: dark
+                                            ? TColors.dark
+                                            : TColors.light),
                               ),
                             ],
                           ),
                           const Spacer(),
-                          const FadeInSlide(
-                            duration: 0.9,
-                            direction: FadeSlideDirection.ltr,
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage(TImages.user),
-                            ),
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage(TImages.user),
                           ),
                         ],
                       ),
@@ -99,10 +87,7 @@ class Home extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const FadeInSlide(
-                              duration: 0.9,
-                              direction: FadeSlideDirection.ltr,
-                              child: SearchBarModel()),
+                          SearchBarModel(),
                           InkWell(
                             onTap: () {},
                             child: CircleAvatar(
@@ -123,38 +108,34 @@ class Home extends StatelessWidget {
                       child: Row(
                         children: List.generate(
                           4,
-                          (index) => FadeInSlide(
-                            duration: 0.9,
-                            direction: FadeSlideDirection.ltr,
-                            child: Column(
-                              children: [
-                                Container(
-                                  child: Center(
-                                      child: Text(
-                                    department[index],
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall!
-                                        .apply(
-                                            color: dark
-                                                ? TColors.dark
-                                                : TColors.light),
-                                  )),
-                                  height: 50,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: dark
-                                        ? TColors.dark.withOpacity(0.3)
-                                        : TColors.light.withOpacity(0.3),
-                                  ),
-                                  margin: EdgeInsets.symmetric(horizontal: 7),
+                          (index) => Column(
+                            children: [
+                              Container(
+                                child: Center(
+                                    child: Text(
+                                  department[index],
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall!
+                                      .apply(
+                                          color: dark
+                                              ? TColors.dark
+                                              : TColors.light),
+                                )),
+                                height: 50,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: dark
+                                      ? TColors.dark.withOpacity(0.3)
+                                      : TColors.light.withOpacity(0.3),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
+                                margin: EdgeInsets.symmetric(horizontal: 7),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -165,44 +146,33 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                children: [
-                  const FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: TPromoSlider(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  children: [
+                    TPromoSlider(
                       banners: [
                         TImages.promoBanner1,
                         TImages.promoBanner1,
                         TImages.promoBanner1
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.spcbtwsections,
-                  ),
-                  FadeInSlide(
-                      duration: 0.9,
-                      direction: FadeSlideDirection.ltr,
-                      child: TSectionHeading(
-                        title: "Nearby Doctors",
-                        onPressed: () {
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context) {
-                            return const AllDoctorsPage();
-                          }));
-                        },
-                      )),
-                  const SizedBox(
-                    height: Tsizes.spcbtwsections,
-                  ),
-                  FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: DocCard(
+                    const SizedBox(
+                      height: Tsizes.spcbtwsections,
+                    ),
+                    TSectionHeading(
+                      title: "Nearby Doctors",
+                      onPressed: () {
+                        Navigator.push(context,
+                            CupertinoPageRoute(builder: (context) {
+                          return const AllDoctorsPage();
+                        }));
+                      },
+                    ),
+                    const SizedBox(
+                      height: Tsizes.spcbtwsections,
+                    ),
+                    DocCard(
                       peoplerated: 45,
                       ratingnumber: 4.0,
                       rating: 4,
@@ -221,14 +191,10 @@ class Home extends StatelessWidget {
                       location: 'Perintalmanna',
                       department: 'Orthologist',
                     ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.defaultspace,
-                  ),
-                  FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: DocCard(
+                    const SizedBox(
+                      height: Tsizes.defaultspace,
+                    ),
+                    DocCard(
                       peoplerated: 32,
                       ratingnumber: 3.0,
                       rating: 3,
@@ -247,14 +213,10 @@ class Home extends StatelessWidget {
                       location: 'Perintalmanna',
                       department: 'Orthologist',
                     ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.defaultspace,
-                  ),
-                  FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: DocCard(
+                    const SizedBox(
+                      height: Tsizes.defaultspace,
+                    ),
+                    DocCard(
                       peoplerated: 48,
                       ratingnumber: 5,
                       rating: 5,
@@ -273,14 +235,14 @@ class Home extends StatelessWidget {
                       location: 'Perintalmanna',
                       department: 'Orthologist',
                     ),
-                  ),
-                  const SizedBox(
-                    height: Tsizes.defaultspace,
-                  ),
-                ],
-              ),
-            )
-          ],
+                    const SizedBox(
+                      height: Tsizes.defaultspace,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
