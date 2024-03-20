@@ -77,23 +77,22 @@ class RichTwoPartsText extends StatelessWidget {
 }
 
 class PasswordField extends StatelessWidget {
+  final TextEditingController? controller; // Add controller parameter
+
   const PasswordField({
-    super.key,
-  });
+    this.controller,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final dark = DocHelperFunctions.isDarkMode(context);
     return TextField(
-      onTapOutside: (event) => FocusManager.instance.primaryFocus!.unfocus(),
-      // cursorColor: isDark ? Colors.grey : Colors.black54,
-      keyboardType: TextInputType.visiblePassword,
+      controller: controller, // Use the controller
       obscureText: true,
       decoration: InputDecoration(
         filled: true,
-        fillColor: dark
-            ? Colors.blueGrey.withOpacity(.1)
-            : TColors.light.withOpacity(.1),
+        fillColor: dark ? Colors.blueGrey.withOpacity(.1) : TColors.light.withOpacity(.1),
         hintText: "Password",
         prefixIcon: const Icon(IconlyLight.lock, size: 20),
         suffixIcon: const Icon(IconlyLight.hide, size: 20),
@@ -108,25 +107,34 @@ class PasswordField extends StatelessWidget {
   }
 }
 
+
+
+
 class EmailField extends StatelessWidget {
+  final TextInputType? keyboardType;
+  final String? hinttext;
+  final IconData? icon;
+  final TextEditingController? controller; // Corrected type
+
   const EmailField({
-    super.key,
-  });
+    this.controller,
+    this.keyboardType,
+    this.hinttext,
+    this.icon,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final dark = DocHelperFunctions.isDarkMode(context);
+    final dark = DocHelperFunctions.isDarkMode(context); // Ensure this function exists and works as expected
     return TextField(
-      onTapOutside: (event) => FocusManager.instance.primaryFocus!.unfocus(),
-      // cursorColor: isDark ? Colors.grey : Colors.black54,
-      keyboardType: TextInputType.emailAddress,
+      controller: controller, // Use the controller
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         filled: true,
-        fillColor: dark
-            ? Colors.blueGrey.withOpacity(.1)
-            : TColors.light.withOpacity(.1),
-        hintText: "Email",
-        prefixIcon: const Icon(IconlyLight.message, size: 20),
+        fillColor: dark ? Colors.blueGrey.withOpacity(.1) : TColors.light.withOpacity(.1),
+        hintText: hinttext ?? "",
+        prefixIcon: icon != null ? Icon(icon) : null,
         prefixIconColor: dark ? Colors.white : Colors.black87,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),

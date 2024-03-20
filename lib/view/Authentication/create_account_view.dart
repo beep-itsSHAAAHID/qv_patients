@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
+import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/loading_overlay.dart';
 import 'package:qv_patient/view/Authentication/login_view.dart';
-
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
 import 'package:qv_patient/view/homepage/home.dart';
 
@@ -17,11 +19,85 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   ValueNotifier<bool> termsCheck = ValueNotifier(false);
+  int? _selectedGender;
+
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _phoneNumberController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _ageController.dispose();
+    // Dispose other controllers...
+    super.dispose();
+  }
+
+  Future<void> submitUserData() async {
+    final String fullName = _fullNameController.text;
+    final String phoneNumber = _phoneNumberController.text;
+    final String email = _emailController.text;
+    final String password = _passwordController.text;
+    final String age = _ageController.text;
+
+    // Map the selected gender to a string
+    String gender = 'Not Specified'; // Default or fallback value
+    if (_selectedGender == 1) {
+      gender = 'Male';
+    } else if (_selectedGender == 2) {
+      gender = 'Female';
+    } else if (_selectedGender == 3) {
+      gender = 'Others';
+    }
+
+    try {
+      LoadingScreen.instance().show(context: context, text: "Sign Up...");
+      await Future.delayed(const Duration(seconds: 1));
+      print('adding data');
+
+      // Use FirebaseAuth to create a new user
+      final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Hide the password storage comment as we won't store the password in Firestore
+      // Add additional user data to Firestore
+      final CollectionReference users = FirebaseFirestore.instance.collection('users');
+      await users.doc(userCredential.user!.uid).set({
+        'fullName': fullName,
+        'phoneNumber': phoneNumber,
+        'email': email,
+        // 'password': password, // Do not store passwords in Firestore for security reasons
+        'age': age,
+        'gender': gender, // Add the gender here
+        // Add other fields as needed...
+      });
+
+      // Hide loading and navigate to Home
+      LoadingScreen.instance().hide();
+      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => const SignInView()));
+
+      print('data added succesfully');
+    } catch (e) {
+      print('Firebase error: $e');
+      LoadingScreen.instance().hide();
+      // Handle errors, e.g., show an error message
+      print(e); // Ideally, use a more user-friendly error handling approach
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height;
-    final isDark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+    final height = MediaQuery.of(context).size.height;
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(),
@@ -46,14 +122,55 @@ class _SignUpViewState extends State<SignUpView> {
           const FadeInSlide(
             duration: .5,
             child: Text(
+              "Full Name",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10),
+           FadeInSlide(
+            duration: .5,
+            child: EmailField(
+              controller: _fullNameController,
+              keyboardType: TextInputType.name,
+              icon: Iconsax.personalcard_bold,
+              hinttext: "Full name",
+            ),
+          ),
+          const SizedBox(height: 20),
+          const FadeInSlide(
+            duration: .5,
+            child: Text(
+              "Phone number",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10),
+           FadeInSlide(
+            duration: .5,
+            child: EmailField(
+              controller: _phoneNumberController,
+              keyboardType: TextInputType.number,
+              icon: Iconsax.mobile_outline,
+              hinttext: "Phone number",
+            ),
+          ),
+          const SizedBox(height: 20),
+          const FadeInSlide(
+            duration: .5,
+            child: Text(
               "Email",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 10),
-          const FadeInSlide(
+           FadeInSlide(
             duration: .5,
-            child: EmailField(),
+            child: EmailField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              icon: Iconsax.direct_inbox_bold,
+              hinttext: "Email",
+            ),
           ),
           const SizedBox(height: 20),
           const FadeInSlide(
@@ -64,11 +181,89 @@ class _SignUpViewState extends State<SignUpView> {
             ),
           ),
           const SizedBox(height: 10),
-          const FadeInSlide(
+           FadeInSlide(
             duration: .6,
-            child: PasswordField(),
+            child: PasswordField(
+              controller:_passwordController ,
+            ),
           ),
           const SizedBox(height: 20),
+          const FadeInSlide(
+            duration: .5,
+            child: Text(
+              "Age",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10),
+           FadeInSlide(
+            duration: .5,
+            child: EmailField(
+              controller: _ageController,
+              keyboardType: TextInputType.number,
+              icon: Icons.numbers,
+              hinttext: "Age",
+            ),
+          ),
+          const SizedBox(height: 20),
+          const FadeInSlide(
+            duration: .6,
+            child: Text(
+              "Select Gender",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: ListTile(
+                  title: const Text("Male"),
+                  leading: Radio<int>(
+                    value: 1,
+                    groupValue: _selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: const Text("Female"),
+                  leading: Radio<int>(
+                    value: 2,
+                    groupValue: _selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: ListTile(
+                  title: const Text("Others"),
+                  leading: Radio<int>(
+                    value: 3,
+                    groupValue: _selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
           FadeInSlide(
             duration: .7,
             child: Row(
@@ -93,6 +288,7 @@ class _SignUpViewState extends State<SignUpView> {
               ],
             ),
           ),
+
           const SizedBox(height: 20),
           FadeInSlide(
             duration: .8,
@@ -116,15 +312,15 @@ class _SignUpViewState extends State<SignUpView> {
               children: [
                 Expanded(
                     child: Divider(
-                  thickness: .3,
-                )),
+                      thickness: .3,
+                    )),
                 Text(
                   "   or   ",
                 ),
                 Expanded(
                     child: Divider(
-                  thickness: .3,
-                )),
+                      thickness: .3,
+                    )),
               ],
             ),
           ),
@@ -150,23 +346,7 @@ class _SignUpViewState extends State<SignUpView> {
             ),
           ),
           SizedBox(height: height * 0.02),
-          // FadeInSlide(
-          //   duration: 1.2,
-          //   child: LoginButton(
-          //     icon: Brand(Brands.facebook, size: 25),
-          //     text: "Continue with Facebook",
-          //     onPressed: () {},
-          //   ),
-          // ),
-          // SizedBox(height: height * 0.02),
-          // FadeInSlide(
-          //   duration: 1.3,
-          //   child: LoginButton(
-          //     icon: Brand(Brands.twitter, size: 25),
-          //     text: "Continue with Twitter",
-          //     onPressed: () {},
-          //   ),
-          // ),
+
         ],
       ),
       // persistentFooterAlignment: AlignmentDirectional.center,
@@ -175,7 +355,7 @@ class _SignUpViewState extends State<SignUpView> {
         direction: FadeSlideDirection.btt,
         child: Container(
           padding:
-              const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
+          const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(width: .2, color: Colors.white),
@@ -183,23 +363,7 @@ class _SignUpViewState extends State<SignUpView> {
           ),
           child: FilledButton(
             onPressed: () async {
-              LoadingScreen.instance()
-                  .show(context: context, text: "Sign Up...");
-              await Future.delayed(const Duration(seconds: 1));
-              for (var i = 0; i <= 100; i++) {
-                LoadingScreen.instance().show(context: context, text: '$i...');
-                await Future.delayed(const Duration(milliseconds: 10));
-              }
-              LoadingScreen.instance()
-                  .show(context: context, text: "Signed Up New User");
-              await Future.delayed(const Duration(seconds: 1));
-              LoadingScreen.instance().hide();
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const Home(),
-                ),
-              );
+             submitUserData();
             },
             style: FilledButton.styleFrom(
               fixedSize: const Size(double.infinity, 50),
@@ -214,3 +378,5 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 }
+
+

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -16,12 +18,70 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   ValueNotifier<bool> termsCheck = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     final isDark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+
+    Future<void> signInUser() async {
+      // Showing loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => Center(child: CircularProgressIndicator()),
+      );
+
+      try {
+        // Authenticate with Firebase Authentication
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+        // Optional: Additional check in Firestore (e.g., check if user profile is complete)
+        DocumentSnapshot userProfile = await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).get();
+
+        if (!userProfile.exists) {
+          throw Exception("User profile does not exist in Firestore.");
+        }
+
+        // Additional custom checks can be performed here
+        // if (userProfile.data()?['someField'] != expectedValue) {
+        //   throw Exception("Custom condition not met.");
+        // }
+
+        // Dismiss loading dialog
+        Navigator.of(context).pop();
+
+        // Navigate to next page if everything is okay
+        Navigator.pushReplacement(
+          context,
+          CupertinoPageRoute(builder: (context) => const NavigationMenu()),
+        );
+
+      } on FirebaseAuthException catch (e) {
+        Navigator.of(context).pop(); // Ensure loading indicator is closed on error
+
+        // Handle Firebase Authentication errors (e.g., wrong password, user not found)
+        String errorMessage = "An error occurred during sign in. Please try again.";
+        if (e.code == 'user-not-found') {
+          errorMessage = 'No user found for that email.';
+        } else if (e.code == 'wrong-password') {
+          errorMessage = 'Wrong password provided.';
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+      } catch (e) {
+        Navigator.of(context).pop(); // Ensure loading indicator is closed on error
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+
+
 
     return Scaffold(
       appBar: AppBar(),
@@ -51,7 +111,9 @@ class _SignInViewState extends State<SignInView> {
               ),
             ),
             const SizedBox(height: 10),
-            const FadeInSlide(duration: .6, child: EmailField()),
+             FadeInSlide(duration: .6, child: EmailField(
+              controller: _emailController,
+            )),
             const SizedBox(height: 20),
             const FadeInSlide(
               duration: .7,
@@ -61,7 +123,9 @@ class _SignInViewState extends State<SignInView> {
               ),
             ),
             const SizedBox(height: 10),
-            const FadeInSlide(duration: .7, child: PasswordField()),
+             FadeInSlide(duration: .7, child: PasswordField(
+              controller: _passwordController,
+            )),
             const SizedBox(height: 20),
             FadeInSlide(
               duration: .8,
@@ -175,23 +239,7 @@ class _SignInViewState extends State<SignInView> {
           ),
           child: FilledButton(
             onPressed: () async {
-              LoadingScreen.instance()
-                  .show(context: context, text: "Sign In...");
-              await Future.delayed(const Duration(milliseconds: 500));
-              for (var i = 0; i <= 100; i++) {
-                LoadingScreen.instance().show(context: context, text: '$i...');
-                await Future.delayed(const Duration(milliseconds: 5));
-              }
-              LoadingScreen.instance()
-                  .show(context: context, text: "Signed In Successfully");
-              await Future.delayed(const Duration(seconds: 1));
-              LoadingScreen.instance().hide();
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const NavigationMenu(),
-                ),
-              );
+              signInUser();
             },
             style: FilledButton.styleFrom(
               backgroundColor: TColors.primary,
