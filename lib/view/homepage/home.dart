@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/image_url.dart';
@@ -15,7 +17,11 @@ import 'package:qv_patient/view/homepage/widgets/promo_slider.dart';
 import 'package:qv_patient/view/homepage/widgets/sectionheading.dart';
 import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
 
+import '../../controller/user_controller.dart';
+
+
 class Home extends StatelessWidget {
+
   const Home({
     super.key,
   });
@@ -28,7 +34,10 @@ class Home extends StatelessWidget {
       "Cardiologist",
       "Psychiatrists"
     ];
+    final UserController userController = Get.find<UserController>(); // Get the UserController instance
     final dark = DocHelperFunctions.isDarkMode(context);
+
+
     return Scaffold(
       backgroundColor: dark ? TColors.dark : TColors.light,
       body: SingleChildScrollView(
@@ -49,30 +58,24 @@ class Home extends StatelessWidget {
                       child: Row(
                         children: [
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Hello Welcome 👋",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .apply(
-                                        color: dark
-                                            ? TColors.dark
-                                            : TColors.light),
-                              ),
-                              Text(
-                                "Sajad.kp",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium!
-                                    .apply(
-                                        color: dark
-                                            ? TColors.dark
-                                            : TColors.light),
-                              ),
-                            ],
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Hello Welcome 👋",
+                                  style: Theme.of(context).textTheme.headlineSmall!.apply(color: dark ? TColors.dark : TColors.light),
+                                ),
+                                Obx(() {
+                                  final UserController userController = Get.find<UserController>();
+                                  return Text(
+                                    userController.userName.value ?? "User", // Dynamically display the user's name
+                                    style: Theme.of(context).textTheme.headlineMedium!.apply(
+                                        color: dark ? TColors.dark : TColors.light),
+                                  );
+                                }),
+
+
+                              ],
                           ),
                           const Spacer(),
                           CircleAvatar(

@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -8,6 +11,8 @@ import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
 import 'package:qv_patient/view/settingsPage/widgets/custom_appbar.dart';
 import 'package:qv_patient/view/settingsPage/widgets/settings_menu_tile.dart';
 import 'package:qv_patient/view/settingsPage/widgets/t_user_tile.dart';
+
+import '../Authentication/login_view.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -123,9 +128,20 @@ class SettingsScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          // Sign out the user
+                          await FirebaseAuth.instance.signOut();
+
+                          // Navigate back to the SignInView (login screen)
+                          // Assuming you're using GetX for navigation as well
+                          Get.offAll(() => SignInView());
+
+                          // If you're not using GetX for navigation, you might do something like:
+                          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInView()));
+                        },
                         child: const Text("Log Out"),
                       ),
+
                     ),
                     const SizedBox(
                       height: Tsizes.spcbtwsections * 2,

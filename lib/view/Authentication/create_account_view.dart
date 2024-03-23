@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -67,28 +69,47 @@ class _SignUpViewState extends State<SignUpView> {
       );
 
       // Hide the password storage comment as we won't store the password in Firestore
-      // Add additional user data to Firestore
+      // Add additional user data to Firestore with email as the document ID
       final CollectionReference users = FirebaseFirestore.instance.collection('users');
-      await users.doc(userCredential.user!.uid).set({
+      await users.doc(email).set({
         'fullName': fullName,
         'phoneNumber': phoneNumber,
-        'email': email,
-        // 'password': password, // Do not store passwords in Firestore for security reasons
+        'email': email, // Storing the email in the document as well, for easy access
         'age': age,
         'gender': gender, // Add the gender here
         // Add other fields as needed...
       });
+      // Add additional user data to Firestore
+
 
       // Hide loading and navigate to Home
       LoadingScreen.instance().hide();
       Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => const SignInView()));
-
+      Get.snackbar(
+        "Signup Successful",
+        "Welcome to DocBook! Please login to continue.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        borderRadius: 20,
+        margin: EdgeInsets.all(15),
+        duration: Duration(seconds: 4),
+      );
       print('data added succesfully');
     } catch (e) {
       print('Firebase error: $e');
       LoadingScreen.instance().hide();
-      // Handle errors, e.g., show an error message
-      print(e); // Ideally, use a more user-friendly error handling approach
+      // Display an error message using Get.snackbar
+      Get.snackbar(
+        "Signup Failed",
+        "An error occurred during signup: $e", // You might want to customize the error message
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        borderRadius: 20,
+        margin: EdgeInsets.all(15),
+        duration: Duration(seconds: 4),
+      );
     }
   }
 

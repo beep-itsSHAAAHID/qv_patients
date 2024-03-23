@@ -28,7 +28,7 @@ class _SignInViewState extends State<SignInView> {
     final isDark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
 
     Future<void> signInUser() async {
-      // Showing loading indicator
+      // Show loading indicator
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -42,17 +42,12 @@ class _SignInViewState extends State<SignInView> {
           password: _passwordController.text.trim(),
         );
 
-        // Optional: Additional check in Firestore (e.g., check if user profile is complete)
-        DocumentSnapshot userProfile = await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).get();
+        // Retrieve user profile from Firestore using email as document ID
+        DocumentSnapshot userProfile = await FirebaseFirestore.instance.collection('users').doc(_emailController.text.trim()).get();
 
         if (!userProfile.exists) {
           throw Exception("User profile does not exist in Firestore.");
         }
-
-        // Additional custom checks can be performed here
-        // if (userProfile.data()?['someField'] != expectedValue) {
-        //   throw Exception("Custom condition not met.");
-        // }
 
         // Dismiss loading dialog
         Navigator.of(context).pop();
@@ -80,6 +75,7 @@ class _SignInViewState extends State<SignInView> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
       }
     }
+
 
 
 
