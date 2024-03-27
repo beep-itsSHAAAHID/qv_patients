@@ -132,13 +132,12 @@ class SettingsScreen extends StatelessWidget {
                           // Sign out the user
                           await FirebaseAuth.instance.signOut();
 
-                          // Navigate back to the SignInView (login screen)
-                          // Assuming you're using GetX for navigation as well
+                          // Using GetX to navigate back to the SignInView (login screen)
                           Get.offAll(() => SignInView());
 
-                          // If you're not using GetX for navigation, you might do something like:
-                          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInView()));
+                          // Optionally, clear any other app-specific state here if necessary
                         },
+
                         child: const Text("Log Out"),
                       ),
 

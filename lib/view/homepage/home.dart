@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,6 +23,8 @@ import '../../controller/user_controller.dart';
 
 class Home extends StatelessWidget {
 
+
+
   const Home({
     super.key,
   });
@@ -36,6 +39,13 @@ class Home extends StatelessWidget {
     ];
     final UserController userController = Get.find<UserController>(); // Get the UserController instance
     final dark = DocHelperFunctions.isDarkMode(context);
+
+
+    Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchDoctors() async {
+      final querySnapshot = await FirebaseFirestore.instance.collection('doctors').get();
+      return querySnapshot.docs;
+    }
+
 
 
     return Scaffold(
@@ -178,71 +188,49 @@ class Home extends StatelessWidget {
                         }));
                       },
                     ),
-                    const SizedBox(
-                      height: Tsizes.spcbtwsections,
-                    ),
-                    DocCard(
-                      peoplerated: 45,
-                      ratingnumber: 4.0,
-                      rating: 4,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const BookingScreen(
-                              doctor: 'Dr.Salman',
-                              specialty: 'Orthologist',
-                            ),
-                          ),
-                        );
+                    // const SizedBox(
+                    //   height: Tsizes.spcbtwsections,
+                    // ),
+                    FutureBuilder<List<QueryDocumentSnapshot>>(
+                      future: fetchDoctors(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasError) {
+                          return Text("Error fetching data");
+                        }
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              var doc = snapshot.data![index].data() as Map<String, dynamic>;
+                              return DocCard(
+                                peoplerated: 45, // Placeholder value
+                                ratingnumber: 4.0, // Placeholder value
+                                rating: 4, // Placeholder value
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => BookingScreen(
+                                        doctor: doc['doctorName'],
+                                        specialty: doc['doctorSpeciality'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                name: doc['doctorName'],
+                                department: doc['doctorSpeciality'], location: 'Test',
+                              );
+                            },
+                          );
+                        } else {
+                          return Text("No doctors found");
+                        }
                       },
-                      name: 'Dr.Salman',
-                      location: 'Perintalmanna',
-                      department: 'Orthologist',
-                    ),
-                    const SizedBox(
-                      height: Tsizes.defaultspace,
-                    ),
-                    DocCard(
-                      peoplerated: 32,
-                      ratingnumber: 3.0,
-                      rating: 3,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const BookingScreen(
-                              doctor: 'Dr.Salman',
-                              specialty: 'Orthologist',
-                            ),
-                          ),
-                        );
-                      },
-                      name: 'Dr.Salman',
-                      location: 'Perintalmanna',
-                      department: 'Orthologist',
-                    ),
-                    const SizedBox(
-                      height: Tsizes.defaultspace,
-                    ),
-                    DocCard(
-                      peoplerated: 48,
-                      ratingnumber: 5,
-                      rating: 5,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const BookingScreen(
-                              doctor: 'Dr.Salman',
-                              specialty: 'Orthologist',
-                            ),
-                          ),
-                        );
-                      },
-                      name: 'Dr.Salman',
-                      location: 'Perintalmanna',
-                      department: 'Orthologist',
                     ),
                     const SizedBox(
                       height: Tsizes.defaultspace,

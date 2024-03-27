@@ -40,6 +40,7 @@ class _SearchBarModelState extends State<SearchBarModel> {
                     children: [
                       Expanded(
                         child: Container(
+
                           padding: const EdgeInsets.only(left: 16),
                           child: !_folded
                               ? const TextField(
@@ -54,7 +55,7 @@ class _SearchBarModelState extends State<SearchBarModel> {
                               : TextField(
                                   decoration: InputDecoration.collapsed(
                                     border: InputBorder.none,
-                                    hintText: "",
+                                    hintText: " ",
                                     hintStyle: TextStyle(
                                       color: (Colors.blue[300]),
                                     ),

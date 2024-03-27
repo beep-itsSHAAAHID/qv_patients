@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -9,6 +11,8 @@ import 'package:qv_patient/constants/loading_overlay.dart';
 import 'package:qv_patient/navigationmenu.dart';
 import 'package:qv_patient/view/Authentication/forgot_password_view.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
+
+import '../../controller/user_controller.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
@@ -49,6 +53,10 @@ class _SignInViewState extends State<SignInView> {
           throw Exception("User profile does not exist in Firestore.");
         }
 
+        // Here, we manually trigger the UserController to update the user's name
+        final userController = Get.find<UserController>();
+        userController.updateUserInformation(); // This should fetch and update the user's name
+
         // Dismiss loading dialog
         Navigator.of(context).pop();
 
@@ -75,6 +83,7 @@ class _SignInViewState extends State<SignInView> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
       }
     }
+
 
 
 

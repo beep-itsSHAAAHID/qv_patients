@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -8,12 +12,23 @@ import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
 import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
 import 'package:qv_patient/view/payment/payment_screen.dart';
-
+import '../../controller/user_controller.dart';
+import '../../model/booking_model.dart';
 import '../../model/qrGenerator.dart';
+import 'package:qv_patient/controller/token_controller.dart' as tokenCtrl;
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
+
+
 
 class BookingScreen extends StatefulWidget {
   final String? specialty;
   final String? doctor;
+
+
 
   const BookingScreen({super.key, this.specialty, this.doctor});
 
@@ -32,6 +47,14 @@ class _BookingScreenState extends State<BookingScreen> {
   ];
   List<dynamic> titlenum = ['7500+', "10+", "4.5+", "4956+"];
   List<dynamic> title = ['patients', "Year Exp.", "Rating", "Reviews"];
+
+  final UserController userController = Get.find<UserController>();
+  final tokenController = tokenCtrl.TokenController();
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final dark = DocHelperFunctions.isDarkMode(context);
@@ -389,22 +412,45 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () {
-                        // _showBookingConfirmation();
-                       Navigator.of(context).push(
-  CupertinoPageRoute(
-    builder: (context) => PaymentScreen(
-      bookingData: {
-        'doctorName': widget.doctor,
-        'patientName': 'Sajjad', // Replace with actual patient's name
-        'tokenNumber': '10', // Replace with actual token number
-        'session': _selectedSession,
-        'date': _selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : '',
-      },
-    ),
-  ),
-);
+                      onTap: () async {
+                        if (_selectedDate != null && _selectedSession != null && widget.doctor != null) {
+                          // Fetch the doctor's ID based on the name
+                          String? doctorId = await fetchDoctorIdByName(widget.doctor!);
+
+                          if (doctorId == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Doctor not found.")));
+                            return;
+                          }
+
+                          String patientName = userController.userName.value ?? "Anonymous";
+                          DateTime selectedDate = _selectedDate!;
+                          String selectedSession = _selectedSession!;
+                          String dateString = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+
+                          // Generate the next token number
+                          int nextToken = await tokenController.generateTokenForBooking(doctorId, selectedSession, selectedDate);
+
+                          // Proceed with navigation to the PaymentScreen
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => PaymentScreen(
+                                bookingData: {
+                                  'doctorId': doctorId,
+                                  'doctorName': widget.doctor,
+                                  'patientName': patientName,
+                                  'tokenNumber': nextToken.toString(),
+                                  'session': selectedSession,
+                                  'date': dateString,
+                                },
+                              ),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please select a date, session, and ensure doctor's name is provided.")));
+                        }
                       },
+
+
                       child: FadeInSlide(
                         duration: 0.9,
                         direction: FadeSlideDirection.ltr,
@@ -459,49 +505,24 @@ class _BookingScreenState extends State<BookingScreen> {
         return '';
     }
   }
-
-  // void _showBookingConfirmation() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         backgroundColor: TColors.light,
-  //         title: const Text("Booking Successful!"),
-  //         content: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Text("Doctor's Name: ${widget.doctor}"),
-  //             const Text(
-  //                 "Patient's Name: Sajjad"), // Replace [Your Patient's Name] with actual patient's name
-  //             const Text(
-  //                 "Token Number: 10"), // Replace [Token Number] with actual token number
-  //             Text("Session: $_selectedSession"),
-  //             Text(
-  //                 "Date: ${_selectedDate != null ? _selectedDate!.toLocal().toString().split(' ')[0] : ''}"),
-  //             const SizedBox(height: 10),
-  //             SizedBox(
-  //               width: 200,
-  //               height: 200,
-  //               child: TokenGenerationDataModel(
-  //                 doctorName: '${widget.doctor}',
-  //                 tokenNumber: '10',
-  //                 patientName: 'Sajjad',
-  //                 appointmentTime: '$_selectedSession"',
-  //               ).generateQrCodeWidget(),
-  //             ),
-  //           ],
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: const Text('OK'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }
+
+Future<String?> fetchDoctorIdByName(String doctorName) async {
+  try {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('doctors')
+        .where('doctorName', isEqualTo: doctorName)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first.id; // Assuming the first document found is the correct doctor
+    }
+    return null; // No doctor found
+  } catch (e) {
+    print("Error fetching doctor ID: $e");
+    return null;
+  }
+}
+
+
