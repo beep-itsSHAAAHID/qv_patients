@@ -30,107 +30,109 @@ class DocCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-            color: dark
-                ? TColors.light.withOpacity(.1)
-                : TColors.dark.withOpacity(.1),
-            borderRadius: BorderRadius.circular(12)),
+          color: dark
+              ? TColors.light.withOpacity(.1)
+              : TColors.dark.withOpacity(.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: Row(
             children: [
               const TRoundedImage(
-                  width: 100, imageurl: 'assets/image/doctor.jpg'),
+                width: 100,
+                imageurl: 'assets/image/doctor.jpg',
+              ),
               const SizedBox(
                 width: Tsizes.defaultspace - 10,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
                               color: TColors.light.withOpacity(.1),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Iconsax.verify4,
-                                  size: 15,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    "Proffesional Doctor",
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Iconsax.verify4,
+                                    size: 15,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      "Professional Doctor",
+                                      style: TextStyle(fontSize: 12), // Reduced font size
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        const FavoriteIconButton()
+                        const FavoriteIconButton(),
                       ],
                     ),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
+                    const SizedBox(height: 5),
+                    Text(
                       name,
                       style: Theme.of(context).textTheme.headlineSmall,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
+                    Text(
                       department,
                       style: Theme.of(context).textTheme.labelMedium!.apply(),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Row(
-                        children: List.generate(
-                          5,
-                          (index) => Icon(
-                            index < rating.floor()
-                                ? Icons.star
-                                : index < rating
-                                    ? Icons.star_half
-                                    : Icons.star_border,
-                            color: Colors.amber,
-                            size: 16,
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Row(
+                          children: List.generate(
+                            5,
+                                (index) => Icon(
+                              index < rating.floor()
+                                  ? Icons.star
+                                  : index < rating
+                                  ? Icons.star_half
+                                  : Icons.star_border,
+                              color: Colors.amber,
+                              size: 16,
+                            ),
                           ),
                         ),
-                      ),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(ratingnumber.toString()),
-                      ),
-                      const Text("  |  "),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(peoplerated.toString()),
-                      ),
-                      const SizedBox(
-                        width: 2,
-                      ),
-                      const FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text("Reviews"),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(width: 5),
+                        Text(
+                          ratingnumber.toString(),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const Text("  |  "),
+                        Text(
+                          peoplerated.toString(),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(width: 2),
+                        const Text(
+                          "Reviews",
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

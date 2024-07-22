@@ -3,8 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -12,23 +11,12 @@ import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
 import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
 import 'package:qv_patient/view/payment/payment_screen.dart';
-import '../../controller/user_controller.dart';
-import '../../model/booking_model.dart';
-import '../../model/qrGenerator.dart';
-import 'package:qv_patient/controller/token_controller.dart' as tokenCtrl;
-
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-
-
-
+import 'package:qv_patient/provider/user_provider.dart';
+import 'package:qv_patient/provider/token_provider.dart';
 
 class BookingScreen extends StatefulWidget {
   final String? specialty;
   final String? doctor;
-
-
 
   const BookingScreen({super.key, this.specialty, this.doctor});
 
@@ -48,440 +36,409 @@ class _BookingScreenState extends State<BookingScreen> {
   List<dynamic> titlenum = ['7500+', "10+", "4.5+", "4956+"];
   List<dynamic> title = ['patients', "Year Exp.", "Rating", "Reviews"];
 
-  final UserController userController = Get.find<UserController>();
-  final tokenController = tokenCtrl.TokenController();
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     final dark = DocHelperFunctions.isDarkMode(context);
-    return Scaffold(
-      backgroundColor: dark ? TColors.dark : TColors.dark.withOpacity(.9),
-      body: Column(
-        children: [
-          TPrimaryHeaderContainer(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                FadeInSlide(
-                  duration: 0.9,
-                  direction: FadeSlideDirection.ltr,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: TColors.white,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        'Book Appointment',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge!
-                            .apply(color: TColors.white),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: Tsizes.spcbtwsections,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: TColors.dark.withOpacity(.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Row(
-                          children: [
-                            const Stack(
-                              children: [
-                                CircleAvatar(
-                                  radius: 40,
-                                  backgroundImage:
-                                      AssetImage('assets/image/doctor.jpg'),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 10,
-                                  child: Icon(
-                                    Icons.verified,
-                                    color: Colors.blueAccent,
-                                    size: 16,
-                                  ),
-                                ),
-                              ],
+
+    return Consumer(
+      builder: (context, ref, child) {
+        final userName = ref.watch(userProvider);
+
+        return Scaffold(
+          backgroundColor: dark ? TColors.dark : TColors.dark.withOpacity(.9),
+          body: Column(
+            children: [
+              TPrimaryHeaderContainer(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    FadeInSlide(
+                      duration: 0.9,
+                      direction: FadeSlideDirection.ltr,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: TColors.white,
                             ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                          const Spacer(),
+                          Text(
+                            'Book Appointment',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .apply(color: TColors.white),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: Tsizes.spcbtwsections),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: FadeInSlide(
+                        duration: 0.9,
+                        direction: FadeSlideDirection.ltr,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: TColors.dark.withOpacity(.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            child: Row(
                               children: [
-                                Text(
-                                  widget.doctor ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: TColors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  widget.specialty ?? '',
-                                  style: const TextStyle(
-                                    color: TColors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                const Row(
+                                const Stack(
                                   children: [
-                                    Icon(
-                                      Iconsax.location,
-                                      color: TColors.white,
-                                      size: 15,
+                                    CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: AssetImage('assets/image/doctor.jpg'),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 10,
+                                      child: Icon(
+                                        Icons.verified,
+                                        color: Colors.blueAccent,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 20),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.doctor ?? '',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        color: TColors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     Text(
-                                      "Melattur,kerala",
-                                      style: TextStyle(
+                                      widget.specialty ?? '',
+                                      style: const TextStyle(
                                         color: TColors.white,
                                         fontSize: 15,
                                       ),
+                                    ),
+                                    const Row(
+                                      children: [
+                                        Icon(
+                                          Iconsax.location,
+                                          color: TColors.white,
+                                          size: 15,
+                                        ),
+                                        Text(
+                                          "Melattur,kerala",
+                                          style: TextStyle(
+                                            color: TColors.white,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: Tsizes.defaultspace,
-                ),
-                const Divider(
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                      4,
-                      (index) => FadeInSlide(
-                        duration: 0.9,
-                        direction: FadeSlideDirection.ltr,
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 70,
-                              width: 70,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: TColors.black,
-                              ),
-                              margin: EdgeInsets.symmetric(horizontal: 15),
-                              child: Icon(
-                                icons[index],
-                                color: TColors.light,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              titlenum[index],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .apply(color: TColors.black),
-                            ),
-                            Text(
-                              title[index],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .apply(color: TColors.darkGrey),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 20),
-                    const Row(
-                      children: [
-                        FadeInSlide(
-                          duration: 0.9,
-                          direction: FadeSlideDirection.ltr,
-                          child: Text(
-                            'About',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
                           ),
                         ),
-                        SizedBox(width: 10),
-                      ],
-                    ),
-                    const FadeInSlide(
-                      duration: 0.9,
-                      direction: FadeSlideDirection.ltr,
-                      child: Text(
-                        'Add information about the doctor here...',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Row(
-                      children: [
-                        FadeInSlide(
-                          duration: 0.9,
-                          direction: FadeSlideDirection.ltr,
-                          child: Text(
-                            'Appointment',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: Tsizes.defaultspace),
+                    const Divider(indent: 20, endIndent: 20),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: FadeInSlide(
-                        duration: 0.9,
-                        direction: FadeSlideDirection.ltr,
-                        child: Row(
-                          children: List.generate(
-                            7,
-                            (index) {
-                              final currentDate =
-                                  DateTime.now().add(Duration(days: index));
-                              final dayAbbreviation =
-                                  _getDayAbbreviation(currentDate.weekday);
-                              return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _selectedDate = currentDate;
-                                  });
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 20),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 25),
-                                  decoration: BoxDecoration(
-                                    color: _selectedDate != null &&
-                                            currentDate.day ==
-                                                _selectedDate!.day
-                                        ? TColors.light
-                                        : TColors.light.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(10),
+                      child: Row(
+                        children: List.generate(
+                          4,
+                              (index) => FadeInSlide(
+                            duration: 0.9,
+                            direction: FadeSlideDirection.ltr,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 70,
+                                  width: 70,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: TColors.black,
                                   ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        dayAbbreviation,
-                                        style: const TextStyle(
-                                          color: TColors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        '${currentDate.day}',
-                                        style: const TextStyle(
-                                          color: TColors.white,
-                                        ),
-                                      ),
-                                    ],
+                                  margin: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Icon(
+                                    icons[index],
+                                    color: TColors.light,
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: FadeInSlide(
-                        duration: 0.9,
-                        direction: FadeSlideDirection.ltr,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _selectedSession = 'Morning';
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 10),
-                                margin: const EdgeInsets.only(right: 10),
-                                decoration: BoxDecoration(
-                                  color: _selectedSession == 'Morning'
-                                      ? TColors.light
-                                      : TColors.light.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(22),
-                                  border: Border.all(color: Colors.transparent),
+                                const SizedBox(height: 10),
+                                Text(
+                                  titlenum[index],
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall!
+                                      .apply(color: TColors.black),
                                 ),
-                                child: const Text(
-                                  'Morning Session',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
+                                Text(
+                                  title[index],
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .apply(color: TColors.darkGrey),
                                 ),
-                              ),
+                              ],
                             ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _selectedSession = 'Evening';
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 10),
-                                margin: const EdgeInsets.only(right: 10),
-                                decoration: BoxDecoration(
-                                  color: _selectedSession == 'Evening'
-                                      ? TColors.light
-                                      : TColors.light.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(22),
-                                  border: Border.all(color: Colors.transparent),
-                                ),
-                                child: const Text(
-                                  'Evening Session',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    GestureDetector(
-                      onTap: () async {
-                        if (_selectedDate != null && _selectedSession != null && widget.doctor != null) {
-                          // Fetch the doctor's ID based on the name
-                          String? doctorId = await fetchDoctorIdByName(widget.doctor!);
-
-                          if (doctorId == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Doctor not found.")));
-                            return;
-                          }
-
-                          String patientName = userController.userName.value ?? "Anonymous";
-                          DateTime selectedDate = _selectedDate!;
-                          String selectedSession = _selectedSession!;
-                          String dateString = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
-
-                          // Generate the next token number
-                          int nextToken = await tokenController.generateTokenForBooking(doctorId, selectedSession, selectedDate);
-
-                          // Proceed with navigation to the PaymentScreen
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) => PaymentScreen(
-                                bookingData: {
-                                  'doctorId': doctorId,
-                                  'doctorName': widget.doctor,
-                                  'patientName': patientName,
-                                  'tokenNumber': nextToken.toString(),
-                                  'session': selectedSession,
-                                  'date': dateString,
-                                },
-                              ),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please select a date, session, and ensure doctor's name is provided.")));
-                        }
-                      },
-
-
-                      child: FadeInSlide(
-                        duration: 0.9,
-                        direction: FadeSlideDirection.ltr,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 17),
-                          decoration: BoxDecoration(
-                            color: TColors.light,
-                            borderRadius: BorderRadius.circular(22),
-                            border: Border.all(color: Colors.transparent),
-                          ),
-                          child: const Text(
-                            'Book Appointment!',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    )
+                    const SizedBox(height: 50)
                   ],
                 ),
               ),
-            ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Row(
+                          children: [
+                            FadeInSlide(
+                              duration: 0.9,
+                              direction: FadeSlideDirection.ltr,
+                              child: Text(
+                                'About',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                          ],
+                        ),
+                        const FadeInSlide(
+                          duration: 0.9,
+                          direction: FadeSlideDirection.ltr,
+                          child: Text(
+                            'Add information about the doctor here...',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Row(
+                          children: [
+                            FadeInSlide(
+                              duration: 0.9,
+                              direction: FadeSlideDirection.ltr,
+                              child: Text(
+                                'Appointment',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: FadeInSlide(
+                            duration: 0.9,
+                            direction: FadeSlideDirection.ltr,
+                            child: Row(
+                              children: List.generate(
+                                7,
+                                    (index) {
+                                  final currentDate = DateTime.now().add(Duration(days: index));
+                                  final dayAbbreviation = _getDayAbbreviation(currentDate.weekday);
+                                  return InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedDate = currentDate;
+                                      });
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 20),
+                                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                                      decoration: BoxDecoration(
+                                        color: _selectedDate != null && currentDate.day == _selectedDate!.day
+                                            ? TColors.light
+                                            : TColors.light.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            dayAbbreviation,
+                                            style: const TextStyle(
+                                              color: TColors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            '${currentDate.day}',
+                                            style: const TextStyle(
+                                              color: TColors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: FadeInSlide(
+                            duration: 0.9,
+                            direction: FadeSlideDirection.ltr,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedSession = 'Morning';
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                    margin: const EdgeInsets.only(right: 10),
+                                    decoration: BoxDecoration(
+                                      color: _selectedSession == 'Morning'
+                                          ? TColors.light
+                                          : TColors.light.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(22),
+                                      border: Border.all(color: Colors.transparent),
+                                    ),
+                                    child: const Text(
+                                      'Morning Session',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedSession = 'Evening';
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                    margin: const EdgeInsets.only(right: 10),
+                                    decoration: BoxDecoration(
+                                      color: _selectedSession == 'Evening'
+                                          ? TColors.light
+                                          : TColors.light.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(22),
+                                      border: Border.all(color: Colors.transparent),
+                                    ),
+                                    child: const Text(
+                                      'Evening Session',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        GestureDetector(
+                          onTap: () async {
+                            if (_selectedDate != null && _selectedSession != null && widget.doctor != null) {
+                              // Fetch the doctor's ID based on the name
+                              String? doctorId = await fetchDoctorIdByName(widget.doctor!);
+
+                              if (doctorId == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Doctor not found.")));
+                                return;
+                              }
+
+                              String patientName = userName ?? "Anonymous";
+                              DateTime selectedDate = _selectedDate!;
+                              String selectedSession = _selectedSession!;
+                              String dateString = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+
+                              // Generate the next token number
+                              int nextToken = await ref.read(tokenProvider.notifier).generateTokenForBooking(doctorId, selectedSession, selectedDate);
+
+                              // Proceed with navigation to the PaymentScreen
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (context) => PaymentScreen(
+                                    bookingData: {
+                                      'doctorId': doctorId,
+                                      'doctorName': widget.doctor,
+                                      'patientName': patientName,
+                                      'tokenNumber': nextToken.toString(),
+                                      'session': selectedSession,
+                                      'date': dateString,
+                                    },
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please select a date, session, and ensure doctor's name is provided.")));
+                            }
+                          },
+                          child: FadeInSlide(
+                            duration: 0.9,
+                            direction: FadeSlideDirection.ltr,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 17),
+                              decoration: BoxDecoration(
+                                color: TColors.light,
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(color: Colors.transparent),
+                              ),
+                              child: const Text(
+                                'Book Appointment!',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -524,5 +481,3 @@ Future<String?> fetchDoctorIdByName(String doctorName) async {
     return null;
   }
 }
-
-

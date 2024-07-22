@@ -1,39 +1,63 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/constants/colors.dart';
-import 'package:qv_patient/controller/navigationcontroller.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
+import 'package:qv_patient/provider/navigation_menu_provider.dart';
+import 'package:qv_patient/view/homepage/AiDoctor/ai_doctor.dart';
 
-class NavigationMenu extends StatelessWidget {
+class NavigationMenu extends ConsumerWidget {
   const NavigationMenu({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(NavigationMenuController());
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(navigationMenuProvider);
+    final navigationNotifier = ref.read(navigationMenuProvider.notifier);
     final darkMode = DocHelperFunctions.isDarkMode(context);
+
     return Scaffold(
-      bottomNavigationBar: Obx(
-        () => NavigationBar(
-            height: 80,
-            selectedIndex: controller.selectedIndex.value,
-            elevation: 1,
-            backgroundColor: darkMode ? TColors.dark : TColors.light,
-            indicatorColor: darkMode
-                ? TColors.white.withOpacity(0.1)
-                : TColors.black.withOpacity(0.1),
-            onDestinationSelected: (index) =>
-                controller.selectedIndex.value = index,
-            destinations: const [
-              NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
-              NavigationDestination(
-                  icon: Icon(Iconsax.ticket), label: 'My Bookings'),
-              NavigationDestination(
-                  icon: Icon(Iconsax.notification), label: 'Notifications'),
-              NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
-            ]),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (index) => navigationNotifier.updateIndex(index),
+        backgroundColor: darkMode ? TColors.dark : TColors.light,
+        selectedItemColor: darkMode ? TColors.white : TColors.black,
+        unselectedItemColor: darkMode ? TColors.grey : TColors.grey.withOpacity(0.6),
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.ticket),
+            label: 'My Bookings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.notification),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.user),
+            label: 'Profile',
+          ),
+        ],
       ),
-      body: Obx(() => controller.screen[controller.selectedIndex.value]),
+      body: navigationNotifier.screens[selectedIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(CupertinoPageRoute(builder: (ctx) {
+            return ChatBot();
+          }));
+        },
+        child: CircleAvatar(
+          radius: 30,
+          backgroundImage: AssetImage('assets/image/chatbot.png'),
+        ),
+        backgroundColor: Color(0xffFAF9F6), // No background color for transparent look
+        elevation: 2,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

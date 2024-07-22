@@ -1,14 +1,9 @@
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qv_patient/view/Authentication/login_view.dart';
 
-class UserController extends GetxController {
-  Rxn<String> userName = Rxn<String>(); // This will hold the user's name
-
-  @override
-  void onInit() {
-    super.onInit();
+class UserNotifier extends StateNotifier<String?> {
+  UserNotifier() : super(null) {
     // Listen to auth state changes to automatically handle user data updates
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
@@ -30,11 +25,11 @@ class UserController extends GetxController {
         final fullName = userDoc.data()?['fullName'] as String?; // Get the fullName field
 
         if (fullName != null) {
-          userName.value = fullName; // Update the userName observable with the fetched name
+          state = fullName; // Update the state with the fetched name
         } else {
           // Handle the case where fullName is null or missing
           print("FullName is null or not found in the document.");
-          userName.value = "User"; // Optionally set a default value or handle as needed
+          state = "User"; // Optionally set a default value or handle as needed
         }
       } catch (e) {
         print("Error fetching user name: $e");
@@ -48,7 +43,7 @@ class UserController extends GetxController {
 
   void _clearUserData() {
     // Clear or reset user-related data upon logout
-    userName.value = null;
+    state = null;
   }
 
   void _updateUserData() async {
@@ -59,10 +54,10 @@ class UserController extends GetxController {
         final userDoc = await FirebaseFirestore.instance.collection('users').doc(email).get();
         final fullName = userDoc.data()?['fullName'] as String?;
         if (fullName != null) {
-          userName.value = fullName;
+          state = fullName;
         } else {
           // Handle the case where the full name is not set
-          userName.value = "User";
+          state = "User";
         }
       } catch (e) {
         // Handle errors in fetching user data
@@ -71,3 +66,7 @@ class UserController extends GetxController {
     }
   }
 }
+
+final userProvider = StateNotifierProvider<UserNotifier, String?>((ref) {
+  return UserNotifier();
+});

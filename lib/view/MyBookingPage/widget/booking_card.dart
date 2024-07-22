@@ -56,10 +56,10 @@ class _BookingCardState extends State<BookingCard> {
                 children: [
                   Expanded(
                     child: Text(
-                      widget
-                          .appointmentDate, // Correctly using provided appointmentDate
+                      widget.appointmentDate,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: TColors.dark),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (widget.showSwitch ?? true) ...[
@@ -94,26 +94,24 @@ class _BookingCardState extends State<BookingCard> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.asset(
-                        widget
-                            .imageurl, // Dynamically using provided image URL/path
+                        widget.imageurl,
                         fit: BoxFit.fill,
                       ),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    // Wrapped in Expanded to prevent overflow
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget
-                              .doctorName, // Dynamically using provided doctorName
+                          widget.doctorName,
                           style: const TextStyle(
                               color: TColors.dark,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Row(
                           children: [
@@ -122,39 +120,40 @@ class _BookingCardState extends State<BookingCard> {
                               color: TColors.dark,
                               size: 15,
                             ),
-                            Text(
-                              widget.location,
-                              style: const TextStyle(color: TColors.dark),
+                            Expanded(
+                              child: Text(
+                                widget.location,
+                                style: const TextStyle(color: TColors.dark),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
-                        ), // Dynamically using provided location
-                        Row(children: [
-                          const Icon(
-                            Iconsax.ticket,
-                            size: 15,
-                            color: TColors.dark,
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                'Booking ID: ',
-                                style: TextStyle(
-                                    color: TColors
-                                        .dark), // Dynamically using provided bookingId
-                              ),
-                              Text(
-                                widget
-                                    .bookingId, // Dynamically using provided bookingId
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Iconsax.ticket,
+                              size: 15,
+                              color: TColors.dark,
+                            ),
+                            const Text(
+                              'Booking ID: ',
+                              style: TextStyle(color: TColors.dark),
+                            ),
+                            Expanded(
+                              child: Text(
+                                widget.bookingId,
                                 style: const TextStyle(
                                     color: TColors.dark,
                                     fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ]),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -164,18 +163,24 @@ class _BookingCardState extends State<BookingCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  MyButtonWithText(
-                    text: widget.firstbuttontext,
-                    textColor: TColors.dark,
-                    backgroundColor: const Color.fromARGB(255, 179, 213, 241),
+                  Flexible(
+                    child: MyButtonWithText(
+                      text: widget.firstbuttontext,
+                      textColor: TColors.dark,
+                      backgroundColor:
+                      const Color.fromARGB(255, 179, 213, 241),
+                    ),
                   ),
-                  MyButtonWithText(
-                    text: widget.secondbuttontext,
-                    textColor: Colors.white,
-                    backgroundColor: TColors.dark,
-                  )
+                  const SizedBox(width: 10),
+                  Flexible(
+                    child: MyButtonWithText(
+                      text: widget.secondbuttontext,
+                      textColor: Colors.white,
+                      backgroundColor: TColors.dark,
+                    ),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

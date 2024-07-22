@@ -1,30 +1,34 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:qv_patient/services/notification_service.dart';
 import 'package:qv_patient/theme/theme.dart';
 import 'package:qv_patient/view/onboarding/screens/onboarding.dart';
-import 'controller/user_controller.dart';
 import 'firebase_options.dart';
 import 'navigationmenu.dart';
 
-// Assuming UserController is defined in another file.
-// import 'path_to_your_user_controller.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle());
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Initialize UserController here so it's available app-wide.
-  Get.put(UserController());
+  final messagingService = FirebaseMessagingService();
+  messagingService.initializeMessaging();
 
-  runApp(const MyApp());
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("Firebase Messaging Token: $token");
+
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,28 +36,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    _getFCMToken();
+    return MaterialApp(
+
+      title: 'QV Patient App',
       themeMode: ThemeMode.system,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+
       debugShowCheckedModeBanner: false,
       home: AuthenticationWrapper(),
     );
   }
 }
 
-class AuthenticationWrapper extends StatelessWidget {
+void _getFCMToken() async {
+  try {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken();
+    print("FCM Token: $token");
+  } catch (e) {
+    print("Failed to get FCM Token: $e");
+  }
+}
+
+class AuthenticationWrapper extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // Directly navigate to NavigationMenu, assuming the user is logged in.
-          Future.microtask(() => Get.offAll(() => const NavigationMenu()));
-          return Container(); // Temporarily return an empty Container
+          Future.microtask(() => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const NavigationMenu()),
+          ));
+          return const SizedBox.shrink(); // More explicit empty widget.
         } else {
-          // Navigate to OnboardingScreen if not logged in.
           return OnboardingScreen();
         }
       },

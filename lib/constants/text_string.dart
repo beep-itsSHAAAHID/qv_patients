@@ -54,18 +54,18 @@ class TTexts {
       "Your Account Security is Our Priority! We've Sent You a Secure Link to Safely Change Your Password and Keep Your Account Protected.";
   static const String confirmEmail = "Verify your email address!";
   static const String confirmEmailSubTitle =
-      "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.";
+      "Congratulations! Your Account Awaits: Verify Your Email to Start Booking";
   static const String emailNotReceivedMessage =
       "Didn’t get the email? Check your junk/spam or resend it.";
   static const String yourAccountCreatedTitle =
       "Your account successfully created!";
   static const String yourAccountCreatedSubTitle =
-      "Welcome to Your Ultimate Shopping Destination: Your Account is Created, Unleash the Joy of Seamless Online Shopping!";
+      "Welcome to Your Ultimate Booking App!";
 
   // -- Product
-  static const String popularProducts = "Popular Products";
+  static const String popularProducts = "Popular Doctors";
 
   // -- Home
-  static const String homeAppbarTitle = "Good day for shopping";
-  static const String homeAppbarSubTitle = "Shahinsh Pbr";
+  static const String homeAppbarTitle = "Have a Good Day!";
+  static const String homeAppbarSubTitle = " Welcome User";
 }

@@ -16,7 +16,7 @@ class AppTheme {
       useMaterial3: true,
       fontFamily: 'Poppins',
       brightness: Brightness.light,
-      primaryColor: const Color.fromARGB(255, 104, 127, 242),
+      primaryColor: const Color.fromARGB(258, 104, 127, 242),
       scaffoldBackgroundColor: const Color.fromARGB(255, 136, 189, 232),
       textTheme: AppTextTheme.lightTextTheme,
       appBarTheme: TAppBarThemes.lightAppbarTheme,

@@ -12,7 +12,7 @@ class TColors {
   static const Color textWhite = Colors.white;
 
   // Background colors
-  static const Color light = Color.fromARGB(255, 136, 189, 232);
+  static const Color light = Color(0xffFAF9F6);
   static const Color dark = Color.fromARGB(255, 23, 59, 89);
   static const Color primaryBackground = Color(0xFFF3F5FF);
 
@@ -43,4 +43,15 @@ class TColors {
   static const Color softGrey = Color(0xFFF4F4F4);
   static const Color lightGrey = Color(0xFFF9F9F9);
   static const Color white = Color(0xFFFFFFFF);
+}
+
+
+class AppColors {
+  static const Color primary = Color(0xFF6C63FF); // Primary color
+  static const Color secondary = Color(0xFFFF6584); // Secondary color
+  static const Color background = Color(0xFFF7F7F7); // Background color
+  static const Color textPrimary = Color(0xFF333333); // Primary text color
+  static const Color textSecondary = Color(0xFF767676); // Secondary text color
+  static const Color cardBackground = Color(0xFFFFFFFF); // Card background color
+  static const Color border = Color(0xFFE0E0E0); // Border color
 }

@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -11,8 +10,7 @@ import 'package:qv_patient/constants/loading_overlay.dart';
 import 'package:qv_patient/navigationmenu.dart';
 import 'package:qv_patient/view/Authentication/forgot_password_view.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
-
-import '../../controller/user_controller.dart';
+import 'package:qv_patient/provider/user_provider.dart'; // Import the provider
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
@@ -31,7 +29,7 @@ class _SignInViewState extends State<SignInView> {
     final height = MediaQuery.sizeOf(context).height;
     final isDark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
 
-    Future<void> signInUser() async {
+    Future<void> signInUser(WidgetRef ref) async {
       // Show loading indicator
       showDialog(
         context: context,
@@ -54,8 +52,8 @@ class _SignInViewState extends State<SignInView> {
         }
 
         // Here, we manually trigger the UserController to update the user's name
-        final userController = Get.find<UserController>();
-        userController.updateUserInformation(); // This should fetch and update the user's name
+        final userNotifier = ref.read(userProvider.notifier);
+        userNotifier.updateUserInformation(); // This should fetch and update the user's name
 
         // Dismiss loading dialog
         Navigator.of(context).pop();
@@ -84,176 +82,160 @@ class _SignInViewState extends State<SignInView> {
       }
     }
 
-
-
-
-
     return Scaffold(
       appBar: AppBar(),
-      body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          children: [
-            const FadeInSlide(
-              duration: .4,
-              child: Text(
-                "Welcome Back! 👋",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              ),
-            ),
-            const SizedBox(height: 15),
-            const FadeInSlide(
-              duration: .5,
-              child: Text(
-                "Your Digital Hospital",
-              ),
-            ),
-            const SizedBox(height: 25),
-            const FadeInSlide(
-              duration: .6,
-              child: Text(
-                "Email",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 10),
-             FadeInSlide(duration: .6, child: EmailField(
-              controller: _emailController,
-            )),
-            const SizedBox(height: 20),
-            const FadeInSlide(
-              duration: .7,
-              child: Text(
-                "Password",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 10),
-             FadeInSlide(duration: .7, child: PasswordField(
-              controller: _passwordController,
-            )),
-            const SizedBox(height: 20),
-            FadeInSlide(
-              duration: .8,
-              child: Row(
-                children: [
-                  ValueListenableBuilder(
-                    valueListenable: termsCheck,
-                    builder: (context, value, child) {
-                      return CupertinoCheckbox(
-                        inactiveColor: isDark ? Colors.white : Colors.black87,
-                        value: value,
-                        onChanged: (_) {
-                          termsCheck.value = !termsCheck.value;
-                        },
-                      );
-                    },
-                  ),
-                  const Text(
-                    "Remember Me",
-                  ),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () => Navigator.pushReplacement(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => const ForgotPasswordView(),
-                      ),
-                    ),
-                    child: const Text("Forgot Password?"),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            const FadeInSlide(
-              duration: .9,
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Divider(
-                    thickness: .3,
-                  )),
-                  Text(
-                    "   or   ",
-                    // style: context.tm,
-                  ),
-                  Expanded(
-                      child: Divider(
-                    thickness: .3,
-                  )),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            FadeInSlide(
-              duration: 1,
-              child: LoginButton(
-                icon: Brand(Brands.google, size: 25),
-                text: "Continue with Google",
-                onPressed: () {},
-              ),
-            ),
-            SizedBox(height: height * 0.02),
-            FadeInSlide(
-              duration: 1.1,
-              child: LoginButton(
-                icon: Icon(
-                  Icons.apple,
-                  color: isDark ? Colors.white : Colors.black,
+      body: Consumer(
+        builder: (context, ref, child) {
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            children: [
+              const FadeInSlide(
+                duration: .4,
+                child: Text(
+                  "Welcome Back! 👋",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
-                text: "Continue with Apple",
-                onPressed: () {},
               ),
-            ),
-            SizedBox(height: height * 0.02),
-            // FadeInSlide(
-            //   duration: 1.2,
-            //   child: LoginButton(
-            //     icon: Brand(Brands.facebook, size: 25),
-            //     text: "Continue with Facebook",
-            //     onPressed: () {},
-            //   ),
-            // ),
-            // SizedBox(height: height * 0.02),
-            // FadeInSlide(
-            //   duration: 1.3,
-            //   child: LoginButton(
-            //     icon: Brand(Brands.twitter, size: 25),
-            //     text: "Continue with Twitter",
-            //     onPressed: () {},
-            //   ),
-            // ),
-          ]
-          // .animate(interval: 10.ms).slide(
-          //     begin: const Offset(0, -40),
-          //     end: Offset.zero,
-          //     // curve: Curves.easeOut,
-          //     duration: 1200.ms,
-          //     delay: 200.ms),
-          ),
+              const SizedBox(height: 15),
+              const FadeInSlide(
+                duration: .5,
+                child: Text(
+                  "Your Digital Hospital",
+                ),
+              ),
+              const SizedBox(height: 25),
+              const FadeInSlide(
+                duration: .6,
+                child: Text(
+                  "Email",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 10),
+              FadeInSlide(
+                duration: .6,
+                child: EmailField(
+                  controller: _emailController,
+                ),
+              ),
+              const SizedBox(height: 20),
+              const FadeInSlide(
+                duration: .7,
+                child: Text(
+                  "Password",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 10),
+              FadeInSlide(
+                duration: .7,
+                child: PasswordField(
+                  controller: _passwordController,
+                ),
+              ),
+              const SizedBox(height: 20),
+              FadeInSlide(
+                duration: .8,
+                child: Row(
+                  children: [
+                    ValueListenableBuilder(
+                      valueListenable: termsCheck,
+                      builder: (context, value, child) {
+                        return CupertinoCheckbox(
+                          inactiveColor: isDark ? Colors.white : Colors.black87,
+                          value: value,
+                          onChanged: (_) {
+                            termsCheck.value = !termsCheck.value;
+                          },
+                        );
+                      },
+                    ),
+                    const Text(
+                      "Remember Me",
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () => Navigator.pushReplacement(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const ForgotPasswordView(),
+                        ),
+                      ),
+                      child: const Text("Forgot Password?"),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              const FadeInSlide(
+                duration: .9,
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Divider(
+                          thickness: .3,
+                        )),
+                    Text(
+                      "   or   ",
+                    ),
+                    Expanded(
+                        child: Divider(
+                          thickness: .3,
+                        )),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              FadeInSlide(
+                duration: 1,
+                child: LoginButton(
+                  icon: Brand(Brands.google, size: 25),
+                  text: "Continue with Google",
+                  onPressed: () {},
+                ),
+              ),
+              SizedBox(height: height * 0.02),
+              FadeInSlide(
+                duration: 1.1,
+                child: LoginButton(
+                  icon: Icon(
+                    Icons.apple,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                  text: "Continue with Apple",
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          );
+        },
+      ),
       bottomNavigationBar: FadeInSlide(
         duration: 1,
         direction: FadeSlideDirection.btt,
         child: Container(
-          padding:
-              const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
+          padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(width: .2, color: Colors.grey),
             ),
           ),
-          child: FilledButton(
-            onPressed: () async {
-              signInUser();
+          child: Consumer(
+            builder: (context, ref, child) {
+              return FilledButton(
+                onPressed: () async {
+                  await signInUser(ref);
+                },
+                style: FilledButton.styleFrom(
+                  backgroundColor: TColors.primary,
+                  fixedSize: const Size(double.infinity, 50),
+                ),
+                child: const Text(
+                  "Sign In",
+                  style: TextStyle(fontWeight: FontWeight.w900),
+                ),
+              );
             },
-            style: FilledButton.styleFrom(
-              backgroundColor: TColors.primary,
-              fixedSize: const Size(double.infinity, 50),
-            ),
-            child: const Text(
-              "Sign In",
-              style: TextStyle(fontWeight: FontWeight.w900),
-            ),
           ),
         ),
       ),
