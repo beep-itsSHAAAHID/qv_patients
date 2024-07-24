@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/view/Authentication/get_started_view.dart';
 import '../data/data.dart';
 import '../custom/custom_bg.dart';
@@ -18,10 +20,10 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   List<Color> myColors = [
-    TColors.dark,
-    TColors.dark,
-    TColors.dark,
-    TColors.dark,
+    Color.fromARGB(255, 252, 252, 246),
+    Color.fromARGB(255, 252, 252, 246),
+    Color.fromARGB(255, 252, 252, 246),
+    Color.fromARGB(255, 252, 252, 246)
   ];
 
   late PageController pageController;
@@ -48,6 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 252, 252, 246),
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         color: myColors[selectedIndex].withOpacity(0.4),
@@ -125,7 +128,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         alignment: Alignment.topRight,
                         duration: const Duration(milliseconds: 300),
                         decoration: BoxDecoration(
-                          color: myColors[selectedIndex],
+                          color: Colors.grey[300],
                           // border: Border.all(color: Colors.red, width: 3),
                         ),
                       ),
@@ -149,7 +152,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         alignment: Alignment.topRight,
                         duration: const Duration(milliseconds: 300),
                         decoration: BoxDecoration(
-                          color: myColors[selectedIndex],
+                          color: Colors.white30,
                           // border: Border.all(color: Colors.red, width: 3),
                         ),
                       ),
@@ -314,7 +317,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         },
                         child: Text(
                           "Skip",
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          style: TextStyle(
+                              color: TColors.black,
+                              fontSize: Responsive.fontSize(context, 0.04)),
                         ),
                       ),
                     ),
@@ -331,35 +336,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           }));
                         }
                       },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        decoration: BoxDecoration(
-                          color: TColors.light.withOpacity(0.1),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15),
+                      child: AnimatedCrossFade(
+                        duration: const Duration(milliseconds: 500),
+                        // height: 50,
+                        crossFadeState: pageValue < 2.0
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        firstChild: Center(
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: Responsive.fontSize(context, 0.05),
+                            color: Colors.black,
                           ),
                         ),
-                        child: AnimatedCrossFade(
-                          duration: const Duration(milliseconds: 500),
-                          // height: 50,
-                          crossFadeState: pageValue < 2.0
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          firstChild: const Center(
-                            child: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          secondChild: const Center(
-                            child: Text(
-                              "Get Started",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
+                        secondChild: Center(
+                          child: Text(
+                            "Get Started",
+                            style: TextStyle(
+                              fontSize: Responsive.fontSize(context, 0.05),
+                              color: TColors.black,
                             ),
                           ),
                         ),

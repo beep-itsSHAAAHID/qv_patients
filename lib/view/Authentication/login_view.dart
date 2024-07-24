@@ -3,10 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconly/iconly.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/loading_overlay.dart';
+import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/navigationmenu.dart';
 import 'package:qv_patient/view/Authentication/forgot_password_view.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
@@ -34,18 +37,27 @@ class _SignInViewState extends State<SignInView> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => Center(child: CircularProgressIndicator()),
+        builder: (BuildContext context) => Center(
+          child: LoadingAnimationWidget.dotsTriangle(
+            color: TColors.primary,
+            size: Responsive.width(context, 0.1),
+          ),
+        ),
       );
 
       try {
         // Authenticate with Firebase Authentication
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
 
         // Retrieve user profile from Firestore using email as document ID
-        DocumentSnapshot userProfile = await FirebaseFirestore.instance.collection('users').doc(_emailController.text.trim()).get();
+        DocumentSnapshot userProfile = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_emailController.text.trim())
+            .get();
 
         if (!userProfile.exists) {
           throw Exception("User profile does not exist in Firestore.");
@@ -53,7 +65,8 @@ class _SignInViewState extends State<SignInView> {
 
         // Here, we manually trigger the UserController to update the user's name
         final userNotifier = ref.read(userProvider.notifier);
-        userNotifier.updateUserInformation(); // This should fetch and update the user's name
+        userNotifier
+            .updateUserInformation(); // This should fetch and update the user's name
 
         // Dismiss loading dialog
         Navigator.of(context).pop();
@@ -63,44 +76,61 @@ class _SignInViewState extends State<SignInView> {
           context,
           CupertinoPageRoute(builder: (context) => const NavigationMenu()),
         );
-
       } on FirebaseAuthException catch (e) {
-        Navigator.of(context).pop(); // Ensure loading indicator is closed on error
+        Navigator.of(context)
+            .pop(); // Ensure loading indicator is closed on error
 
         // Handle Firebase Authentication errors (e.g., wrong password, user not found)
-        String errorMessage = "An error occurred during sign in. Please try again.";
+        String errorMessage =
+            "An error occurred during sign in. Please try again.";
         if (e.code == 'user-not-found') {
           errorMessage = 'No user found for that email.';
         } else if (e.code == 'wrong-password') {
           errorMessage = 'Wrong password provided.';
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: TColors.error,
+            content: Text(
+              errorMessage,
+            ),
+          ),
+        );
       } catch (e) {
-        Navigator.of(context).pop(); // Ensure loading indicator is closed on error
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+        Navigator.of(context)
+            .pop(); // Ensure loading indicator is closed on error
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.toString())));
       }
     }
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 252, 252, 246),
       appBar: AppBar(),
       body: Consumer(
         builder: (context, ref, child) {
           return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
-              const FadeInSlide(
+              FadeInSlide(
                 duration: .4,
                 child: Text(
                   "Welcome Back! 👋",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: TextStyle(
+                      color: TColors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.fontSize(context, 0.06)),
                 ),
               ),
               const SizedBox(height: 15),
-              const FadeInSlide(
+              FadeInSlide(
                 duration: .5,
                 child: Text(
                   "Your Digital Hospital",
+                  style: TextStyle(
+                      color: TColors.black,
+                      fontSize: Responsive.fontSize(context, 0.04)),
                 ),
               ),
               const SizedBox(height: 25),
@@ -108,13 +138,15 @@ class _SignInViewState extends State<SignInView> {
                 duration: .6,
                 child: Text(
                   "Email",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: TColors.black),
                 ),
               ),
               const SizedBox(height: 10),
               FadeInSlide(
                 duration: .6,
                 child: EmailField(
+                  icon: IconlyLight.message,
                   controller: _emailController,
                 ),
               ),
@@ -123,7 +155,8 @@ class _SignInViewState extends State<SignInView> {
                 duration: .7,
                 child: Text(
                   "Password",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: TColors.black),
                 ),
               ),
               const SizedBox(height: 10),
@@ -142,7 +175,7 @@ class _SignInViewState extends State<SignInView> {
                       valueListenable: termsCheck,
                       builder: (context, value, child) {
                         return CupertinoCheckbox(
-                          inactiveColor: isDark ? Colors.white : Colors.black87,
+                          inactiveColor: Colors.black87,
                           value: value,
                           onChanged: (_) {
                             termsCheck.value = !termsCheck.value;
@@ -152,6 +185,7 @@ class _SignInViewState extends State<SignInView> {
                     ),
                     const Text(
                       "Remember Me",
+                      style: TextStyle(color: TColors.black),
                     ),
                     const Spacer(),
                     TextButton(
@@ -161,7 +195,10 @@ class _SignInViewState extends State<SignInView> {
                           builder: (context) => const ForgotPasswordView(),
                         ),
                       ),
-                      child: const Text("Forgot Password?"),
+                      child: const Text(
+                        "Forgot Password?",
+                        style: TextStyle(color: TColors.primary),
+                      ),
                     ),
                   ],
                 ),
@@ -173,15 +210,16 @@ class _SignInViewState extends State<SignInView> {
                   children: [
                     Expanded(
                         child: Divider(
-                          thickness: .3,
-                        )),
+                      thickness: .3,
+                    )),
                     Text(
                       "   or   ",
+                      style: TextStyle(color: TColors.black),
                     ),
                     Expanded(
                         child: Divider(
-                          thickness: .3,
-                        )),
+                      thickness: .3,
+                    )),
                   ],
                 ),
               ),
@@ -214,7 +252,8 @@ class _SignInViewState extends State<SignInView> {
         duration: 1,
         direction: FadeSlideDirection.btt,
         child: Container(
-          padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
+          padding:
+              const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(width: .2, color: Colors.grey),
@@ -232,7 +271,8 @@ class _SignInViewState extends State<SignInView> {
                 ),
                 child: const Text(
                   "Sign In",
-                  style: TextStyle(fontWeight: FontWeight.w900),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900, color: TColors.white),
                 ),
               );
             },

@@ -45,13 +45,13 @@ class TColors {
   static const Color white = Color(0xFFFFFFFF);
 }
 
-
 class AppColors {
   static const Color primary = Color(0xFF6C63FF); // Primary color
   static const Color secondary = Color(0xFFFF6584); // Secondary color
   static const Color background = Color(0xFFF7F7F7); // Background color
   static const Color textPrimary = Color(0xFF333333); // Primary text color
   static const Color textSecondary = Color(0xFF767676); // Secondary text color
-  static const Color cardBackground = Color(0xFFFFFFFF); // Card background color
+  static const Color cardBackground =
+      Color(0xFFFFFFFF); // Card background color
   static const Color border = Color(0xFFE0E0E0); // Border color
 }

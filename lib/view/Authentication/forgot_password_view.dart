@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/loading_overlay.dart';
+import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/view/Authentication/otp_input_view.dart';
 
 import '../../animations/fade_in_slide.dart';
@@ -19,37 +21,48 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   Widget build(BuildContext context) {
     final isDark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 252, 252, 246),
       appBar: AppBar(),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-          const SizedBox(height: 20),
-          const FadeInSlide(
+          FadeInSlide(
             duration: .4,
             child: Text(
               "Forgot Your Password 🔑",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              style: TextStyle(
+                  color: TColors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.fontSize(context, 0.06)),
             ),
           ),
           const SizedBox(height: 15),
-          const FadeInSlide(
+          FadeInSlide(
             duration: .5,
             child: Text(
               "We've got you covered. Enter your registered email to reset your password. We will send an OTP code to your email for the next steps.",
+              style: TextStyle(
+                  color: TColors.black,
+                  fontWeight: FontWeight.normal,
+                  fontSize: Responsive.fontSize(context, 0.04)),
             ),
           ),
           const SizedBox(height: 25),
-          const FadeInSlide(
+          FadeInSlide(
             duration: .6,
             child: Text(
               "Your Registered Email",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(
+                  color: TColors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.fontSize(context, 0.04)),
             ),
           ),
           const SizedBox(height: 10),
           FadeInSlide(
             duration: .7,
             child: TextField(
+              style: TextStyle(color: TColors.black),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus!.unfocus(),
               // cursorColor: isDark ? Colors.grey : Colors.black54,
@@ -59,7 +72,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 fillColor: isDark
                     ? TColors.dark.withOpacity(.1)
                     : TColors.light.withOpacity(.1),
-                hintText: "Email",
+                hintText: "Enter your email...",
+                hintStyle: TextStyle(color: TColors.black.withOpacity(0.4)),
                 prefixIcon: const Icon(IconlyLight.message, size: 20),
                 prefixIconColor: isDark ? Colors.white : Colors.black87,
                 border: OutlineInputBorder(
@@ -85,22 +99,39 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           ),
           child: FilledButton(
             onPressed: () async {
-              LoadingScreen.instance()
-                  .show(context: context, text: "Sending OTP...");
-              await Future.delayed(const Duration(seconds: 1));
-              for (var i = 0; i <= 100; i++) {
-                LoadingScreen.instance().show(context: context, text: '$i...');
-                await Future.delayed(const Duration(milliseconds: 10));
-              }
-              LoadingScreen.instance()
-                  .show(context: context, text: "OTP Sent Successfully");
-              await Future.delayed(const Duration(seconds: 1));
-              LoadingScreen.instance().hide();
+              // Show loading dialog
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: TColors.primary,
+                      size: Responsive.width(context, 0.1),
+                    ),
+                  );
+                },
+              );
+
+              // Simulate a delay
+              await Future.delayed(Duration(seconds: 3));
+
+              // Close the dialog
+              Navigator.of(context).pop();
+
+              // Show success message
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text('OTP successfully sent'),
+                  duration: Duration(seconds: 1),
+                ),
+              );
+
+              // Navigate to OTPInputView
               Navigator.pushReplacement(
                 context,
-                CupertinoPageRoute(
-                  builder: (context) => const OTPInputView(),
-                ),
+                MaterialPageRoute(builder: (context) => OTPInputView()),
               );
             },
             style: FilledButton.styleFrom(
@@ -109,7 +140,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             ),
             child: const Text(
               "Send OTP Code",
-              style: TextStyle(fontWeight: FontWeight.w900),
+              style:
+                  TextStyle(fontWeight: FontWeight.w900, color: TColors.white),
             ),
           ),
         ),

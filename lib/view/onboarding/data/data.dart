@@ -1,15 +1,19 @@
-
 import '../models/item.dart';
 
 List<Item> items = [
   Item(
-      title: 'Appoint your \nassessment now.',
+      title: 'Appoint your ',
+      subtitle: 'assessment now.',
       lottie: lotties[0],
       description: desc),
   Item(
-      title: 'Find the \nbest doctors.', lottie: lotties[1], description: desc),
+      title: 'Find the ',
+      lottie: lotties[1],
+      description: desc,
+      subtitle: 'best doctors.'),
   Item(
-      title: 'Trace your \nassessment request.',
+      title: 'Trace your ',
+      subtitle: 'assessment request.',
       lottie: lotties[2],
       description: desc),
 ];

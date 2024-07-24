@@ -24,11 +24,12 @@ class TPromoSlider extends ConsumerWidget {
         CarouselSlider(
           items: banners
               .map((url) => TRoundedImage(
-            padding: const EdgeInsets.all(16),
-            imageurl: url,
-          ))
+                    padding: const EdgeInsets.all(16),
+                    imageurl: url,
+                  ))
               .toList(),
           options: CarouselOptions(
+              autoPlay: true,
               viewportFraction: 1.5,
               onPageChanged: (index, _) =>
                   homeNotifier.updatePageIndicator(index)),
@@ -45,9 +46,8 @@ class TPromoSlider extends ConsumerWidget {
                   margin: const EdgeInsets.only(right: 10),
                   width: 20,
                   height: 4,
-                  backgroundColor: carousalCurrentIndex == i
-                      ? TColors.light
-                      : TColors.grey,
+                  backgroundColor:
+                      carousalCurrentIndex == i ? TColors.light : TColors.grey,
                 ),
             ],
           ),

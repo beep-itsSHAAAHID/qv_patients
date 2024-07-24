@@ -17,12 +17,11 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = MediaQuery.platformBrightnessOf(context);
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         backgroundColor: Colors.white.withOpacity(.05),
-        side: BorderSide(color: Colors.grey.shade800, width: .1),
+        side: BorderSide(color: TColors.primary, width: 1),
         fixedSize: const Size.fromHeight(50),
         padding: const EdgeInsets.symmetric(horizontal: 15),
       ),
@@ -33,10 +32,8 @@ class LoginButton extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
                 ),
               )),
           Align(alignment: Alignment.centerLeft, child: icon),
@@ -76,8 +73,8 @@ class RichTwoPartsText extends StatelessWidget {
   }
 }
 
-class PasswordField extends StatelessWidget {
-  final TextEditingController? controller; // Add controller parameter
+class PasswordField extends StatefulWidget {
+  final TextEditingController? controller;
 
   const PasswordField({
     this.controller,
@@ -85,36 +82,60 @@ class PasswordField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _PasswordFieldState createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  bool _obscureText = true;
+
+  @override
   Widget build(BuildContext context) {
     final dark = DocHelperFunctions.isDarkMode(context);
     return TextField(
-      controller: controller, // Use the controller
-      obscureText: true,
+      style: TextStyle(color: TColors.black),
+      controller: widget.controller,
+      obscureText: _obscureText,
       decoration: InputDecoration(
         filled: true,
-        fillColor: dark ? Colors.blueGrey.withOpacity(.1) : TColors.light.withOpacity(.1),
-        hintText: "Password",
+        fillColor: const Color.fromARGB(255, 252, 252, 246),
+        hintText: "Enter password...",
+        hintStyle: TextStyle(color: TColors.black.withOpacity(0.4)),
         prefixIcon: const Icon(IconlyLight.lock, size: 20),
-        suffixIcon: const Icon(IconlyLight.hide, size: 20),
-        prefixIconColor: dark ? Colors.white : Colors.black87,
-        suffixIconColor: dark ? Colors.white : Colors.black87,
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscureText ? IconlyLight.hide : IconlyLight.show,
+            size: 20,
+          ),
+          onPressed: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+        ),
+        prefixIconColor: Colors.black87,
+        suffixIconColor: Colors.black87,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: TColors.black),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: TColors.black),
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: TColors.black),
         ),
       ),
     );
   }
 }
 
-
-
-
 class EmailField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? hinttext;
   final IconData? icon;
-  final TextEditingController? controller; // Corrected type
+  final TextEditingController? controller;
 
   const EmailField({
     this.controller,
@@ -126,19 +147,30 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = DocHelperFunctions.isDarkMode(context); // Ensure this function exists and works as expected
+    final dark = DocHelperFunctions.isDarkMode(
+        context); // Ensure this function exists and works as expected
     return TextField(
+      style: TextStyle(color: TColors.black),
       controller: controller, // Use the controller
       keyboardType: keyboardType,
       decoration: InputDecoration(
         filled: true,
-        fillColor: dark ? Colors.blueGrey.withOpacity(.1) : TColors.light.withOpacity(.1),
-        hintText: hinttext ?? "",
+        fillColor: const Color.fromARGB(255, 252, 252, 246),
+        hintText: hinttext ?? "Enter your email...",
         prefixIcon: icon != null ? Icon(icon) : null,
-        prefixIconColor: dark ? Colors.white : Colors.black87,
+        prefixIconColor: Colors.black87,
+        hintStyle: TextStyle(color: TColors.black.withOpacity(0.4)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: TColors.black),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: TColors.black),
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: TColors.black),
         ),
       ),
     );

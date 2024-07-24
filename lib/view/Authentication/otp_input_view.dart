@@ -6,6 +6,7 @@ import 'package:pinput/pinput.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
+import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/view/Authentication/new_password_view.dart';
 
 class OTPInputView extends StatelessWidget {
@@ -22,24 +23,28 @@ class OTPInputView extends StatelessWidget {
     });
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 252, 252, 246),
       appBar: AppBar(),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-          const SizedBox(height: 20),
-          const FadeInSlide(
+          FadeInSlide(
             duration: .4,
-            child: Text(
-              "Enter OTP Code 🔐",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-            ),
+            child: Text("Enter OTP Code 🔐",
+                style: TextStyle(
+                    color: TColors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.fontSize(context, 0.06))),
           ),
           const SizedBox(height: 15),
-          const FadeInSlide(
+          FadeInSlide(
             duration: .5,
             child: Text(
-              "Please check your email inbox for a message from Smartome. Enter the one-time verification code below.",
-            ),
+                "Please check your email inbox for a message from Smartome. Enter the one-time verification code below.",
+                style: TextStyle(
+                    color: TColors.black,
+                    fontWeight: FontWeight.normal,
+                    fontSize: Responsive.fontSize(context, 0.04))),
           ),
           const SizedBox(height: 25),
           _buildPinPut(context),
@@ -80,13 +85,13 @@ class OTPInputView extends StatelessWidget {
       height: 70,
       textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
-        color: dark ? TColors.textSecondary : TColors.lightGrey.withOpacity(.5),
+        color: TColors.primary.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      color: TColors.accent.withOpacity(.1),
+      color: TColors.primary,
       border: Border.all(color: TColors.borderSecondary, width: 2),
       borderRadius: BorderRadius.circular(15),
     );

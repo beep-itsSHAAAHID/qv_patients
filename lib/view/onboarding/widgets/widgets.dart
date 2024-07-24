@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class TrianglePath extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -21,17 +20,17 @@ class TrianglePath extends CustomClipper<Path> {
 Widget blackBall(double size) => Container(
       height: size,
       width: size,
-      decoration:
-          const BoxDecoration(shape: BoxShape.circle, color: Colors.black),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(colors: [Colors.blue, Colors.white])),
     );
 
 Widget greyBall(double size) => Container(
       height: size,
       width: size,
-      decoration:
-          const BoxDecoration(color: Colors.white38, shape: BoxShape.circle),
+      decoration: BoxDecoration(
+          color: Colors.lightGreen.withOpacity(0.3), shape: BoxShape.circle),
     );
-
 
 class TubePath extends CustomClipper<Path> {
   @override

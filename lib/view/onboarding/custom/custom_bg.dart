@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:qv_patient/constants/colors.dart';
 
 // thanks a lot to Jeanmartin Pachas Villa for this
 // https://github.com/JeanmartinPV
@@ -30,7 +31,7 @@ class OnBoardingBackground extends CustomPainter {
     paint.strokeWidth = 4;
     paint.shader = ui.Gradient.linear(
         Offset(size.width / 2, 0), Offset(size.width / 2, size.height), [
-      firstColor ?? Colors.lightGreen.shade300,
+      firstColor ?? TColors.primary,
       secondColor ?? Colors.greenAccent.shade200
       // Color(0xffF52C6A),
       // Color(0xffF72D6B),

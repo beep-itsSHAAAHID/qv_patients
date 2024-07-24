@@ -18,48 +18,100 @@ class DepartmentContainer extends StatelessWidget {
     IconData departmentIcon;
     switch (departmentName) {
       case 'Neurologist':
-        departmentIcon = Iconsax.next;
+        departmentIcon = Iconsax.happyemoji;
         break;
       case 'Dentist':
-        departmentIcon = Iconsax.car1;
+        departmentIcon = Iconsax.tag;
         break;
       case 'Cardiologist':
         departmentIcon = Iconsax.heart;
         break;
-      case 'Psychiatrists':
+      case 'Psychiatrist':
         departmentIcon = Iconsax.emoji_happy;
         break;
+      case 'Pediatrician':
+        departmentIcon = Iconsax.cake;
+        break;
+      case 'Dermatologist':
+        departmentIcon = Iconsax.activity;
+        break;
+      case 'Ophthalmologist':
+        departmentIcon = Iconsax.eye;
+        break;
+      case 'Gynecologist':
+        departmentIcon = Iconsax.woman;
+        break;
+      case 'Orthopedic':
+        departmentIcon = Iconsax.add;
+        break;
+      // case 'Radiologist':
+      //   departmentIcon = Iconsax.radio;
+      //   break;
+      // case 'Oncologist':
+      //   departmentIcon = Iconsax.airdrop;
+      //   break;
+      // case 'Anesthesiologist':
+      //   departmentIcon = Iconsax.airplane2;
+      //   break;
+      // case 'ENT Specialist':
+      //   departmentIcon = Iconsax.archive_slash2;
+      //   break;
+      // case 'Gastroenterologist':
+      //   departmentIcon = Iconsax.arrow_left_3;
+      //   break;
+      // case 'Nephrologist':
+      //   departmentIcon = Iconsax.award;
+      //   break;
+      // case 'Urologist':
+      //   departmentIcon = Iconsax.bank5;
+      // break;
       default:
         departmentIcon = Iconsax.user;
     }
 
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: Responsive.width(context, 0.02)),
-      padding: EdgeInsets.symmetric(
-        horizontal: Responsive.width(context, 0.03),
-        vertical: Responsive.height(context, 0.01),
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
-        border: Border.all(color: Colors.amber, width: 2), // Golden color border
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(departmentIcon, color: Colors.black, size: Responsive.width(context, 0.06)),
-          const SizedBox(width: 8),
-          Text(
-            departmentName,
-            style: GoogleFonts.montserrat(
-              textStyle: TextStyle(
-                fontSize: Responsive.width(context, 0.04),
-                color: Colors.black,
-              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: Responsive.width(context, 0.07),
+          backgroundColor: Colors.white.withOpacity(0.2),
+        ),
+        Text(
+          departmentName,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.montserrat(
+            textStyle: TextStyle(
+              fontSize: Responsive.width(context, 0.03),
+              color: Colors.white,
             ),
           ),
-        ],
+        ),
+      ],
+    );
+  }
+}
+
+class DepartmentGrid extends StatelessWidget {
+  final List<String> departments;
+
+  const DepartmentGrid({
+    super.key,
+    required this.departments,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: EdgeInsets.all(Responsive.width(context, 0.02)),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4, // 4 items per line
+        crossAxisSpacing: Responsive.width(context, 0.05),
+        mainAxisSpacing: Responsive.height(context, 0.04),
       ),
+      itemCount: departments.length,
+      itemBuilder: (context, index) {
+        return DepartmentContainer(departmentName: departments[index]);
+      },
     );
   }
 }

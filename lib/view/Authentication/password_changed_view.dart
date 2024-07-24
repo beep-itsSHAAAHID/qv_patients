@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/helper/responsive.dart';
+import 'package:qv_patient/view/Authentication/get_started_view.dart';
 import 'package:qv_patient/view/Authentication/login_view.dart';
 
 class PasswordChangedView extends StatelessWidget {
@@ -11,20 +13,31 @@ class PasswordChangedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: const Column(
+      backgroundColor: Color.fromARGB(255, 252, 252, 246),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           FadeInSlide(
-              duration: .4, child: Icon(IconlyBold.login, size: 60)),
+              duration: .4,
+              child: Icon(
+                IconlyBold.login,
+                size: 60,
+                color: TColors.black,
+              )),
           SizedBox(height: 20),
           FadeInSlide(
             duration: .5,
             child: Text(
               "You're All Set!",
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: TColors.black,
+                  fontWeight: FontWeight.w700,
+                  fontSize: Responsive.fontSize(context, 0.05)),
             ),
           ),
           SizedBox(height: 15),
@@ -32,6 +45,10 @@ class PasswordChangedView extends StatelessWidget {
             duration: .6,
             child: Text(
               "Your Password has been successfully changed",
+              style: TextStyle(
+                  color: TColors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: Responsive.fontSize(context, 0.03)),
               textAlign: TextAlign.center,
             ),
           ),
@@ -53,7 +70,7 @@ class PasswordChangedView extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => const SignInView(),
+                  builder: (context) => const GetStartedView(),
                 ),
               );
             },
@@ -63,7 +80,8 @@ class PasswordChangedView extends StatelessWidget {
             ),
             child: const Text(
               "Back To Login",
-              style: TextStyle(fontWeight: FontWeight.w900),
+              style:
+                  TextStyle(fontWeight: FontWeight.w900, color: TColors.white),
             ),
           ),
         ),

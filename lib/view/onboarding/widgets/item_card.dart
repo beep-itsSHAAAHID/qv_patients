@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:qv_patient/constants/colors.dart';
 
 import '../models/item.dart';
 
@@ -36,20 +37,39 @@ class ItemCard extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: w * 0.08),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
                 height: h * 0.10,
                 // child: const Placeholder(),
-                child: Text(
-                  item.title,
-                  textScaleFactor: 2.5,
-                  maxLines: 2,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      height: 1.2,
-                      letterSpacing: 1.5,
-                      wordSpacing: 7),
+                child: Column(
+                  children: [
+                    Text(
+                      item.title,
+                      textScaleFactor: 2.5,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          color: TColors.black,
+                          fontWeight: FontWeight.w800,
+                          height: 1.2,
+                          letterSpacing: 1,
+                          fontSize: 10,
+                          wordSpacing: 7),
+                    ),
+                    Text(
+                      item.subtitle,
+                      textScaleFactor: 2.5,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          color: TColors.black,
+                          fontWeight: FontWeight.w800,
+                          height: 1.2,
+                          letterSpacing: 1,
+                          fontSize: 10,
+                          wordSpacing: 7),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: h * 0.03),

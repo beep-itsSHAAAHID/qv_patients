@@ -17,6 +17,7 @@ class DocCard extends StatelessWidget {
     required this.ratingnumber,
     required this.peoplerated,
   });
+
   final VoidCallback onTap;
   final String name, location, department;
   final double rating;
@@ -54,7 +55,7 @@ class DocCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Expanded(
+                        Flexible(
                           child: Container(
                             decoration: BoxDecoration(
                               color: TColors.light.withOpacity(.1),
@@ -62,28 +63,27 @@ class DocCard extends StatelessWidget {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.only(right: 8),
-                              child: Row(
+                              child: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
                                   const Icon(
                                     Iconsax.verify4,
+                                    color: Colors.blue,
                                     size: 15,
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      "Professional Doctor",
-                                      style: TextStyle(fontSize: 12), // Reduced font size
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    "Professional Doctor",
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    ), // Reduced font size
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                        const FavoriteIconButton(),
                       ],
                     ),
                     const SizedBox(height: 5),
@@ -103,12 +103,12 @@ class DocCard extends StatelessWidget {
                         Row(
                           children: List.generate(
                             5,
-                                (index) => Icon(
+                            (index) => Icon(
                               index < rating.floor()
                                   ? Icons.star
                                   : index < rating
-                                  ? Icons.star_half
-                                  : Icons.star_border,
+                                      ? Icons.star_half
+                                      : Icons.star_border,
                               color: Colors.amber,
                               size: 16,
                             ),
@@ -134,6 +134,7 @@ class DocCard extends StatelessWidget {
                   ],
                 ),
               ),
+              const FavoriteIconButton(), // Moved to the end of the row
             ],
           ),
         ),

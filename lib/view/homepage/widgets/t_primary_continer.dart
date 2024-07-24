@@ -15,7 +15,12 @@ class TPrimaryHeaderContainer extends StatelessWidget {
     final dark = DocHelperFunctions.isDarkMode(context);
     return TCurvedEdgesWidgets(
       child: Container(
-        color: dark ? TColors.light : TColors.dark,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [TColors.white, Colors.blue])),
+        // color: dark ? Color.fromARGB(255, 241, 248, 252) : TColors.dark,
         padding: const EdgeInsets.all(0),
         child: SizedBox(
           child: Stack(
@@ -28,8 +33,8 @@ class TPrimaryHeaderContainer extends StatelessWidget {
                   height: 400,
                   radius: 400,
                   backgroundColor: dark
-                      ? TColors.dark.withOpacity(0.1)
-                      : TColors.light.withOpacity(0.1),
+                      ? TColors.dark.withOpacity(0.3)
+                      : TColors.dark.withOpacity(0.1),
                 ),
               ),
               Positioned(
@@ -40,8 +45,8 @@ class TPrimaryHeaderContainer extends StatelessWidget {
                   height: 400,
                   radius: 400,
                   backgroundColor: dark
-                      ? TColors.dark.withOpacity(0.1)
-                      : TColors.light.withOpacity(0.1),
+                      ? TColors.dark.withOpacity(0.3)
+                      : TColors.dark.withOpacity(0.1),
                 ),
               ),
               child

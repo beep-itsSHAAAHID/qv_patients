@@ -8,6 +8,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/loading_overlay.dart';
+import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/view/Authentication/login_view.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
 import 'package:qv_patient/view/homepage/home.dart';
@@ -63,28 +64,31 @@ class _SignUpViewState extends State<SignUpView> {
       print('adding data');
 
       // Use FirebaseAuth to create a new user
-      final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       // Hide the password storage comment as we won't store the password in Firestore
       // Add additional user data to Firestore with email as the document ID
-      final CollectionReference users = FirebaseFirestore.instance.collection('users');
+      final CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
       await users.doc(email).set({
         'fullName': fullName,
         'phoneNumber': phoneNumber,
-        'email': email, // Storing the email in the document as well, for easy access
+        'email':
+            email, // Storing the email in the document as well, for easy access
         'age': age,
         'gender': gender, // Add the gender here
         // Add other fields as needed...
       });
       // Add additional user data to Firestore
 
-
       // Hide loading and navigate to Home
       LoadingScreen.instance().hide();
-      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => const SignInView()));
+      Navigator.pushReplacement(context,
+          CupertinoPageRoute(builder: (context) => const SignInView()));
       Get.snackbar(
         "Signup Successful",
         "Welcome to DocBook! Please login to continue.",
@@ -113,48 +117,52 @@ class _SignUpViewState extends State<SignUpView> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 252, 252, 246),
       appBar: AppBar(),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-          const FadeInSlide(
+          FadeInSlide(
             duration: .3,
             child: Text(
               "Join DocBook Today ",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              style: TextStyle(
+                  color: TColors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.fontSize(context, 0.06)),
             ),
           ),
           const SizedBox(height: 15),
-          const FadeInSlide(
+          FadeInSlide(
             duration: .4,
-            child: Text(
-              "Join DocBook, Your Gateway to Smart Living.",
-            ),
+            child: Text("Join DocBook, Your Gateway to Smart Living.",
+                style: TextStyle(
+                    color: TColors.black,
+                    fontSize: Responsive.fontSize(context, 0.04))),
           ),
           const SizedBox(height: 25),
           const FadeInSlide(
             duration: .5,
             child: Text(
               "Full Name",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
             ),
           ),
           const SizedBox(height: 10),
-           FadeInSlide(
+          FadeInSlide(
             duration: .5,
             child: EmailField(
               controller: _fullNameController,
               keyboardType: TextInputType.name,
               icon: Iconsax.personalcard_bold,
-              hinttext: "Full name",
+              hinttext: "Enter Your name...",
             ),
           ),
           const SizedBox(height: 20),
@@ -162,17 +170,18 @@ class _SignUpViewState extends State<SignUpView> {
             duration: .5,
             child: Text(
               "Phone number",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
             ),
           ),
           const SizedBox(height: 10),
-           FadeInSlide(
+          FadeInSlide(
             duration: .5,
             child: EmailField(
               controller: _phoneNumberController,
               keyboardType: TextInputType.number,
               icon: Iconsax.mobile_outline,
-              hinttext: "Phone number",
+              hinttext: "Enter phone number...",
             ),
           ),
           const SizedBox(height: 20),
@@ -180,17 +189,18 @@ class _SignUpViewState extends State<SignUpView> {
             duration: .5,
             child: Text(
               "Email",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
             ),
           ),
           const SizedBox(height: 10),
-           FadeInSlide(
+          FadeInSlide(
             duration: .5,
             child: EmailField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               icon: Iconsax.direct_inbox_bold,
-              hinttext: "Email",
+              hinttext: "Enter e-mail",
             ),
           ),
           const SizedBox(height: 20),
@@ -198,14 +208,15 @@ class _SignUpViewState extends State<SignUpView> {
             duration: .6,
             child: Text(
               "Password",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
             ),
           ),
           const SizedBox(height: 10),
-           FadeInSlide(
+          FadeInSlide(
             duration: .6,
             child: PasswordField(
-              controller:_passwordController ,
+              controller: _passwordController,
             ),
           ),
           const SizedBox(height: 20),
@@ -213,17 +224,18 @@ class _SignUpViewState extends State<SignUpView> {
             duration: .5,
             child: Text(
               "Age",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
             ),
           ),
           const SizedBox(height: 10),
-           FadeInSlide(
+          FadeInSlide(
             duration: .5,
             child: EmailField(
               controller: _ageController,
               keyboardType: TextInputType.number,
               icon: Icons.numbers,
-              hinttext: "Age",
+              hinttext: "Enter age...",
             ),
           ),
           const SizedBox(height: 20),
@@ -231,7 +243,8 @@ class _SignUpViewState extends State<SignUpView> {
             duration: .6,
             child: Text(
               "Select Gender",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
             ),
           ),
           const SizedBox(height: 10),
@@ -239,8 +252,12 @@ class _SignUpViewState extends State<SignUpView> {
             children: [
               Expanded(
                 child: ListTile(
-                  title: const Text("Male"),
+                  title: const Text(
+                    "Male",
+                    style: TextStyle(color: TColors.black),
+                  ),
                   leading: Radio<int>(
+                    fillColor: WidgetStatePropertyAll(TColors.primary),
                     value: 1,
                     groupValue: _selectedGender,
                     onChanged: (value) {
@@ -253,8 +270,12 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               Expanded(
                 child: ListTile(
-                  title: const Text("Female"),
+                  title: const Text(
+                    "Female",
+                    style: TextStyle(color: TColors.black),
+                  ),
                   leading: Radio<int>(
+                    fillColor: WidgetStatePropertyAll(TColors.primary),
                     value: 2,
                     groupValue: _selectedGender,
                     onChanged: (value) {
@@ -271,8 +292,12 @@ class _SignUpViewState extends State<SignUpView> {
             children: [
               Expanded(
                 child: ListTile(
-                  title: const Text("Others"),
+                  title: Text(
+                    "Others",
+                    style: TextStyle(color: TColors.black),
+                  ),
                   leading: Radio<int>(
+                    fillColor: WidgetStatePropertyAll(TColors.primary),
                     value: 3,
                     groupValue: _selectedGender,
                     onChanged: (value) {
@@ -309,7 +334,6 @@ class _SignUpViewState extends State<SignUpView> {
               ],
             ),
           ),
-
           const SizedBox(height: 20),
           FadeInSlide(
             duration: .8,
@@ -333,15 +357,15 @@ class _SignUpViewState extends State<SignUpView> {
               children: [
                 Expanded(
                     child: Divider(
-                      thickness: .3,
-                    )),
+                  thickness: .3,
+                )),
                 Text(
                   "   or   ",
                 ),
                 Expanded(
                     child: Divider(
-                      thickness: .3,
-                    )),
+                  thickness: .3,
+                )),
               ],
             ),
           ),
@@ -367,7 +391,6 @@ class _SignUpViewState extends State<SignUpView> {
             ),
           ),
           SizedBox(height: height * 0.02),
-
         ],
       ),
       // persistentFooterAlignment: AlignmentDirectional.center,
@@ -376,7 +399,7 @@ class _SignUpViewState extends State<SignUpView> {
         direction: FadeSlideDirection.btt,
         child: Container(
           padding:
-          const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
+              const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(width: .2, color: Colors.white),
@@ -384,14 +407,16 @@ class _SignUpViewState extends State<SignUpView> {
           ),
           child: FilledButton(
             onPressed: () async {
-             submitUserData();
+              submitUserData();
             },
             style: FilledButton.styleFrom(
+              backgroundColor: TColors.primary,
               fixedSize: const Size(double.infinity, 50),
             ),
             child: const Text(
               "Sign Up",
-              style: TextStyle(fontWeight: FontWeight.w900),
+              style:
+                  TextStyle(fontWeight: FontWeight.w900, color: TColors.white),
             ),
           ),
         ),
@@ -399,5 +424,3 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 }
-
-
