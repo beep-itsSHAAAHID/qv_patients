@@ -6,10 +6,12 @@ import 'package:qv_patient/helper/responsive.dart';
 
 class DepartmentContainer extends StatelessWidget {
   final String departmentName;
+  final String assetimgurl;
 
   const DepartmentContainer({
     super.key,
     required this.departmentName,
+    required this.assetimgurl,
   });
 
   @override
@@ -38,12 +40,12 @@ class DepartmentContainer extends StatelessWidget {
       case 'Ophthalmologist':
         departmentIcon = Iconsax.eye;
         break;
-      case 'Gynecologist':
-        departmentIcon = Iconsax.woman;
-        break;
-      case 'Orthopedic':
-        departmentIcon = Iconsax.add;
-        break;
+      // case 'Gynecologist':
+      //   departmentIcon = Iconsax.woman;
+      //   break;
+      // case 'Orthopedic':
+      //   departmentIcon = Iconsax.add;
+      //   break;
       // case 'Radiologist':
       //   departmentIcon = Iconsax.radio;
       //   break;
@@ -74,7 +76,11 @@ class DepartmentContainer extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: Responsive.width(context, 0.07),
-          backgroundColor: Colors.white.withOpacity(0.2),
+          backgroundColor: TColors.dark.withOpacity(0.1),
+          child: Image(
+            image: AssetImage(assetimgurl),
+            width: Responsive.width(context, 0.09),
+          ),
         ),
         Text(
           departmentName,
@@ -82,7 +88,7 @@ class DepartmentContainer extends StatelessWidget {
           style: GoogleFonts.montserrat(
             textStyle: TextStyle(
               fontSize: Responsive.width(context, 0.03),
-              color: Colors.white,
+              color: TColors.black,
             ),
           ),
         ),
@@ -93,10 +99,12 @@ class DepartmentContainer extends StatelessWidget {
 
 class DepartmentGrid extends StatelessWidget {
   final List<String> departments;
+  final List<String> assetimgurl;
 
   const DepartmentGrid({
     super.key,
     required this.departments,
+    required this.assetimgurl,
   });
 
   @override
@@ -110,7 +118,10 @@ class DepartmentGrid extends StatelessWidget {
       ),
       itemCount: departments.length,
       itemBuilder: (context, index) {
-        return DepartmentContainer(departmentName: departments[index]);
+        return DepartmentContainer(
+          departmentName: departments[index],
+          assetimgurl: assetimgurl[index],
+        );
       },
     );
   }

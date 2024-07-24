@@ -31,9 +31,13 @@ class DocCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: dark
-              ? TColors.light.withOpacity(.1)
-              : TColors.dark.withOpacity(.1),
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.blue,
+                const Color.fromARGB(255, 212, 211, 211),
+              ]),
           borderRadius: BorderRadius.circular(12),
         ),
         width: double.infinity,

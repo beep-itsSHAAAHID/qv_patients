@@ -3,21 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/image_url.dart';
-import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
+import 'package:qv_patient/helper/responsive.dart';
+import 'package:qv_patient/provider/user_provider.dart';
 import 'package:qv_patient/view/BookingPage/all_doctors_avil.dart';
 import 'package:qv_patient/view/BookingPage/bookingpage.dart';
-import 'package:qv_patient/view/homepage/AiDoctor/ai_doctor.dart';
 import 'package:qv_patient/view/homepage/widgets/custom_search_bar.dart';
+import 'package:qv_patient/view/homepage/widgets/department_container.dart';
 import 'package:qv_patient/view/homepage/widgets/docCaed.dart';
 import 'package:qv_patient/view/homepage/widgets/promo_slider.dart';
 import 'package:qv_patient/view/homepage/widgets/sectionheading.dart';
-import 'package:qv_patient/provider/user_provider.dart';
-import 'package:qv_patient/helper/responsive.dart';
-import 'package:qv_patient/view/homepage/widgets/department_container.dart';
 import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
 
 class Home extends StatefulWidget {
@@ -28,6 +27,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // Method to refresh data
+  Future<void> _refreshData() async {
+    setState(() {
+      // You can add any additional logic here if needed.
+      // Currently, it just refreshes the state to trigger a rebuild.
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> department = [
@@ -37,8 +44,8 @@ class _HomeState extends State<Home> {
       'Psychiatrists',
       'Pediatrician',
       'Dermatologist',
-      'Ophthalmology',
-      'Gynecologist',
+      // 'Ophthalmology',
+      // 'Gynecologist',
       // 'Orthopedic',
       // 'Radiologist',
       // 'Oncologist',
@@ -47,6 +54,14 @@ class _HomeState extends State<Home> {
       // 'Gastroenterologist',
       // 'Nephrologist',
       // 'Urologist',
+    ];
+    List<String> asseticonurl = [
+      'assets/icons/Neurologist.png',
+      'assets/icons/Dentist.png',
+      'assets/icons/Cardiologist.png',
+      'assets/icons/Psychiatrists.png',
+      'assets/icons/Pediatrician.png',
+      'assets/icons/Dermatologist.png'
     ];
 
     final dark = DocHelperFunctions.isDarkMode(context);
@@ -59,10 +74,11 @@ class _HomeState extends State<Home> {
     }
 
     return Scaffold(
-      backgroundColor: dark ? TColors.dark : TColors.light,
-      body: SafeArea(
+      backgroundColor: const Color.fromARGB(255, 252, 252, 246),
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
         child: Padding(
-          padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 0),
           child: SingleChildScrollView(
             child: FadeInSlide(
               direction: FadeSlideDirection.ltr,
@@ -114,17 +130,16 @@ class _HomeState extends State<Home> {
                               const Spacer(),
                               IconButton(
                                   onPressed: () {},
-                                  icon: Icon(Iconsax.notification)),
-                              SizedBox(
-                                width: 8,
-                              ),
+                                  icon: const Icon(Iconsax.notification)),
+                              const SizedBox(width: 8),
                               CircleAvatar(
-                                radius: Responsive.width(context, 0.08),
-                                backgroundImage: AssetImage(TImages.user),
+                                radius: Responsive.width(context, 0.06),
+                                backgroundImage: const AssetImage(TImages.user),
                               ),
                             ],
                           ),
                         ),
+                        SizedBox(height: Responsive.height(context, 0.02)),
                         Padding(
                           padding:
                               Responsive.symmetricPadding(context, 0.01, 0.05),
@@ -138,7 +153,7 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         ),
-                        SizedBox(height: Responsive.height(context, 0.03)),
+                        SizedBox(height: Responsive.height(context, 0.05)),
                       ],
                     ),
                   ),
@@ -154,6 +169,7 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                         TSectionHeading(
+                          textColor: TColors.black,
                           title: "Browse By Categories",
                         ),
                         GridView.builder(
@@ -161,21 +177,23 @@ class _HomeState extends State<Home> {
                               EdgeInsets.all(Responsive.width(context, 0.02)),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
+                            crossAxisCount: 3,
                             crossAxisSpacing: Responsive.width(context, 0.02),
                             mainAxisSpacing: Responsive.height(context, 0.02),
                           ),
                           itemCount: department.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return DepartmentContainer(
+                                assetimgurl: asseticonurl[index],
                                 departmentName: department[index]);
                           },
                         ),
                         SizedBox(height: Responsive.height(context, 0.01)),
                         TSectionHeading(
                           title: "Nearby Doctors",
+                          textColor: TColors.black,
                           onPressed: () {
                             Navigator.push(context,
                                 CupertinoPageRoute(builder: (context) {
@@ -188,14 +206,16 @@ class _HomeState extends State<Home> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return Center(
+                                  child: LoadingAnimationWidget.dotsTriangle(
+                                      color: TColors.primary, size: 20));
                             }
                             if (snapshot.hasError) {
-                              return Text("Error fetching data");
+                              return const Text("Error fetching data");
                             }
                             if (snapshot.hasData) {
                               return ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {
@@ -227,7 +247,7 @@ class _HomeState extends State<Home> {
                                 },
                               );
                             } else {
-                              return Text("No doctors found");
+                              return const Text("No doctors found");
                             }
                           },
                         ),

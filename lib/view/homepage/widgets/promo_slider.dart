@@ -46,8 +46,9 @@ class TPromoSlider extends ConsumerWidget {
                   margin: const EdgeInsets.only(right: 10),
                   width: 20,
                   height: 4,
-                  backgroundColor:
-                      carousalCurrentIndex == i ? TColors.light : TColors.grey,
+                  backgroundColor: carousalCurrentIndex == i
+                      ? TColors.primary
+                      : TColors.primary.withOpacity(0.2),
                 ),
             ],
           ),

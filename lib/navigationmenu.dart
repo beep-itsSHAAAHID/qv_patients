@@ -20,9 +20,9 @@ class NavigationMenu extends ConsumerWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (index) => navigationNotifier.updateIndex(index),
-        backgroundColor: darkMode ? TColors.dark : TColors.light,
-        selectedItemColor: darkMode ? TColors.white : TColors.black,
-        unselectedItemColor: darkMode ? TColors.grey : TColors.grey.withOpacity(0.6),
+        backgroundColor: TColors.light,
+        selectedItemColor: TColors.primary,
+        unselectedItemColor: TColors.black,
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
@@ -54,10 +54,11 @@ class NavigationMenu extends ConsumerWidget {
           radius: 30,
           backgroundImage: AssetImage('assets/image/chatbot.png'),
         ),
-        backgroundColor: Color(0xffFAF9F6), // No background color for transparent look
+        backgroundColor:
+            Color(0xffFAF9F6), // No background color for transparent look
         elevation: 2,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

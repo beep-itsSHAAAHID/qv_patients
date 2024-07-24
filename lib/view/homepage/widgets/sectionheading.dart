@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qv_patient/constants/colors.dart';
 
 class TSectionHeading extends StatelessWidget {
   const TSectionHeading({
@@ -27,7 +28,10 @@ class TSectionHeading extends StatelessWidget {
       if (showActionButton)
         TextButton(
           onPressed: onPressed,
-          child: Text(buttonTitle),
+          child: Text(
+            buttonTitle,
+            style: TextStyle(color: TColors.black.withOpacity(0.4)),
+          ),
         ),
     ]);
   }
