@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/helper/responsive.dart';
 
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/canceled_page.dart';
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/completed_page.dart';
@@ -11,42 +12,40 @@ class MyBookingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    return DefaultTabController(
       length: 3, // Number of tabs
       child: Scaffold(
-        backgroundColor: TColors.dark,
+        backgroundColor: const Color.fromARGB(255, 252, 252, 246),
         body: Column(
           children: [
-            SizedBox(
-              height: 40,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Spacer(),
-                  FadeInSlide(
-                    duration: 0.9,
-                    direction: FadeSlideDirection.ltr,
-                    child: Text(
-                      "My Booking",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 30,
-                          color: Colors.white),
-                    ),
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
-            SizedBox(height: 20), // Add some spacing before the TabBar
-            FadeInSlide(
-              duration: 0.9,
-              direction: FadeSlideDirection.ltr,
+            Container(
+                width: double.infinity,
+                height: 20,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [TColors.dark.withOpacity(0.2), Colors.blue]))),
+            Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [TColors.dark.withOpacity(0.2), Colors.blue])),
               child: TabBar(
-                indicatorColor: Colors.white,
-                labelColor: Colors.white,
+                dividerColor: Colors.transparent,
+                labelColor: TColors.primary,
+                indicatorColor: TColors.primary,
+                unselectedLabelColor: TColors.black,
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14.0,
+                ),
                 tabs: [
                   Tab(text: 'Upcoming'),
                   Tab(text: 'Completed'),
@@ -55,17 +54,13 @@ class MyBookingPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: FadeInSlide(
-                duration: 0.9,
-                direction: FadeSlideDirection.ltr,
-                child: TabBarView(
-                  children: [
-                    // Replace these with your actual content widgets
-                    UpcommingTab(),
-                    CompletedPage(),
-                    CanceledPage(),
-                  ],
-                ),
+              child: TabBarView(
+                children: [
+                  // Replace these with your actual content widgets
+                  UpcommingTab(),
+                  CompletedPage(),
+                  CanceledPage(),
+                ],
               ),
             ),
           ],

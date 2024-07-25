@@ -13,6 +13,7 @@ class TUserProfileTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const TCircularImage(
+        backgroundcolor: Colors.transparent,
         image: TImages.user,
         width: 50,
         height: 50,
@@ -23,12 +24,12 @@ class TUserProfileTile extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .headlineSmall!
-            .apply(color: TColors.white),
+            .apply(color: TColors.dark),
       ),
       subtitle: Text(
         'paramboorshahinsh@gmail.com',
         style:
-            Theme.of(context).textTheme.bodyMedium!.apply(color: TColors.white),
+            Theme.of(context).textTheme.bodyMedium!.apply(color: TColors.dark),
       ),
       trailing: IconButton(
         onPressed: () {},

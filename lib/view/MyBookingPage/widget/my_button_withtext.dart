@@ -16,6 +16,7 @@ class MyButtonWithText extends StatelessWidget {
       width: 150,
       child: ElevatedButton(
           style: ButtonStyle(
+              side: WidgetStatePropertyAll(BorderSide.none),
               padding: const MaterialStatePropertyAll(
                   EdgeInsets.symmetric(horizontal: 40)),
               backgroundColor: MaterialStatePropertyAll(backgroundColor)),

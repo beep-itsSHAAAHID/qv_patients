@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/helper/responsive.dart';
 
 class SettingsMenuTile extends StatelessWidget {
   const SettingsMenuTile(
@@ -23,12 +24,12 @@ class SettingsMenuTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: TextStyle(
+            color: TColors.black, fontSize: Responsive.width(context, 0.03)),
       ),
-      subtitle: Text(
-        subtitle,
-        style: Theme.of(context).textTheme.labelMedium,
-      ),
+      subtitle: Text(subtitle,
+          style: TextStyle(
+              color: TColors.black, fontSize: Responsive.width(context, 0.02))),
       trailing: trailing,
       onTap: ontap,
     );

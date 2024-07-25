@@ -20,136 +20,136 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 252, 252, 246),
       body: SingleChildScrollView(
-        child: FadeInSlide(
-          duration: 0.9,
-          direction: FadeSlideDirection.ltr,
-          child: Column(
-            children: [
-              //header
-              TPrimaryHeaderContainer(
-                child: Column(
-                  children: [
-                    TAppBar(
-                      title: Text(
-                        'Account',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium!
-                            .apply(color: TColors.white),
-                      ),
+        child: Column(
+          children: [
+            //header
+            TPrimaryHeaderContainer(
+              child: Column(
+                children: [
+                  TAppBar(
+                    title: Text(
+                      'Account',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .apply(color: TColors.dark),
                     ),
-                    const SizedBox(
-                      height: Tsizes.spcBtwitems - 5,
-                    ),
-                    //user profile card
-                    const TUserProfileTile(),
-                    const SizedBox(
-                      height: Tsizes.spcbtwsections,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcBtwitems - 5,
+                  ),
+                  //user profile card
+                  const TUserProfileTile(),
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+                ],
               ),
-              //body
-              Padding(
-                padding: const EdgeInsets.all(Tsizes.defaultspace),
-                child: Column(
-                  children: [
-                    const TSectionHeading(
-                      title: 'Account Settings',
-                      showActionButton: false,
-                    ),
-                    const SizedBox(
-                      height: Tsizes.spcBtwitems,
-                    ),
+            ),
+            //body
+            Padding(
+              padding: const EdgeInsets.all(Tsizes.defaultspace),
+              child: Column(
+                children: [
+                  const TSectionHeading(
+                    textColor: TColors.black,
+                    title: 'Account Settings',
+                    showActionButton: false,
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcBtwitems,
+                  ),
 
-                    SettingsMenuTile(
-                      icon: Iconsax.heart,
-                      title: 'Favourite',
-                      subtitle: 'Your favourite doctor here',
-                      ontap: () {},
-                    ),
-                    SettingsMenuTile(
-                      icon: Iconsax.bank,
-                      title: 'Bank Account',
-                      subtitle: 'For transactions and payment',
-                      ontap: () {},
-                    ),
-                    SettingsMenuTile(
-                      icon: Iconsax.discount_shape,
-                      title: 'My Coupons',
-                      subtitle: 'List of all the discounted coupons',
-                      ontap: () {},
-                    ),
-                    SettingsMenuTile(
-                      icon: Iconsax.notification,
-                      title: 'Notification',
-                      subtitle: 'Set any kind of notification message',
-                      ontap: () {},
-                    ),
-                    SettingsMenuTile(
-                      icon: Iconsax.security_card,
-                      title: 'Account privacy',
-                      subtitle: 'manage data usage and connected Accounts',
-                      ontap: () {},
-                    ),
-                    //app Settings
-                    const SizedBox(
-                      height: Tsizes.spcbtwsections,
-                    ),
-                    const TSectionHeading(
-                      title: 'App Settings',
-                      showActionButton: false,
-                    ),
-                    const SizedBox(
-                      height: Tsizes.spcBtwitems,
-                    ),
+                  SettingsMenuTile(
+                    icon: Iconsax.heart,
+                    title: 'Favourite',
+                    subtitle: 'Your favourite doctor here',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.bank,
+                    title: 'Bank Account',
+                    subtitle: 'For transactions and payment',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.discount_shape,
+                    title: 'My Coupons',
+                    subtitle: 'List of all the discounted coupons',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.notification,
+                    title: 'Notification',
+                    subtitle: 'Set any kind of notification message',
+                    ontap: () {},
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.security_card,
+                    title: 'Account privacy',
+                    subtitle: 'manage data usage and connected Accounts',
+                    ontap: () {},
+                  ),
+                  //app Settings
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+                  const TSectionHeading(
+                    title: 'App Settings',
+                    textColor: TColors.black,
+                    showActionButton: false,
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcBtwitems,
+                  ),
 
-                    SettingsMenuTile(
-                      icon: Iconsax.location,
-                      title: 'Set Location',
-                      subtitle: "Set recommendation based on location ",
-                      trailing: Switch(
-                        value: true,
-                        onChanged: (value) {},
+                  SettingsMenuTile(
+                    icon: Iconsax.location,
+                    title: 'Set Location',
+                    subtitle: "Set recommendation based on location ",
+                    trailing: Switch(
+                      value: true,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  SettingsMenuTile(
+                    icon: Iconsax.info_circle,
+                    title: 'Help Center',
+                    subtitle: 'Need Help Contact us!',
+                    ontap: () {},
+                  ),
+
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections,
+                  ),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        // Sign out the user
+                        await FirebaseAuth.instance.signOut();
+
+                        // Using GetX to navigate back to the SignInView (login screen)
+                        Get.offAll(() => SignInView());
+
+                        // Optionally, clear any other app-specific state here if necessary
+                      },
+                      child: const Text(
+                        "Log Out",
+                        style: TextStyle(color: TColors.black),
                       ),
                     ),
-                    SettingsMenuTile(
-                      icon: Iconsax.info_circle,
-                      title: 'Help Center',
-                      subtitle: 'Need Help Contact us!',
-                      ontap: () {},
-                    ),
-
-                    const SizedBox(
-                      height: Tsizes.spcbtwsections,
-                    ),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: () async {
-                          // Sign out the user
-                          await FirebaseAuth.instance.signOut();
-
-                          // Using GetX to navigate back to the SignInView (login screen)
-                          Get.offAll(() => SignInView());
-
-                          // Optionally, clear any other app-specific state here if necessary
-                        },
-
-                        child: const Text("Log Out"),
-                      ),
-
-                    ),
-                    const SizedBox(
-                      height: Tsizes.spcbtwsections * 2,
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+                  ),
+                  const SizedBox(
+                    height: Tsizes.spcbtwsections * 2,
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

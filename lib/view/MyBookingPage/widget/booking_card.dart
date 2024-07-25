@@ -43,9 +43,14 @@ class _BookingCardState extends State<BookingCard> {
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: TColors.light.withOpacity(0.9),
-            boxShadow: const [BoxShadow(blurRadius: 2, spreadRadius: .1)],
-            border: Border.all(color: TColors.light),
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.blue,
+                  const Color.fromARGB(255, 212, 211, 211),
+                ]),
+            // boxShadow: const [BoxShadow(blurRadius: 2, spreadRadius: .1)],
             borderRadius: BorderRadius.circular(12),
           ),
           width: MediaQuery.of(context).size.width,
@@ -58,7 +63,7 @@ class _BookingCardState extends State<BookingCard> {
                     child: Text(
                       widget.appointmentDate,
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: TColors.dark),
+                          fontWeight: FontWeight.bold, color: TColors.white),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -66,7 +71,7 @@ class _BookingCardState extends State<BookingCard> {
                     const Text(
                       'Remind Me',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: TColors.dark),
+                          fontWeight: FontWeight.bold, color: TColors.white),
                     ),
                     Switch(
                       activeColor: TColors.dark,
@@ -81,7 +86,7 @@ class _BookingCardState extends State<BookingCard> {
                 ],
               ),
               const Divider(
-                color: TColors.dark,
+                color: TColors.white,
               ),
               Row(
                 children: [
@@ -108,7 +113,7 @@ class _BookingCardState extends State<BookingCard> {
                         Text(
                           widget.doctorName,
                           style: const TextStyle(
-                              color: TColors.dark,
+                              color: TColors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
                           overflow: TextOverflow.ellipsis,
@@ -117,13 +122,13 @@ class _BookingCardState extends State<BookingCard> {
                           children: [
                             const Icon(
                               Iconsax.location,
-                              color: TColors.dark,
+                              color: TColors.white,
                               size: 15,
                             ),
                             Expanded(
                               child: Text(
                                 widget.location,
-                                style: const TextStyle(color: TColors.dark),
+                                style: const TextStyle(color: TColors.white),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -134,17 +139,17 @@ class _BookingCardState extends State<BookingCard> {
                             const Icon(
                               Iconsax.ticket,
                               size: 15,
-                              color: TColors.dark,
+                              color: TColors.white,
                             ),
                             const Text(
                               'Booking ID: ',
-                              style: TextStyle(color: TColors.dark),
+                              style: TextStyle(color: TColors.white),
                             ),
                             Expanded(
                               child: Text(
                                 widget.bookingId,
                                 style: const TextStyle(
-                                    color: TColors.dark,
+                                    color: TColors.white,
                                     fontWeight: FontWeight.bold),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -158,7 +163,7 @@ class _BookingCardState extends State<BookingCard> {
               ),
               const SizedBox(height: 10),
               const Divider(
-                color: TColors.dark,
+                color: TColors.white,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,8 +172,7 @@ class _BookingCardState extends State<BookingCard> {
                     child: MyButtonWithText(
                       text: widget.firstbuttontext,
                       textColor: TColors.dark,
-                      backgroundColor:
-                      const Color.fromARGB(255, 179, 213, 241),
+                      backgroundColor: const Color.fromARGB(255, 179, 213, 241),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -176,7 +180,7 @@ class _BookingCardState extends State<BookingCard> {
                     child: MyButtonWithText(
                       text: widget.secondbuttontext,
                       textColor: Colors.white,
-                      backgroundColor: TColors.dark,
+                      backgroundColor: TColors.primary,
                     ),
                   ),
                 ],

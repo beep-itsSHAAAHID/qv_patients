@@ -11,16 +11,16 @@ class BoxButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8),
       alignment: Alignment.center,
       child: Text(labelText,
           style: Theme.of(context)
               .textTheme
               .labelMedium!
-              .apply(color: TColors.dark)),
-      width: 150,
+              .apply(color: TColors.white)),
       height: 100,
       decoration: BoxDecoration(
-          color: TColors.light, borderRadius: BorderRadius.circular(20)),
+          color: TColors.primary, borderRadius: BorderRadius.circular(20)),
     );
   }
 }

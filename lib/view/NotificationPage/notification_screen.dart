@@ -23,7 +23,7 @@ class NotificationPage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: TColors.dark,
+        backgroundColor: const Color.fromARGB(255, 252, 252, 246),
         body: FadeInSlide(
           duration: 0.9,
           direction: FadeSlideDirection.ltr,
@@ -33,10 +33,8 @@ class NotificationPage extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              PageHeading(headingText: "Notification"),
-              SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -62,8 +60,11 @@ class NotificationPage extends StatelessWidget {
                         leading: CircleAvatar(
                           backgroundImage: AssetImage(TImages.user),
                         ),
-                        title:
-                            Text(notificationData[itemIndex]['items'][index]),
+                        title: Text(
+                          notificationData[itemIndex]['items'][index],
+                          style:
+                              TextStyle(color: TColors.black.withOpacity(0.5)),
+                        ),
                       );
                     } else {
                       // Even index: Display section header
@@ -71,7 +72,9 @@ class NotificationPage extends StatelessWidget {
                       return ListTile(
                         title: Text(
                           notificationData[sectionIndex]['date'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: TColors.black),
                         ),
                       );
                     }

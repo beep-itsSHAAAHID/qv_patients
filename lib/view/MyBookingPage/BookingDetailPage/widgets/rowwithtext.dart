@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/helper/responsive.dart';
 
 class RowWith2Text extends StatelessWidget {
   const RowWith2Text({
@@ -17,11 +19,16 @@ class RowWith2Text extends StatelessWidget {
           children: [
             Text(
               firsttext,
-              style: const TextStyle(fontSize: 20, color: Colors.grey),
+              style: TextStyle(
+                  fontSize: Responsive.width(context, 0.05),
+                  color: TColors.black.withOpacity(0.5)),
             ),
             Text(
               secondText,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: Responsive.width(context, 0.05),
+                  fontWeight: FontWeight.bold,
+                  color: TColors.black.withOpacity(0.5)),
             ),
           ],
         ));

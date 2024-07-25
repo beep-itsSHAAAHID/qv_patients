@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart'; // Your color constants
-import 'package:qv_patient/constants/image_url.dart'; // Your image URL constants
+import 'package:qv_patient/constants/image_url.dart';
+import 'package:qv_patient/helper/responsive.dart'; // Your image URL constants
 
 class ChatMessage {
   final String text;
@@ -24,7 +25,7 @@ class ChatBot extends StatefulWidget {
 }
 
 class _ChatBotState extends State<ChatBot> {
-  final apikey = "Api Key Check WhatsApp";
+  final apikey = "Whtasapp";
   TextEditingController messageController = TextEditingController();
   List<ChatMessage> chatMessages = [];
   bool isLoading = false;
@@ -100,114 +101,115 @@ class _ChatBotState extends State<ChatBot> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: TColors.dark,
-        appBar: AppBar(
-          backgroundColor: TColors.dark,
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "AI Doctor",
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              Text(
-                "Your Health Assistant",
-                style: Theme.of(context).textTheme.labelMedium,
-              )
-            ],
-          ),
-        ),
-        body: Column(
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 252, 252, 246),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 252, 252, 246),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
-                child: Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      border: Border.all(color: TColors.light.withOpacity(0.1)),
-                      color: TColors.light.withOpacity(.1)),
-                  child: ListView.builder(
-                    itemCount: chatMessages.length,
-                    itemBuilder: (ctx, index) {
-                      final message = chatMessages[index];
-                      return ChatBubble(
-                        text: message.text,
-                        isUser: message.isUser,
-                      );
-                    },
-                  ),
+            Text("AI Doctor",
+                style: TextStyle(
+                    fontSize: Responsive.fontSize(context, 0.06),
+                    color: TColors.black,
+                    fontWeight: FontWeight.bold)),
+            Text("Your Health Assistant",
+                style: TextStyle(
+                    fontSize: Responsive.fontSize(context, 0.03),
+                    color: TColors.black,
+                    fontWeight: FontWeight.normal))
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
+              child: Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(22),
+                    border: Border.all(color: TColors.primary.withOpacity(0.1)),
+                    color: TColors.dark.withOpacity(.1)),
+                child: ListView.builder(
+                  itemCount: chatMessages.length,
+                  itemBuilder: (ctx, index) {
+                    final message = chatMessages[index];
+                    return ChatBubble(
+                      text: message.text,
+                      isUser: message.isUser,
+                    );
+                  },
                 ),
               ),
             ),
-            if (isLoading)
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
-              ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: messageController,
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
+          ),
+          if (isLoading)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: messageController,
+                    decoration: InputDecoration(
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: TColors.light,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Iconsax.message,
+                          color: TColors.black,
+                        ),
+                        enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: BorderSide(
-                              color: TColors.light,
-                            ),
+                                color: TColors.light.withOpacity(.1))),
+                        fillColor: TColors.dark.withOpacity(.1),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(
+                            color: TColors.primary,
                           ),
-                          prefixIcon: Icon(
-                            Iconsax.message,
-                            color: TColors.light.withOpacity(0.3),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide(
-                                  color: TColors.light.withOpacity(.1))),
-                          fillColor: TColors.light.withOpacity(.1),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                              color: TColors.light,
-                            ),
-                          ),
-                          helperText: 'Enter your message',
-                          helperStyle: Theme.of(context).textTheme.labelMedium),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20, left: 5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: TColors.light),
-                      child: IconButton(
-                        color: TColors.light,
-                        highlightColor: TColors.dark,
-                        onPressed: () {
-                          sendMessage(messageController.text);
-                          messageController.clear();
-                        },
-                        icon: const Icon(
-                          Iconsax.send_1,
-                          color: TColors.grey,
                         ),
+                        helperText: 'Enter your message...',
+                        helperStyle:
+                            TextStyle(color: TColors.black.withOpacity(0.5))),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20, left: 5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: TColors.primary),
+                    child: IconButton(
+                      color: TColors.light,
+                      highlightColor: TColors.dark,
+                      onPressed: () {
+                        sendMessage(messageController.text);
+                        messageController.clear();
+                      },
+                      icon: const Icon(
+                        Iconsax.send_1,
+                        color: TColors.grey,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -251,8 +253,9 @@ class ChatBubble extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: isUser
-                        ? TColors.light.withOpacity(0.7)
-                        : TColors.darkGrey
+                        ? TColors.primary
+                        : TColors.primary
+                            .withOpacity(0.2)
                             .withOpacity(.3), // Adjust based on your theme
                     borderRadius: BorderRadius.circular(10),
                   ),

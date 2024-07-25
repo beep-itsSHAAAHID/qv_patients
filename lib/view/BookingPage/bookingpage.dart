@@ -9,6 +9,7 @@ import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
+import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/view/homepage/widgets/t_primary_continer.dart';
 import 'package:qv_patient/view/payment/payment_screen.dart';
 import 'package:qv_patient/provider/user_provider.dart';
@@ -45,59 +46,37 @@ class _BookingScreenState extends State<BookingScreen> {
         final userName = ref.watch(userProvider);
 
         return Scaffold(
-          backgroundColor: dark ? TColors.dark : TColors.dark.withOpacity(.9),
-          body: Column(
-            children: [
-              TPrimaryHeaderContainer(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    FadeInSlide(
-                      duration: 0.9,
-                      direction: FadeSlideDirection.ltr,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: TColors.white,
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            'Book Appointment',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineLarge!
-                                .apply(color: TColors.white),
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: Tsizes.spcbtwsections),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: FadeInSlide(
-                        duration: 0.9,
-                        direction: FadeSlideDirection.ltr,
+          backgroundColor: const Color.fromARGB(255, 252, 252, 246),
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: ListView(
+              padding: EdgeInsets.all(0),
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                TPrimaryHeaderContainer(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      const SizedBox(height: Tsizes.spcbtwsections),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Container(
                           decoration: BoxDecoration(
                             color: TColors.dark.withOpacity(.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
                             child: Row(
                               children: [
                                 const Stack(
                                   children: [
                                     CircleAvatar(
                                       radius: 40,
-                                      backgroundImage: AssetImage('assets/image/doctor.jpg'),
+                                      backgroundImage:
+                                          AssetImage('assets/image/doctor.jpg'),
                                     ),
                                     Positioned(
                                       bottom: 0,
@@ -119,14 +98,14 @@ class _BookingScreenState extends State<BookingScreen> {
                                       widget.doctor ?? '',
                                       style: const TextStyle(
                                         fontSize: 20,
-                                        color: TColors.white,
+                                        color: TColors.dark,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
                                       widget.specialty ?? '',
                                       style: const TextStyle(
-                                        color: TColors.white,
+                                        color: TColors.dark,
                                         fontSize: 15,
                                       ),
                                     ),
@@ -134,13 +113,13 @@ class _BookingScreenState extends State<BookingScreen> {
                                       children: [
                                         Icon(
                                           Iconsax.location,
-                                          color: TColors.white,
+                                          color: TColors.dark,
                                           size: 15,
                                         ),
                                         Text(
                                           "Melattur,kerala",
                                           style: TextStyle(
-                                            color: TColors.white,
+                                            color: TColors.dark,
                                             fontSize: 15,
                                           ),
                                         ),
@@ -153,119 +132,88 @@ class _BookingScreenState extends State<BookingScreen> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: Tsizes.defaultspace),
-                    const Divider(indent: 20, endIndent: 20),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: List.generate(
-                          4,
-                              (index) => FadeInSlide(
-                            duration: 0.9,
-                            direction: FadeSlideDirection.ltr,
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 70,
-                                  width: 70,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: TColors.black,
-                                  ),
-                                  margin: EdgeInsets.symmetric(horizontal: 15),
-                                  child: Icon(
-                                    icons[index],
-                                    color: TColors.light,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  titlenum[index],
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall!
-                                      .apply(color: TColors.black),
-                                ),
-                                Text(
-                                  title[index],
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .apply(color: TColors.darkGrey),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      const SizedBox(height: Tsizes.defaultspace),
+                      const Divider(indent: 20, endIndent: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              DocReview(
+                                  icons: Iconsax.people,
+                                  titlenum: '7500+',
+                                  title: 'Peoples'),
+                              DocReview(
+                                  icons: Iconsax.people,
+                                  titlenum: '10+',
+                                  title: 'Year Exp.'),
+                              DocReview(
+                                  icons: Iconsax.people,
+                                  titlenum: '4.5+',
+                                  title: 'Rating'),
+                              DocReview(
+                                  icons: Iconsax.people,
+                                  titlenum: '4956+',
+                                  title: 'Reviews'),
+                            ]),
                       ),
-                    ),
-                    const SizedBox(height: 50)
-                  ],
+                      SizedBox(height: Responsive.width(context, 0.1))
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 20),
-                        const Row(
-                          children: [
-                            FadeInSlide(
-                              duration: 0.9,
-                              direction: FadeSlideDirection.ltr,
-                              child: Text(
+                Expanded(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 20),
+                          const Row(
+                            children: [
+                              Text(
                                 'About',
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: TColors.black),
                               ),
-                            ),
-                            SizedBox(width: 10),
-                          ],
-                        ),
-                        const FadeInSlide(
-                          duration: 0.9,
-                          direction: FadeSlideDirection.ltr,
-                          child: Text(
-                            'Add information about the doctor here...',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
+                              SizedBox(width: 10),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Row(
-                          children: [
-                            FadeInSlide(
-                              duration: 0.9,
-                              direction: FadeSlideDirection.ltr,
-                              child: Text(
-                                'Appointment',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                          Text(
+                            'Add information about the doctor here...',
+                            style:
+                                TextStyle(fontSize: 14, color: TColors.black),
+                          ),
+                          const SizedBox(height: 20),
+                          const Row(
+                            children: [
+                              FadeInSlide(
+                                duration: 0.9,
+                                direction: FadeSlideDirection.ltr,
+                                child: Text(
+                                  'Appointment',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: TColors.black),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: FadeInSlide(
-                            duration: 0.9,
-                            direction: FadeSlideDirection.ltr,
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               children: List.generate(
                                 7,
-                                    (index) {
-                                  final currentDate = DateTime.now().add(Duration(days: index));
-                                  final dayAbbreviation = _getDayAbbreviation(currentDate.weekday);
+                                (index) {
+                                  final currentDate =
+                                      DateTime.now().add(Duration(days: index));
+                                  final dayAbbreviation =
+                                      _getDayAbbreviation(currentDate.weekday);
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
@@ -274,20 +222,24 @@ class _BookingScreenState extends State<BookingScreen> {
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.only(right: 20),
-                                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 25),
                                       decoration: BoxDecoration(
-                                        color: _selectedDate != null && currentDate.day == _selectedDate!.day
-                                            ? TColors.light
-                                            : TColors.light.withOpacity(0.1),
+                                        color: _selectedDate != null &&
+                                                currentDate.day ==
+                                                    _selectedDate!.day
+                                            ? TColors.primary
+                                            : TColors.primary.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             dayAbbreviation,
                                             style: const TextStyle(
-                                              color: TColors.white,
+                                              color: TColors.black,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -295,7 +247,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                           Text(
                                             '${currentDate.day}',
                                             style: const TextStyle(
-                                              color: TColors.white,
+                                              color: TColors.black,
                                             ),
                                           ),
                                         ],
@@ -306,116 +258,105 @@ class _BookingScreenState extends State<BookingScreen> {
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 30),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: FadeInSlide(
-                            duration: 0.9,
-                            direction: FadeSlideDirection.ltr,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedSession = 'Morning';
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                                    margin: const EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                      color: _selectedSession == 'Morning'
-                                          ? TColors.light
-                                          : TColors.light.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(22),
-                                      border: Border.all(color: Colors.transparent),
-                                    ),
-                                    child: const Text(
-                                      'Morning Session',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _selectedSession = 'Morning';
+                                  });
+                                },
+                                child: Text('Morning session',
+                                    style: TextStyle(color: TColors.black)),
+                                style: ButtonStyle(
+                                  padding: WidgetStatePropertyAll(
+                                      EdgeInsets.symmetric(horizontal: 20)),
+                                  side: WidgetStatePropertyAll(BorderSide.none),
+                                  backgroundColor: _selectedSession == 'Morning'
+                                      ? WidgetStatePropertyAll(TColors.primary)
+                                      : WidgetStatePropertyAll(
+                                          TColors.primary.withOpacity(0.1)),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedSession = 'Evening';
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                                    margin: const EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                      color: _selectedSession == 'Evening'
-                                          ? TColors.light
-                                          : TColors.light.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(22),
-                                      border: Border.all(color: Colors.transparent),
-                                    ),
-                                    child: const Text(
-                                      'Evening Session',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _selectedSession = 'Evening';
+                                  });
+                                },
+                                child: Text(
+                                  'Evening session',
+                                  style: TextStyle(color: TColors.black),
+                                ),
+                                style: ButtonStyle(
+                                  padding: WidgetStatePropertyAll(
+                                      EdgeInsets.symmetric(horizontal: 20)),
+                                  side: WidgetStatePropertyAll(BorderSide.none),
+                                  backgroundColor: _selectedSession == 'Evening'
+                                      ? WidgetStatePropertyAll(TColors.primary)
+                                      : WidgetStatePropertyAll(
+                                          TColors.primary.withOpacity(0.1)),
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 40),
-                        GestureDetector(
-                          onTap: () async {
-                            if (_selectedDate != null && _selectedSession != null && widget.doctor != null) {
-                              // Fetch the doctor's ID based on the name
-                              String? doctorId = await fetchDoctorIdByName(widget.doctor!);
+                          const SizedBox(height: 40),
+                          GestureDetector(
+                            onTap: () async {
+                              if (_selectedDate != null &&
+                                  _selectedSession != null &&
+                                  widget.doctor != null) {
+                                // Fetch the doctor's ID based on the name
+                                String? doctorId =
+                                    await fetchDoctorIdByName(widget.doctor!);
 
-                              if (doctorId == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Doctor not found.")));
-                                return;
-                              }
+                                if (doctorId == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text("Doctor not found.")));
+                                  return;
+                                }
 
-                              String patientName = userName ?? "Anonymous";
-                              DateTime selectedDate = _selectedDate!;
-                              String selectedSession = _selectedSession!;
-                              String dateString = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                                String patientName = userName ?? "Anonymous";
+                                DateTime selectedDate = _selectedDate!;
+                                String selectedSession = _selectedSession!;
+                                String dateString =
+                                    "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
 
-                              // Generate the next token number
-                              int nextToken = await ref.read(tokenProvider.notifier).generateTokenForBooking(doctorId, selectedSession, selectedDate);
+                                // Generate the next token number
+                                int nextToken = await ref
+                                    .read(tokenProvider.notifier)
+                                    .generateTokenForBooking(doctorId,
+                                        selectedSession, selectedDate);
 
-                              // Proceed with navigation to the PaymentScreen
-                              Navigator.of(context).push(
-                                CupertinoPageRoute(
-                                  builder: (context) => PaymentScreen(
-                                    bookingData: {
-                                      'doctorId': doctorId,
-                                      'doctorName': widget.doctor,
-                                      'patientName': patientName,
-                                      'tokenNumber': nextToken.toString(),
-                                      'session': selectedSession,
-                                      'date': dateString,
-                                    },
+                                // Proceed with navigation to the PaymentScreen
+                                Navigator.of(context).push(
+                                  CupertinoPageRoute(
+                                    builder: (context) => PaymentScreen(
+                                      bookingData: {
+                                        'doctorId': doctorId,
+                                        'doctorName': widget.doctor,
+                                        'patientName': patientName,
+                                        'tokenNumber': nextToken.toString(),
+                                        'session': selectedSession,
+                                        'date': dateString,
+                                      },
+                                    ),
                                   ),
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please select a date, session, and ensure doctor's name is provided.")));
-                            }
-                          },
-                          child: FadeInSlide(
-                            duration: 0.9,
-                            direction: FadeSlideDirection.ltr,
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        "Please select a date, session, and ensure doctor's name is provided.")));
+                              }
+                            },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 17),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 17),
                               decoration: BoxDecoration(
-                                color: TColors.light,
+                                color: TColors.primary,
                                 borderRadius: BorderRadius.circular(22),
                                 border: Border.all(color: Colors.transparent),
                               ),
@@ -424,18 +365,18 @@ class _BookingScreenState extends State<BookingScreen> {
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    color: TColors.black),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 20)
-                      ],
+                          const SizedBox(height: 20)
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -464,6 +405,55 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 }
 
+class DocReview extends StatelessWidget {
+  const DocReview({
+    super.key,
+    required this.icons,
+    required this.titlenum,
+    required this.title,
+  });
+
+  final IconData icons;
+  final String titlenum;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: Responsive.width(context, 0.2),
+          width: 70,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: TColors.black,
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 0),
+          child: Icon(
+            icons,
+            color: TColors.light,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          titlenum,
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall!
+              .apply(color: TColors.black),
+        ),
+        Text(
+          title,
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .apply(color: TColors.darkGrey),
+        ),
+      ],
+    );
+  }
+}
+
 Future<String?> fetchDoctorIdByName(String doctorName) async {
   try {
     final querySnapshot = await FirebaseFirestore.instance
@@ -473,7 +463,8 @@ Future<String?> fetchDoctorIdByName(String doctorName) async {
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
-      return querySnapshot.docs.first.id; // Assuming the first document found is the correct doctor
+      return querySnapshot.docs.first
+          .id; // Assuming the first document found is the correct doctor
     }
     return null; // No doctor found
   } catch (e) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qv_patient/constants/colors.dart';
+import 'package:qv_patient/helper/responsive.dart';
 
 class PageHeading extends StatelessWidget {
   const PageHeading({
@@ -12,10 +14,11 @@ class PageHeading extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Spacer(),
-        Text(
-          headingText,
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
+        Text(headingText,
+            style: TextStyle(
+                color: TColors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: Responsive.fontSize(context, 0.05))),
         Spacer(),
       ],
     );

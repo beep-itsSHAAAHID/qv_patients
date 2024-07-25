@@ -76,7 +76,7 @@ class DepartmentContainer extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: Responsive.width(context, 0.07),
-          backgroundColor: TColors.dark.withOpacity(0.1),
+          backgroundColor: TColors.dark.withOpacity(0.04),
           child: Image(
             image: AssetImage(assetimgurl),
             width: Responsive.width(context, 0.09),

@@ -51,11 +51,12 @@ class NavigationMenu extends ConsumerWidget {
           }));
         },
         child: CircleAvatar(
+          backgroundColor: TColors.primary,
           radius: 30,
           backgroundImage: AssetImage('assets/image/chatbot.png'),
         ),
         backgroundColor:
-            Color(0xffFAF9F6), // No background color for transparent look
+            TColors.primary, // No background color for transparent look
         elevation: 2,
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

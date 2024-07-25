@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/size.dart';
 import 'package:qv_patient/helper/doc_helper_function.dart';
+import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/view/homepage/widgets/fav_icon_button.dart';
 import 'package:qv_patient/view/homepage/widgets/t_rounded_image.dart';
 
@@ -114,7 +115,7 @@ class DocCard extends StatelessWidget {
                                       ? Icons.star_half
                                       : Icons.star_border,
                               color: Colors.amber,
-                              size: 16,
+                              size: Responsive.width(context, 0.04),
                             ),
                           ),
                         ),
@@ -123,14 +124,22 @@ class DocCard extends StatelessWidget {
                           ratingnumber.toString(),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const Text("  |  "),
+                        Text(
+                          "  |  ",
+                          style: TextStyle(
+                              fontSize: Responsive.width(context, 0.03)),
+                        ),
                         Text(
                           peoplerated.toString(),
+                          style: TextStyle(
+                              fontSize: Responsive.width(context, 0.03)),
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(width: 2),
-                        const Text(
+                        Text(
                           "Reviews",
+                          style: TextStyle(
+                              fontSize: Responsive.width(context, 0.03)),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
