@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart'; // Ensure you have a package for icons
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/helper/responsive.dart';
@@ -85,11 +84,9 @@ class DepartmentContainer extends StatelessWidget {
         Text(
           departmentName,
           textAlign: TextAlign.center,
-          style: GoogleFonts.montserrat(
-            textStyle: TextStyle(
-              fontSize: Responsive.width(context, 0.03),
-              color: TColors.black,
-            ),
+          style: TextStyle(
+            fontSize: Responsive.width(context, 0.03),
+            color: TColors.black,
           ),
         ),
       ],

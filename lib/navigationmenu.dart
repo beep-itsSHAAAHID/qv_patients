@@ -34,8 +34,8 @@ class NavigationMenu extends ConsumerWidget {
             label: 'My Bookings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Iconsax.notification),
-            label: 'Notifications',
+            icon: Icon(Iconsax.document),
+            label: 'Reports',
           ),
           BottomNavigationBarItem(
             icon: Icon(Iconsax.user),

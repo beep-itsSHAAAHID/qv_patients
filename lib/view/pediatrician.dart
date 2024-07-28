@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 import '../model/globalvariable.dart';
 
@@ -20,11 +20,11 @@ class _PediatricianState extends State<Pediatrician> {
         backgroundColor: const Color(0XFF4682B4),
         title: Text(
           "Pediatricians",
-          style: GoogleFonts.poppins(
-            fontSize: height * 0.030,
-            fontWeight: FontWeight.w600,
-            color: const Color(0XFFFFFFFF),
-          ),
+          // style: GoogleFonts.poppins(
+          //   fontSize: height * 0.030,
+          //   fontWeight: FontWeight.w600,
+          //   color: const Color(0XFFFFFFFF),
+          // ),
         ),centerTitle: true,
       ),
     );

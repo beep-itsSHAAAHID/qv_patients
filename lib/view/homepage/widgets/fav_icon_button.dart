@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qv_patient/constants/colors.dart';
 
 class FavoriteIconButton extends StatefulWidget {
   const FavoriteIconButton({super.key});
@@ -14,9 +15,9 @@ class _FavoriteIconButtonState extends State<FavoriteIconButton> {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
-        size: 15,
+        size: 25,
         _isFavorite ? Icons.favorite : Icons.favorite_border,
-        color: _isFavorite ? Colors.red : null,
+        color: _isFavorite ? Colors.red : TColors.black.withOpacity(0.5),
       ),
       onPressed: () {
         setState(() {

@@ -12,58 +12,52 @@ class MyBookingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3, // Number of tabs
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 252, 252, 246),
-        body: Column(
-          children: [
-            Container(
-                width: double.infinity,
-                height: 20,
+    return SafeArea(
+      child: DefaultTabController(
+        length: 3, // Number of tabs
+        child: Scaffold(
+          backgroundColor: const Color.fromARGB(255, 252, 252, 246),
+          body: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [TColors.dark.withOpacity(0.2), Colors.blue]))),
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [TColors.dark.withOpacity(0.2), Colors.blue])),
-              child: TabBar(
-                dividerColor: Colors.transparent,
-                labelColor: TColors.primary,
-                indicatorColor: TColors.primary,
-                unselectedLabelColor: TColors.black,
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
+                        colors: [TColors.dark.withOpacity(0.2), Colors.blue])),
+                child: TabBar(
+                  dividerColor: Colors.transparent,
+                  labelColor: TColors.primary,
+                  indicatorColor: TColors.primary,
+                  unselectedLabelColor: TColors.black,
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                  unselectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 14.0,
+                  ),
+                  tabs: [
+                    Tab(text: 'Upcoming'),
+                    Tab(text: 'Completed'),
+                    Tab(text: 'Cancelled'),
+                  ],
                 ),
-                unselectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14.0,
+              ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // Replace these with your actual content widgets
+                    UpcommingTab(),
+                    CompletedPage(),
+                    CanceledPage(),
+                  ],
                 ),
-                tabs: [
-                  Tab(text: 'Upcoming'),
-                  Tab(text: 'Completed'),
-                  Tab(text: 'Cancelled'),
-                ],
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  // Replace these with your actual content widgets
-                  UpcommingTab(),
-                  CompletedPage(),
-                  CanceledPage(),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
