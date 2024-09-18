@@ -2,33 +2,41 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/constants/loading_overlay.dart';
 import 'package:qv_patient/helper/responsive.dart';
+import 'package:qv_patient/controllers/sign_up_controller.dart';
 import 'package:qv_patient/view/Authentication/login_view.dart';
+import 'package:qv_patient/models/patient_model.dart';
+import 'package:qv_patient/view/Authentication/widgets/build_divider.dart';
+import 'package:qv_patient/view/Authentication/widgets/build_sign_in_text.dart';
+import 'package:qv_patient/view/Authentication/widgets/buildsignupbutton.dart';
+import 'package:qv_patient/view/Authentication/widgets/buildsocialbutton.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
-import 'package:qv_patient/view/homepage/home.dart';
 
-class SignUpView extends StatefulWidget {
+class SignUpView extends ConsumerStatefulWidget {
   const SignUpView({super.key});
 
   @override
-  State<SignUpView> createState() => _SignUpViewState();
+  ConsumerState<SignUpView> createState() => _SignUpViewState();
 }
 
-class _SignUpViewState extends State<SignUpView> {
+class _SignUpViewState extends ConsumerState<SignUpView> {
   ValueNotifier<bool> termsCheck = ValueNotifier(false);
   int? _selectedGender;
-
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? _verificationId;
+  bool _isOtpSent = false;
+  bool _isVerifying = false;
 
   @override
   void dispose() {
@@ -37,19 +45,36 @@ class _SignUpViewState extends State<SignUpView> {
     _emailController.dispose();
     _passwordController.dispose();
     _ageController.dispose();
-    // Dispose other controllers...
+    _otpController.dispose();
     super.dispose();
   }
 
-  Future<void> submitUserData() async {
+  Future<String> generateNewPatientId() async {
+    DocumentReference idCounterRef = FirebaseFirestore.instance
+        .collection('id_counters')
+        .doc('patientcounter');
+
+    DocumentSnapshot snapshot = await idCounterRef.get();
+    String lastPatientId = snapshot.get('lastPatientId') as String;
+
+    int currentIdNumber = int.parse(lastPatientId.substring(2));
+    int newIdNumber = currentIdNumber + 1;
+
+    String newPatientId = 'PI${newIdNumber.toString().padLeft(3, '0')}';
+
+    await idCounterRef.update({'lastPatientId': newPatientId});
+
+    return newPatientId;
+  }
+
+  Future<void> submitUserData(BuildContext context, WidgetRef ref) async {
     final String fullName = _fullNameController.text;
     final String phoneNumber = _phoneNumberController.text;
     final String email = _emailController.text;
     final String password = _passwordController.text;
     final String age = _ageController.text;
 
-    // Map the selected gender to a string
-    String gender = 'Not Specified'; // Default or fallback value
+    String gender = 'Not Specified';
     if (_selectedGender == 1) {
       gender = 'Male';
     } else if (_selectedGender == 2) {
@@ -61,60 +86,271 @@ class _SignUpViewState extends State<SignUpView> {
     try {
       LoadingScreen.instance().show(context: context, text: "Sign Up...");
       await Future.delayed(const Duration(seconds: 1));
-      print('adding data');
 
-      // Use FirebaseAuth to create a new user
       final UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Hide the password storage comment as we won't store the password in Firestore
-      // Add additional user data to Firestore with email as the document ID
-      final CollectionReference users =
-          FirebaseFirestore.instance.collection('users');
-      await users.doc(email).set({
-        'fullName': fullName,
-        'phoneNumber': phoneNumber,
-        'email':
-            email, // Storing the email in the document as well, for easy access
-        'age': age,
-        'gender': gender, // Add the gender here
-        // Add other fields as needed...
-      });
-      // Add additional user data to Firestore
+      final String patientId = await generateNewPatientId();
 
-      // Hide loading and navigate to Home
+      final PatientModel patient = PatientModel(
+        patientId: patientId,
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        email: email,
+        age: age,
+        gender: gender,
+        profilePicUrl: 'https://example.com/default-profile-pic.png',
+        reference:
+            FirebaseFirestore.instance.collection('patients').doc(patientId),
+      );
+
+      await ref.read(patientControllerProvider).addPatient(context, patient);
+
       LoadingScreen.instance().hide();
       Navigator.pushReplacement(context,
           CupertinoPageRoute(builder: (context) => const SignInView()));
-      Get.snackbar(
-        "Signup Successful",
-        "Welcome to DocBook! Please login to continue.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        borderRadius: 20,
-        margin: EdgeInsets.all(15),
-        duration: Duration(seconds: 4),
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Signup Successful! Please login to continue."),
+          backgroundColor: Colors.green,
+        ),
       );
-      print('data added succesfully');
     } catch (e) {
-      print('Firebase error: $e');
       LoadingScreen.instance().hide();
-      // Display an error message using Get.snackbar
-      Get.snackbar(
-        "Signup Failed",
-        "An error occurred during signup: $e", // You might want to customize the error message
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        borderRadius: 20,
-        margin: EdgeInsets.all(15),
-        duration: Duration(seconds: 4),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Signup Failed: $e"),
+          backgroundColor: Colors.red,
+        ),
       );
     }
+  }
+
+  Future<void> _sendOtp() async {
+    final phoneNumber = _phoneNumberController.text.trim();
+    setState(() {
+      _isVerifying = true;
+    });
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await _auth.signInWithCredential(credential);
+          setState(() {
+            _isVerifying = false;
+          });
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Verification failed: ${e.message}')),
+          );
+          setState(() {
+            _isVerifying = false;
+          });
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          setState(() {
+            _verificationId = verificationId;
+            _isOtpSent = true;
+            _isVerifying = false;
+          });
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          setState(() {
+            _verificationId = verificationId;
+            _isVerifying = false;
+          });
+        },
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+      setState(() {
+        _isVerifying = false;
+      });
+    }
+  }
+
+  Future<void> _verifyOtp() async {
+    final otp = _otpController.text.trim();
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: _verificationId!,
+        smsCode: otp,
+      );
+      await _auth.signInWithCredential(credential);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Phone number verified!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
+  FadeInSlide buildTextFieldWithButton({
+    required String labelText,
+    required TextEditingController controller,
+    required TextInputType keyboardType,
+    required IconData icon,
+    Widget? suffixIcon,
+  }) {
+    return FadeInSlide(
+      duration: .5,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            labelText,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: TColors.black,
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            style: const TextStyle(color: TColors.black),
+            controller: controller,
+            keyboardType: keyboardType,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: const Color.fromARGB(255, 252, 252, 246),
+              hintText: "Enter your $labelText...",
+              prefixIcon: Icon(icon),
+              suffixIcon: suffixIcon,
+              prefixIconColor: Colors.black87,
+              hintStyle: TextStyle(color: TColors.black.withOpacity(0.4)),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(color: TColors.black),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(color: TColors.black),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(color: TColors.black),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Column buildPhoneNumberField() {
+    return Column(
+      children: [
+        buildTextFieldWithButton(
+          labelText: "Phone Number",
+          controller: _phoneNumberController,
+          keyboardType: TextInputType.number,
+          icon: Icons.phone,
+          suffixIcon: IconButton(
+            onPressed: () async {
+              if (!_isOtpSent && !_isVerifying) {
+                await _sendOtp();
+              }
+            },
+            icon: Icon(Icons.check, color: TColors.black),
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        if (_isOtpSent)
+          Column(
+            children: [
+              buildTextFieldWithButton(
+                labelText: "OTP",
+                controller: _otpController,
+                keyboardType: TextInputType.number,
+                icon: Icons.lock,
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: _verifyOtp,
+                child: const Text('Verify OTP'),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Row buildGenderSelection() {
+    return Row(
+      children: [
+        Expanded(
+          child: ListTile(
+            title: const Text(
+              "Male",
+              style: TextStyle(color: TColors.black),
+            ),
+            leading: Radio<int>(
+              fillColor: const MaterialStatePropertyAll(TColors.primary),
+              value: 1,
+              groupValue: _selectedGender,
+              onChanged: (value) {
+                setState(() {
+                  _selectedGender = value;
+                });
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListTile(
+            title: const Text(
+              "Female",
+              style: TextStyle(color: TColors.black),
+            ),
+            leading: Radio<int>(
+              fillColor: const MaterialStatePropertyAll(TColors.primary),
+              value: 2,
+              groupValue: _selectedGender,
+              onChanged: (value) {
+                setState(() {
+                  _selectedGender = value;
+                });
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  FadeInSlide buildTermsCheckBox() {
+    return FadeInSlide(
+      duration: .7,
+      child: Row(
+        children: [
+          ValueListenableBuilder(
+            valueListenable: termsCheck,
+            builder: (context, value, child) {
+              return CupertinoCheckbox(
+                inactiveColor: Colors.black87,
+                value: value,
+                onChanged: (_) {
+                  termsCheck.value = !termsCheck.value;
+                },
+              );
+            },
+          ),
+          RichTwoPartsText(
+            onTap: () {},
+            text1: "I agree to DocBook ",
+            text2: "Terms and Conditions.",
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -123,7 +359,7 @@ class _SignUpViewState extends State<SignUpView> {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 252, 252, 246),
+      backgroundColor: const Color.fromARGB(255, 252, 252, 246),
       appBar: AppBar(),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -133,293 +369,78 @@ class _SignUpViewState extends State<SignUpView> {
             child: Text(
               "Join DocBook Today ",
               style: TextStyle(
-                  color: TColors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Responsive.fontSize(context, 0.06)),
+                color: TColors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: Responsive.fontSize(context, 0.06),
+              ),
             ),
           ),
           const SizedBox(height: 15),
           FadeInSlide(
             duration: .4,
-            child: Text("Join DocBook, Your Gateway to Smart Living.",
-                style: TextStyle(
-                    color: TColors.black,
-                    fontSize: Responsive.fontSize(context, 0.04))),
+            child: Text(
+              "Join DocBook, Your Gateway to Smart Living.",
+              style: TextStyle(
+                color: TColors.black,
+                fontSize: Responsive.fontSize(context, 0.04),
+              ),
+            ),
           ),
           const SizedBox(height: 25),
-          const FadeInSlide(
-            duration: .5,
-            child: Text(
-              "Full Name",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
-            ),
-          ),
-          const SizedBox(height: 10),
-          FadeInSlide(
-            duration: .5,
-            child: EmailField(
-              controller: _fullNameController,
-              keyboardType: TextInputType.name,
-              icon: Iconsax.personalcard_bold,
-              hinttext: "Enter Your name...",
-            ),
+          buildTextFieldWithButton(
+            labelText: "Full Name",
+            controller: _fullNameController,
+            keyboardType: TextInputType.name,
+            icon: Iconsax.personalcard_bold,
           ),
           const SizedBox(height: 20),
-          const FadeInSlide(
-            duration: .5,
-            child: Text(
-              "Phone number",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
-            ),
-          ),
-          const SizedBox(height: 10),
-          FadeInSlide(
-            duration: .5,
-            child: EmailField(
-              controller: _phoneNumberController,
-              keyboardType: TextInputType.number,
-              icon: Iconsax.mobile_outline,
-              hinttext: "Enter phone number...",
-            ),
-          ),
+          buildPhoneNumberField(),
           const SizedBox(height: 20),
-          const FadeInSlide(
-            duration: .5,
-            child: Text(
-              "Email",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
-            ),
-          ),
-          const SizedBox(height: 10),
-          FadeInSlide(
-            duration: .5,
-            child: EmailField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              icon: Iconsax.direct_inbox_bold,
-              hinttext: "Enter e-mail",
-            ),
+          buildTextFieldWithButton(
+            labelText: "Email",
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+            icon: Iconsax.direct_inbox_bold,
           ),
           const SizedBox(height: 20),
           const FadeInSlide(
             duration: .6,
             child: Text(
               "Password",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: TColors.black,
+              ),
             ),
           ),
           const SizedBox(height: 10),
           FadeInSlide(
             duration: .6,
-            child: PasswordField(
-              controller: _passwordController,
-            ),
+            child: PasswordField(controller: _passwordController),
           ),
           const SizedBox(height: 20),
-          const FadeInSlide(
-            duration: .5,
-            child: Text(
-              "Age",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
-            ),
-          ),
-          const SizedBox(height: 10),
-          FadeInSlide(
-            duration: .5,
-            child: EmailField(
-              controller: _ageController,
-              keyboardType: TextInputType.number,
-              icon: Icons.numbers,
-              hinttext: "Enter age...",
-            ),
+          buildTextFieldWithButton(
+            labelText: "Age",
+            controller: _ageController,
+            keyboardType: TextInputType.number,
+            icon: Icons.numbers,
           ),
           const SizedBox(height: 20),
-          const FadeInSlide(
-            duration: .6,
-            child: Text(
-              "Select Gender",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: TColors.black),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: ListTile(
-                  title: const Text(
-                    "Male",
-                    style: TextStyle(color: TColors.black),
-                  ),
-                  leading: Radio<int>(
-                    fillColor: WidgetStatePropertyAll(TColors.primary),
-                    value: 1,
-                    groupValue: _selectedGender,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ListTile(
-                  title: const Text(
-                    "Female",
-                    style: TextStyle(color: TColors.black),
-                  ),
-                  leading: Radio<int>(
-                    fillColor: WidgetStatePropertyAll(TColors.primary),
-                    value: 2,
-                    groupValue: _selectedGender,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: ListTile(
-                  title: Text(
-                    "Others",
-                    style: TextStyle(color: TColors.black),
-                  ),
-                  leading: Radio<int>(
-                    fillColor: WidgetStatePropertyAll(TColors.primary),
-                    value: 3,
-                    groupValue: _selectedGender,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-          FadeInSlide(
-            duration: .7,
-            child: Row(
-              children: [
-                ValueListenableBuilder(
-                  valueListenable: termsCheck,
-                  builder: (context, value, child) {
-                    return CupertinoCheckbox(
-                      inactiveColor: isDark ? Colors.white : Colors.black87,
-                      value: value,
-                      onChanged: (_) {
-                        termsCheck.value = !termsCheck.value;
-                      },
-                    );
-                  },
-                ),
-                RichTwoPartsText(
-                  text1: "I agree to DocBook ",
-                  text2: "Terms and Conditions.",
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ),
+          buildGenderSelection(),
+          buildTermsCheckBox(),
           const SizedBox(height: 20),
-          FadeInSlide(
-            duration: .8,
-            child: RichTwoPartsText(
-              text1: "Already have an account? ",
-              text2: "Sign In",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const SignInView(),
-                  ),
-                );
-              },
-            ),
-          ),
+          buildSignInText(context),
           const SizedBox(height: 30),
-          const FadeInSlide(
-            duration: .9,
-            child: Row(
-              children: [
-                Expanded(
-                    child: Divider(
-                  thickness: .3,
-                )),
-                Text(
-                  "   or   ",
-                ),
-                Expanded(
-                    child: Divider(
-                  thickness: .3,
-                )),
-              ],
-            ),
-          ),
+          buildOrDivider(),
           const SizedBox(height: 20),
-          FadeInSlide(
-            duration: 1.0,
-            child: LoginButton(
-              icon: Brand(Brands.google, size: 25),
-              text: "Continue with Google",
-              onPressed: () {},
-            ),
-          ),
-          SizedBox(height: height * 0.02),
-          FadeInSlide(
-            duration: 1.1,
-            child: LoginButton(
-              icon: Icon(
-                Icons.apple,
-                color: isDark ? Colors.white : Colors.black,
-              ),
-              text: "Continue with Apple",
-              onPressed: () {},
-            ),
-          ),
+          buildSocialButtons(isDark),
           SizedBox(height: height * 0.02),
         ],
       ),
-      // persistentFooterAlignment: AlignmentDirectional.center,
-      bottomNavigationBar: FadeInSlide(
-        duration: 1,
-        direction: FadeSlideDirection.btt,
-        child: Container(
-          padding:
-              const EdgeInsets.only(bottom: 40, left: 20, right: 20, top: 30),
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(width: .2, color: Colors.white),
-            ),
-          ),
-          child: FilledButton(
-            onPressed: () async {
-              submitUserData();
-            },
-            style: FilledButton.styleFrom(
-              backgroundColor: TColors.primary,
-              fixedSize: const Size(double.infinity, 50),
-            ),
-            child: const Text(
-              "Sign Up",
-              style:
-                  TextStyle(fontWeight: FontWeight.w900, color: TColors.white),
-            ),
-          ),
-        ),
+      bottomNavigationBar: buildSignUpButton(
+        () async {
+          await submitUserData(context, ref);
+        },
       ),
     );
   }

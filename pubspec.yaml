@@ -1,5 +1,5 @@
 name: qv_patient
-description: "A new Flutter project."
+description: "Doctor booking app"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -28,25 +28,30 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  agora_rtc_engine: ^6.3.2
+  audioplayers: ^6.0.0
   carousel_slider: ^4.2.1
   cloud_firestore: ^4.15.5
   cloud_firestore_web: ^3.10.5
   cupertino_icons: ^1.0.6
+  encrypt: ^5.0.0
   file_picker: ^5.0.0
   firebase_auth: ^4.17.5
   firebase_core: ^2.24.2
   firebase_messaging: ^14.9.1
   firebase_storage: ^11.6.6
+  vibration: ^1.7.5
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.0
   flutter_riverpod: ^2.5.1
+  flutter_sound: ^9.0.6
   flutter_spinkit: ^5.2.0
   flutter_svg: ^2.0.9
   get: ^4.6.5
   get_storage: ^2.1.1
   go_router: ^13.2.0
-  # google_fonts: ^6.1.0
+  google_sign_in: ^6.2.1
   iconly: ^1.0.1
   icons_plus: ^5.0.0
   iconsax: ^0.0.8
@@ -54,17 +59,25 @@ dependencies:
   intl: ^0.19.0
   loading_animation_widget: ^1.2.1
   lottie: ^2.7.0
+  permission_handler: ^8.3.0
   pinput: ^4.0.0
   qr_flutter: ^4.1.0
+  razorpay_flutter: ^1.3.7
   simple_gradient_text: ^1.3.0
   slidable_button: ^3.0.0+1
   smooth_page_indicator: ^1.1.0
   url_launcher: ^6.2.4
-  encrypt: ^5.0.0
-  flutter_sound: ^9.0.6
-  permission_handler: ^8.3.0
   wave: ^0.2.0
-  # audioplayers: ^0.20.1
+  shared_preferences: ^2.0.6
+  local_auth: ^2.3.0 # Updated to a compatible version with intl
+  flutter_native_splash: ^2.4.1
+  google_nav_bar: ^5.0.6
+  shimmer: ^2.0.0
+  screenshot: ^3.0.0
+  gallery_saver: ^2.3.0
+  path_provider: ^2.0.11
+
+
 
 dev_dependencies:
   flutter_lints: ^3.0.0
@@ -94,10 +107,14 @@ flutter:
     - assets/image/products/
     - assets/payment_methods/
     - assets/
+    - assets/qv_logo.png
     - assets/fonts/
     - assets/lotties/
     - assets/text/
     - assets/icons/
+    - assets/image/pay_money.svg
+    - assets/lotties/transation_waiting.json
+    - assets/sounds/success.mp3
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
@@ -120,3 +137,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_native_splash:
+  color: "#42a5f5"  # Background color of splash screen (replace with your desired color)
+  image: assets/qv_logo.png  # Your splash image path (add your image under assets folder)
+  android: true
+  ios: true
+  web: true
+  fullscreen: true

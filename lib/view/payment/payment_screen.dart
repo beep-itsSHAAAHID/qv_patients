@@ -1,407 +1,264 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:qv_patient/constants/colors.dart';
-import 'package:qv_patient/constants/image_url.dart';
-import 'package:qv_patient/constants/size.dart';
-import 'package:qv_patient/helper/doc_helper_function.dart';
-import 'package:qv_patient/model/qrGenerator.dart';
-import 'package:qv_patient/navigationmenu.dart';
+import 'package:qv_patient/models/booking_model.dart';
+import 'package:qv_patient/view/BookingConfirmationScreen/booking_confirmation_screen.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final Map<String, dynamic> bookingData;
-  const PaymentScreen({super.key, required this.bookingData});
+  final Booking booking;
+  final double totalAmount;
+  final double advanceAmount; // Add advance amount
+
+  const PaymentScreen({
+    Key? key,
+    required this.booking,
+    required this.totalAmount,
+    required this.advanceAmount,
+    required String qrData, // Accept advance amount
+  }) : super(key: key);
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  late final String doctorName;
-  late final String patientName;
-  late final String tokenNumber;
-  late final String session;
-  late final String date;
-
-  int _selectedPaymentMethod =
-      0; // 0 for Google Pay, 1 for PayPal, 2 for Visa, 3 for Master Card
-  final _cardNumberController = TextEditingController();
-  final _expirationDateController = TextEditingController();
-  final _cvvController = TextEditingController();
-  final _pinController = TextEditingController();
-  bool _isProcessingPayment = false;
+  late Razorpay _razorpay;
+  double selectedAmount = 0.0; // To track the selected amount for payment
 
   @override
   void initState() {
     super.initState();
-    doctorName = widget.bookingData['doctorName'] ?? '';
-    patientName = widget.bookingData['patientName'] ?? '';
-    tokenNumber = widget.bookingData['tokenNumber'] ?? '';
-    session = widget.bookingData['session'] ?? '';
-    date = widget.bookingData['date'] ?? '';
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
-  void dispose() {
-    _cardNumberController.dispose();
-    _expirationDateController.dispose();
-    _cvvController.dispose();
-    _pinController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _processPayment() async {
-    setState(() {
-      _isProcessingPayment = true;
-    });
-
-    try {
-      // Here, you would integrate with the payment gateway or service
-      // to process the payment based on the selected payment method
-      // and the entered payment details (if applicable).
-
-      // Simulating a successful payment for demonstration purposes
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Payment successful
-      _showBookingConfirmation();
-    } catch (e) {
-      // Handle payment error
-      _showErrorMessage(e.toString());
+  void _payWithRazorpay() {
+    if (selectedAmount == 0.0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select an amount to pay.")),
+      );
+      return;
     }
 
-    setState(() {
-      _isProcessingPayment = false;
-    });
+    var options = {
+      'key': 'whatsApp shahid', // Razorpay key
+      'amount': (selectedAmount * 100).toInt(), // Amount in paise
+      'name': widget.booking.doctorName,
+      'description': 'Consultation Fee',
+      'prefill': {
+        'contact': widget.booking.patientPhoneNumber,
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
-  void _showSuccessMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Payment successful'),
-        duration: Duration(seconds: 2),
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    String transactionId = response.paymentId ?? "Unknown Transaction ID";
+
+    // Generate booking ID and create a new booking
+    String bookingId = await _generateBookingId();
+    await _createBookingDocument(bookingId, transactionId);
+
+    // Generate the QR data
+    String qrData = '''
+    Doctor ID: ${widget.booking.doctorId}
+    Doctor Name: ${widget.booking.doctorName}
+    Patient Name: ${widget.booking.patientName}
+    Booking ID: $bookingId
+    Token Number: ${widget.booking.appointmentDetails?['tokenNumber']}
+    Date: ${widget.booking.bookingDate != null ? DateFormat('yyyy-MM-dd').format(widget.booking.bookingDate!) : 'Date not available'}
+    Time: ${widget.booking.appointmentDetails?['timeSlot']}
+    Transaction ID: $transactionId
+    Consultation Fee: ₹${selectedAmount.toStringAsFixed(2)}
+  ''';
+
+    // Navigate to the booking confirmation screen and pass the QR data
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            BookingConfirmedScreen(qrData: qrData), // Pass QR data
       ),
     );
   }
 
-  void _showErrorMessage(String errorMessage) {
+  Future<String> _generateBookingId() async {
+    DocumentReference idCounterRef = FirebaseFirestore.instance
+        .collection('id_counters')
+        .doc('booking_counter');
+    DocumentSnapshot snapshot = await idCounterRef.get();
+
+    if (snapshot.exists) {
+      int counter = snapshot['counter'] ?? 0;
+      String newBookingId =
+          "QVB${(counter + 1).toString().padLeft(3, '0')}"; // Generate booking ID
+
+      // Increment the counter
+      await idCounterRef.update({'counter': counter + 1});
+
+      return newBookingId;
+    } else {
+      throw Exception("Booking counter not found!");
+    }
+  }
+
+  Future<void> _createBookingDocument(
+      String bookingId, String transactionId) async {
+    Map<String, dynamic> appointmentDetails = {
+      'address': 'test',
+      'phone': '1234567890',
+      'timeSlot': 'Morning',
+    };
+
+    Map<String, dynamic> bookingData = {
+      'appointmentDetails': appointmentDetails,
+      'bookingDate': Timestamp.now(),
+      'bookingId': bookingId,
+      'bookingSource': 'online',
+      'bookingType': 'fromOnline',
+      'clinicId': widget.booking.clinicId,
+      'doctorId': widget.booking.doctorId,
+
+      'doctorName': widget.booking.doctorName,
+      'patientId': widget.booking.patientId,
+      'patientName': widget.booking.patientName,
+      'paymentAmount': selectedAmount,
+      'paymentStatus': 'confirmed',
+      'status': 'upcoming',
+      'tokenNumber':
+          widget.booking.appointmentDetails?["tokenNumber"]?.toString() ?? "",
+      'transactionId': transactionId, // Store the transaction ID
+    };
+
+    await FirebaseFirestore.instance
+        .collection('bookings') // Ensure the collection name matches
+        .doc(bookingId) // Use the bookingId as the document ID
+        .set(bookingData);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorMessage),
-        duration: const Duration(seconds: 2),
-      ),
+      const SnackBar(content: Text("Payment Failed! Please try again.")),
+    );
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("External Wallet selected.")),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    final dark = DocHelperFunctions.isDarkMode(context);
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Center(
-          child: Text(
-            'Select Payment Method',
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          // Container to show the amount
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: TColors.light.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total Amount:',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '\$300.00', // Replace with your actual amount
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 7,
-                      spreadRadius: 3,
-                      color: TColors.light.withOpacity(0.1),
-                    )
-                  ],
-                  color: TColors.light.withOpacity(0.1),
-                  border: Border.all(
-                    color: TColors.light.withOpacity(0.1),
-                  ),
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        RadioListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Google Pay',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .apply(color: TColors.grey),
-                              ),
-                              Image.asset(TImages.googlePay, height: 20),
-                            ],
-                          ),
-                          value: 0, // Value for Google Pay
-                          groupValue: _selectedPaymentMethod,
-                          activeColor: Colors.green,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPaymentMethod = value as int;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          height: Tsizes.spcBtwitems,
-                        ),
-                        RadioListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Pay Pal',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .apply(color: TColors.grey),
-                              ),
-                              Image.asset(TImages.paypal, height: 20),
-                            ],
-                          ),
-                          value: 1, // Value for PayPal
-                          activeColor: Colors.green,
-                          groupValue: _selectedPaymentMethod,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPaymentMethod = value as int;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          height: Tsizes.spcBtwitems,
-                        ),
-                        RadioListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Visa',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .apply(color: TColors.grey),
-                              ),
-                              Image.asset(TImages.visa, height: 20),
-                            ],
-                          ),
-                          value: 2, // Value for Visa
-                          groupValue: _selectedPaymentMethod,
-                          activeColor: Colors.green,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPaymentMethod = value as int;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          height: Tsizes.spcBtwitems,
-                        ),
-                        RadioListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Master Card',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .apply(color: TColors.grey),
-                              ),
-                              Image.asset(TImages.masterCard, height: 20),
-                            ],
-                          ),
-                          value: 3, // Value for Master Card
-                          groupValue: _selectedPaymentMethod,
-                          activeColor: Colors.green,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPaymentMethod = value as int;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        if (_selectedPaymentMethod == 0 ||
-                            _selectedPaymentMethod == 1)
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 70.0, left: 20, right: 20, bottom: 50),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Enter PIN',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                TextField(
-                                  controller: _pinController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                    hintText: 'XXXX',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        if (_selectedPaymentMethod == 2 ||
-                            _selectedPaymentMethod == 3)
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Card Number',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                TextField(
-                                  controller: _cardNumberController,
-                                  decoration: const InputDecoration(
-                                    hintText: 'XXXX XXXX XXXX XXXX',
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'Expiration Date',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                TextField(
-                                  controller: _expirationDateController,
-                                  decoration: const InputDecoration(
-                                    hintText: 'MM/YY',
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'CVV',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                TextField(
-                                  controller: _cvvController,
-                                  decoration: const InputDecoration(
-                                    hintText: 'XXX',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed:
-                                  _isProcessingPayment ? null : _processPayment,
-                              child: _isProcessingPayment
-                                  ? const CircularProgressIndicator(
-                                      color: TColors.dark,
-                                      backgroundColor: TColors.dark,
-                                    )
-                                  : const Text('Pay Now'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  void dispose() {
+    _razorpay.clear(); // Clear all listeners when the widget is disposed
+    super.dispose();
   }
 
-  void _showBookingConfirmation() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: TColors.dark,
-          title: const Center(child: Text("Booking Successful!")),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Doctor's Name: $doctorName"),
-              Text("Patient's Name: $patientName"), // Dynamic patient's name
-              Text("Token Number: $tokenNumber"), // Dynamic token number
-              Text("Session: $session"),
-              Text(
-                  "Date: ${date.isNotEmpty ? date.split(' ')[0] : ''}"), // Check if date is not empty
-              const SizedBox(height: 10),
-              SizedBox(
-                width: 200,
-                height: 200,
-                child: TokenGenerationDataModel(
-                  doctorName: doctorName,
-                  tokenNumber: tokenNumber,
-                  patientName: patientName,
-                  appointmentTime: date,
-                ).generateQrCodeWidget(),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushReplacement(CupertinoPageRoute(builder: (ctx) {
-                  return const NavigationMenu();
-                }));
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(color: TColors.black),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 252, 252, 246),
+      appBar: AppBar(
+        title: const Text(
+          "Payment Options",
+          style: TextStyle(color: TColors.black),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Total Amount: ₹${widget.totalAmount.toStringAsFixed(2)}",
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: TColors.black),
+            ),
+            const SizedBox(height: 20),
+
+            // Add SVG image below the total amount
+            SvgPicture.asset(
+              'assets/image/pay_money.svg', // Path to your SVG asset
+              height: 150, // Adjust size as needed
+            ),
+            const SizedBox(height: 20),
+
+            // Radio buttons to choose payment option
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: TColors.primary.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20)),
+              child: ListTile(
+                title: Text(
+                  "Pay Advance Amount (₹${widget.advanceAmount.toStringAsFixed(2)})",
+                  style: const TextStyle(color: TColors.black),
+                ),
+                leading: Radio<double>(
+                  value: widget.advanceAmount,
+                  groupValue: selectedAmount,
+                  onChanged: (double? value) {
+                    setState(() {
+                      selectedAmount = value ?? 0.0;
+                    });
+                  },
+                ),
               ),
             ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: TColors.primary.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20)),
+              child: ListTile(
+                title: Text(
+                  "Pay Complete Amount (₹${widget.totalAmount.toStringAsFixed(2)})",
+                  style: const TextStyle(color: TColors.black),
+                ),
+                leading: Radio<double>(
+                  value: widget.totalAmount,
+                  groupValue: selectedAmount,
+                  onChanged: (double? value) {
+                    setState(() {
+                      selectedAmount = value ?? 0.0;
+                    });
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Payment button
+            ElevatedButton(
+              onPressed: _payWithRazorpay,
+              style: ElevatedButton.styleFrom(
+                side: BorderSide.none,
+                backgroundColor: TColors.primary,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text("Proceed to Payment"),
+            ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }

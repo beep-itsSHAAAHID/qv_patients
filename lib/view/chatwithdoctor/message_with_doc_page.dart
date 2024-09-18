@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:qv_patient/provider/doc_chat_notifier.dart';
+import 'package:qv_patient/view/chatwithdoctor/video_call.dart';
+import 'package:qv_patient/view/chatwithdoctor/voice_call.dart';
 import 'package:wave/wave.dart';
 import 'package:wave/config.dart';
 import 'package:qv_patient/constants/colors.dart';
@@ -144,7 +147,26 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.video_call))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, CupertinoPageRoute(
+                  builder: (context) {
+                    return VideoCall();
+                  },
+                ));
+              },
+              icon: Icon(Icons.video_call)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, CupertinoPageRoute(
+                  builder: (context) {
+                    return VoiceCall();
+                  },
+                ));
+              },
+              icon: Icon(Icons.call))
+        ],
         backgroundColor: TColors.primary,
         title: Text('Doctor name'),
       ),

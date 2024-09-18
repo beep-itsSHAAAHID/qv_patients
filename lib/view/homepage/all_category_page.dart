@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qv_patient/constants/colors.dart';
 import 'package:qv_patient/helper/responsive.dart';
-import 'package:qv_patient/view/chatwithdoctor/message_with_doc_page.dart';
+import 'package:qv_patient/view/homepage/doctor_by_categorypage.dart';
 import 'package:qv_patient/view/homepage/widgets/department_container.dart';
 
 class AllCategoriesPage extends StatelessWidget {
@@ -25,7 +25,7 @@ class AllCategoriesPage extends StatelessWidget {
     'Urologist',
   ];
 
-  final List<String> asseticonurl = [
+  final List<String> assetIconUrl = [
     'assets/icons/Neurologist.png',
     'assets/icons/Dentist.png',
     'assets/icons/Cardiologist.png',
@@ -48,13 +48,12 @@ class AllCategoriesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 252, 252, 246),
       appBar: AppBar(
-        backgroundColor: TColors.primary,
-        title: Text(
+        title: const Text(
           'All Categories',
           style: TextStyle(color: Colors.white),
         ),
         leading: IconButton(
-          icon: Icon(Iconsax.arrow_left, color: Colors.white),
+          icon: const Icon(Iconsax.arrow_left, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -73,15 +72,19 @@ class AllCategoriesPage extends StatelessWidget {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
+                // Navigate to the DoctorsByCategoryPage with the selected category
                 Navigator.push(context, CupertinoPageRoute(
                   builder: (context) {
-                    return ChatScreen();
+                    return DoctorsByCategoryPage(
+                      category: department[index],
+                    );
                   },
                 ));
               },
               child: DepartmentContainer(
-                  assetimgurl: asseticonurl[index],
-                  departmentName: department[index]),
+                assetimgurl: assetIconUrl[index],
+                departmentName: department[index],
+              ),
             );
           },
         ),

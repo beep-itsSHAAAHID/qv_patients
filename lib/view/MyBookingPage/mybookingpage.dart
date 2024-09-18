@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qv_patient/animations/fade_in_slide.dart';
 import 'package:qv_patient/constants/colors.dart';
-import 'package:qv_patient/helper/responsive.dart';
-
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/canceled_page.dart';
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/completed_page.dart';
 import 'package:qv_patient/view/MyBookingPage/TabbarBookingInfo/upcomming_page.dart';

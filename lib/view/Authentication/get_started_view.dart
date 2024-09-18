@@ -8,7 +8,6 @@ import 'package:qv_patient/helper/responsive.dart';
 import 'package:qv_patient/view/Authentication/login_view.dart';
 import 'package:qv_patient/view/Authentication/create_account_view.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class GetStartedView extends StatelessWidget {
   const GetStartedView({super.key});
@@ -70,22 +69,13 @@ class GetStartedView extends StatelessWidget {
               ),
             ),
             SizedBox(height: height * 0.02),
-            FadeInSlide(
-              duration: .8,
-              child: LoginButton(
-                icon: Brand(Brands.facebook,
-                    size: Responsive.width(context, 0.05)),
-                text: "Continue with Facebook",
-                onPressed: () {},
-              ),
-            ),
             SizedBox(height: height * 0.02),
             const Spacer(),
             FadeInSlide(
               duration: 1.1,
               child: FilledButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     CupertinoPageRoute(
                       builder: (context) => const SignInView(),
@@ -113,7 +103,7 @@ class GetStartedView extends StatelessWidget {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => const SignUpView(),
+                      builder: (context) => SignUpView(),
                     ),
                   );
                 },

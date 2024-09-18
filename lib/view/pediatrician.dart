@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
-import '../model/globalvariable.dart';
 
 class Pediatrician extends StatefulWidget {
   const Pediatrician({super.key});
