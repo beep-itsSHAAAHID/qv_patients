@@ -15,6 +15,7 @@ import 'package:qv_patient/view/Authentication/widgets/build_divider.dart';
 import 'package:qv_patient/view/Authentication/widgets/build_sign_in_text.dart';
 import 'package:qv_patient/view/Authentication/widgets/buildsignupbutton.dart';
 import 'package:qv_patient/view/Authentication/widgets/buildsocialbutton.dart';
+import 'package:qv_patient/view/Authentication/widgets/globalfunctions.dart';
 import 'package:qv_patient/view/Authentication/widgets/widgets.dart';
 
 class SignUpView extends ConsumerStatefulWidget {
@@ -49,24 +50,6 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     super.dispose();
   }
 
-  Future<String> generateNewPatientId() async {
-    DocumentReference idCounterRef = FirebaseFirestore.instance
-        .collection('id_counters')
-        .doc('patientcounter');
-
-    DocumentSnapshot snapshot = await idCounterRef.get();
-    String lastPatientId = snapshot.get('lastPatientId') as String;
-
-    int currentIdNumber = int.parse(lastPatientId.substring(2));
-    int newIdNumber = currentIdNumber + 1;
-
-    String newPatientId = 'PI${newIdNumber.toString().padLeft(3, '0')}';
-
-    await idCounterRef.update({'lastPatientId': newPatientId});
-
-    return newPatientId;
-  }
-
   Future<void> submitUserData(BuildContext context, WidgetRef ref) async {
     final String fullName = _fullNameController.text;
     final String phoneNumber = _phoneNumberController.text;
@@ -93,10 +76,14 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
         password: password,
       );
 
-      final String patientId = await generateNewPatientId();
+      if (userCredential.user == null) {
+        showsnackbar(context, "User not found");
+        return;
+      }
+  String patientid = userCredential.user!.uid;
 
       final PatientModel patient = PatientModel(
-        patientId: patientId,
+        patientId: patientid,
         fullName: fullName,
         phoneNumber: phoneNumber,
         email: email,
@@ -104,7 +91,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
         gender: gender,
         profilePicUrl: 'https://example.com/default-profile-pic.png',
         reference:
-            FirebaseFirestore.instance.collection('patients').doc(patientId),
+            FirebaseFirestore.instance.collection('patients').doc(patientid),
       );
 
       await ref.read(patientControllerProvider).addPatient(context, patient);
